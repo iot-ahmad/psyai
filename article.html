@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta
+      name="description"
+      content="قراءة المقال والتثقيف النفسي — منصة PsyAI."
+    />
+    <title id="pageTitle">قراءة المقال — مدونة PsyAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+      <link rel="stylesheet" href="assets/css/fonts.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header" id="pageHeader">
+      <div class="container">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <img src="psyai.png" alt="PsyAI" class="logo-img" />
+            <span class="logo-text">PsyaI</span>
+          </a>
+          <nav class="nav desktop-nav">
+            <a href="index.html" class="nav-link">الرئيسية</a>
+            <a href="specialists.html" class="nav-link">المختصين</a>
+            <a href="business.html" class="nav-link">PsyAI الأعمال</a>
+            <div class="nav-item">
+              <a href="service-individual.html" class="nav-link">
+                <span>خدماتنا</span>
+                <svg
+                  class="svg-icon dd-chevron"
+                  viewBox="0 0 24 24"
+                  width="14"
+                  height="14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </a>
+              <div class="nav-dropdown">
+                <a href="service-individual.html" class="dropdown-item"
+                  >دعم نفسي فردي</a
+                >
+                <a href="service-corporate.html" class="dropdown-item"
+                  >برامج الشركات</a
+                >
+                <a href="service-kids.html" class="dropdown-item"
+                  >برامج الأطفال</a
+                >
+                <div class="dropdown-divider"></div>
+                <a href="values.html" class="dropdown-item">قيمنا ومبادئنا</a>
+              </div>
+            </div>
+            <a href="assessment.html" class="nav-link">التقييم الذاتي</a>
+            <a href="blog.html" class="nav-link active">المدونة</a>
+          </nav>
+          <div class="header-actions desktop-nav">
+            <a href="#" class="lang-btn">EN</a>
+            <a href="login.html" class="btn btn-gold"
+              >احجز جلسة</a
+            >
+          </div>
+          <button class="hamburger mobile-nav-toggle" aria-label="قائمة التصفح">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html" class="nav-link">الرئيسية</a>
+        <a href="specialists.html" class="nav-link">المختصين</a>
+        <a href="business.html" class="nav-link">PsyAI الأعمال</a>
+        <a href="service-individual.html" class="nav-link">دعم نفسي فردي</a>
+        <a href="service-corporate.html" class="nav-link">برامج الشركات</a>
+        <a href="service-kids.html" class="nav-link">برامج الأطفال</a>
+        <a href="values.html" class="nav-link">قيمنا</a>
+        <a href="assessment.html" class="nav-link">التقييم الذاتي</a>
+        <a href="blog.html" class="nav-link active">المدونة</a>
+        <a href="login.html" class="btn btn-gold"
+          >احجز جلسة</a
+        >
+      </nav>
+    </header>
+
+    <!-- Clean Simple Reader Container -->
+    <main class="simple-article-wrapper">
+      <div class="simple-article-container">
+        <!-- Simple Navigation / Back Link -->
+        <div class="simple-article-nav">
+          <a href="blog.html" class="simple-back-link">
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            العودة إلى المدونة
+          </a>
+        </div>
+
+        <!-- Article Header: Title & Meta -->
+        <header class="simple-article-header">
+          <div class="simple-article-meta" id="articleMetaLine">
+            <span id="articleCategoryText" class="meta-cat">الرفاه وجودة الحياة</span>
+            <span class="meta-dot">·</span>
+            <span id="articleAuthorText">د. سارة المنصوري</span>
+            <span class="meta-dot">·</span>
+            <span id="articleDateText">١ سبتمبر ٢٠٢٦</span>
+            <span class="meta-dot">·</span>
+            <span id="articleReadTimeText">وقت القراءة: ٦ دقائق</span>
+          </div>
+
+          <h1
+            data-anim="fade-up"
+            class="simple-article-title"
+            id="articleMainTitle"
+          >
+            ...
+          </h1>
+
+          <p
+            class="simple-article-lead"
+            id="articleMainLead"
+            style="display: none"
+          ></p>
+        </header>
+
+        <hr class="simple-divider" />
+
+        <!-- Clean Article Text -->
+        <article class="simple-article-content" id="articleBody">
+          <!-- Populated dynamically -->
+        </article>
+
+        <hr class="simple-divider" />
+
+        <!-- Simple Footer Nav / Action -->
+        <div class="simple-article-footer">
+          <a href="blog.html" class="simple-back-btn"
+            >← العودة لقائمة المقالات</a
+          >
+          <button
+            class="simple-share-btn"
+            id="simpleShareBtn"
+            onclick="copyArticleUrl()"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+              />
+              <path
+                d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+              />
+            </svg>
+            <span id="shareBtnText">نسخ رابط المقال</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <div class="footer-logo"><span class="logo-text">PsyaI</span></div>
+            <p>
+              صحتك النفسية أولويتنا — رعاية متخصصة، سرية تامة، وهوية عربية
+              أصيلة.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>خدماتنا</h4>
+            <ul>
+              <li><a href="service-individual.html">دعم نفسي فردي</a></li>
+              <li><a href="service-corporate.html">برامج الشركات</a></li>
+              <li><a href="service-kids.html">برامج الأطفال</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>الروابط</h4>
+            <ul>
+              <li><a href="specialists.html">المختصين</a></li>
+              <li><a href="values.html">قيمنا ومبادئنا</a></li>
+              <li><a href="assessment.html">التقييم الذاتي</a></li>
+              <li><a href="blog.html">المدونة</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>تواصل معنا</h4>
+            <a href="mailto:psyaiwellbeing@gmail.com" class="footer-email"
+              >psyaiwellbeing@gmail.com</a
+            >
+            <a href="tel:0775666346" class="footer-email" style="direction:ltr; display:inline-block; font-weight:700; color:var(--gold-light); margin-top:0.3rem;"
+              >0775666346</a
+            >
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2025 PsyAI. جميع الحقوق محفوظة.</span>
+          <div class="footer-links">
+            <a href="#">سياسة الخصوصية</a><a href="#">الشروط والأحكام</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="articles-store.js?v=3"></script>
+    <script src="script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleId = urlParams.get("id") || "anxiety-guide";
+        let article = null;
+
+        if (window.ArticlesStore) {
+          article = ArticlesStore.getById(articleId);
+          if (article && article.id !== articleId) {
+            article = null; // not exact match
+          }
+        }
+
+        // Try direct fetch from backend API
+        if (!article) {
+          try {
+            const res = await fetch(`/api/articles/${encodeURIComponent(articleId)}`);
+            if (res.ok) {
+              const data = await res.json();
+              if (data && data.success && data.article) {
+                const item = data.article;
+                const d = item.createdAt ? new Date(item.createdAt) : new Date();
+                const months = [
+                  "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                  "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+                ];
+                article = {
+                  id: item.id,
+                  title: item.title,
+                  category: item.category || "الرفاه وجودة الحياة",
+                  lead: item.lead || "",
+                  readTime: item.readTime || "٥ دقائق",
+                  author: item.authorName || "أخصائي PsyAI",
+                  date: d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear(),
+                  content: item.content
+                };
+              }
+            }
+          } catch (e) {
+            console.warn(e);
+          }
+        }
+
+        // Fallback to default article if still not found
+        if (!article && window.ArticlesStore) {
+          article = ArticlesStore.getAll()[0];
+        }
+
+        if (!article) return;
+
+        document.title = article.title + " — PsyAI";
+        document.getElementById("articleMainTitle").textContent = article.title;
+
+        document.getElementById("articleCategoryText").textContent =
+          article.category || "تثقيف نفسي";
+        document.getElementById("articleAuthorText").textContent =
+          article.author || "فريق PsyAI";
+        document.getElementById("articleDateText").textContent =
+          article.date || "";
+        document.getElementById("articleReadTimeText").textContent =
+          article.readTime ? "وقت القراءة: " + article.readTime : "";
+
+        const leadElem = document.getElementById("articleMainLead");
+        if (article.lead && article.lead.trim()) {
+          leadElem.textContent = article.lead;
+          leadElem.style.display = "block";
+        }
+
+        const articleBody = document.getElementById("articleBody");
+        articleBody.innerHTML =
+          article.content || "<p>" + (article.lead || "") + "</p>";
+      });
+
+      function copyArticleUrl() {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          const txt = document.getElementById("shareBtnText");
+          txt.textContent = "تم النسخ!";
+          setTimeout(() => {
+            txt.textContent = "نسخ رابط المقال";
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1306 @@
+@import "fonts.css";
+/* ============================================================================
+   PsyAI — Cinematic Authentication Experience
+   ----------------------------------------------------------------------------
+   Design System:
+     - Dark luxury charcoal surface (#25232b) with near-black page background (#121115)
+     - Sophisticated rose-gold / dusty-pink glow & gradient accent
+     - Seamless continuous diagonal geometric morphing transition (800ms cubic)
+     - Outgoing form slides, fades (1 → 0) and blurs (0 → 10px)
+     - Incoming form slides in from offset, fades in (0 → 1) and de-blurs (10px → 0)
+     - Staggered entrance timing for inner form elements
+     - Synchronized welcome copy traveling with the sliding color wedge
+     - Shimmer sweep across gold panel during transition
+     - Full bidirectional smooth reverse transition on "Sign In"
+   ============================================================================ */
+
+/* ============================================================================
+   1. DESIGN TOKENS
+   ============================================================================ */
+:root {
+  /* Official PsyAI Deep Dark Teal & Charcoal Surfaces */
+  --teal-deep: #1a2e2f;
+  --teal-dark: #243d3e;
+  --teal: #2e5254;
+  --teal-light: #7ab3b7;
+  --teal-pale: #eaf3f4;
+  --bg-page: #0e191a;
+  --card-bg: #162728;
+  --card-inner: #1a2e2f;
+  --input-bg: #101d1e;
+  --input-border: rgba(122, 179, 183, 0.22);
+  --input-focus-border: #d4a843;
+
+  /* Official PsyAI Warm Gold Palette */
+  --gold: #d4a843;
+  --gold-light: #e0bc72;
+  --gold-dark: #9e7a28;
+  --gold-glow: none;
+  --gold-gradient: linear-gradient(135deg, #d8ad49 0%, #e5c378 45%, #c89a35 100%);
+  --gold-btn-gradient: linear-gradient(135deg, #d8ad49 0%, #e0bc72 50%, #c99b38 100%);
+
+  /* Backward Compatibility Aliases */
+  --charcoal: #162728;
+  --charcoal-deep: #0e191a;
+  --near-black: #0e191a;
+  --rose-100: #e0bc72;
+  --rose-200: #e0bc72;
+  --rose-300: #d4a843;
+  --rose-400: #c89a35;
+  --rose-500: #9e7a28;
+  --rose-glow: none;
+  --rose-gradient: var(--gold-gradient);
+  --rose-btn-gradient: var(--gold-btn-gradient);
+
+  /* Surfaces & Typography */
+  --text-main: #ffffff;
+  --text-muted: #9eb1b3;
+  --text-dark: #1a2e2f;
+
+  /* Status & Third-party */
+  --google-blue: #4285f4;
+  --whatsapp-green: #25d366;
+  --error: #f87171;
+  --success: #34d399;
+
+  /* Dimensions & Radius */
+  --card-width: 940px;
+  --card-height: 590px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  /* Cinematic Animation Timing (3s Smooth Ease-In-Out) */
+  --dur: 3s;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================================
+   2. BASE / RESET / TYPOGRAPHY
+   ============================================================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Poppins', 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0e191a;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* ============================================================================
+   3. TOP NAVIGATION BAR
+   ============================================================================ */
+.auth-topbar {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.1rem 2rem 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.logo:hover {
+  transform: translateY(-1px);
+}
+
+.logo-img {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.logo-text {
+  font-size: 1.7rem;
+  color: #ffffff;
+  font-weight: 800;
+  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.logo-text span {
+  color: var(--rose-200);
+}
+
+.topbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.top-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--teal-pale);
+  padding: 0.45rem 1.15rem;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  backdrop-filter: blur(8px);
+}
+
+.top-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: var(--rose-300);
+  color: var(--rose-100);
+  transform: translateY(-1px);
+}
+
+/* ============================================================================
+   4. AUTH WRAPPER & RECTANGULAR CARD SHELL (WITH SOFT GLOW)
+   ============================================================================ */
+.auth-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.6rem 1.5rem 2.2rem;
+}
+
+/* Card entrance animation on page load */
+@keyframes card-enter {
+  0%   { opacity: 0; transform: translateY(24px) scale(0.97); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0) scale(1);      filter: blur(0); }
+}
+
+.auth-card {
+  position: relative;
+  width: var(--card-width);
+  max-width: 100%;
+  min-height: var(--card-height);
+  height: var(--card-height);
+  background: #162728;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid rgba(212, 168, 67, 0.28);
+  overflow: hidden;
+  box-shadow: none;
+}
+
+/* ============================================================================
+   5. GOLD DIAGONAL SLIDING PANEL & WELCOME COPY
+   ----------------------------------------------------------------------------
+   The diagonal divider smoothly travels from right to left when switching.
+   Login: Panel is on the right side with diagonal leading edge.
+   Register: Panel travels to the left side with diagonal edge.
+   ============================================================================ */
+.gold-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 53%;
+  height: 100%;
+  z-index: 20;
+  background: var(--gold-gradient);
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.4);
+  /* Login state: positioned on the right side with diagonal cutting on left */
+  -webkit-clip-path: polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%);
+  transform: translate3d(88.7%, 0, 0);
+  -webkit-transform: translate3d(88.7%, 0, 0);
+  transition:
+    transform 3s cubic-bezier(0.4, 0, 0.2, 1),
+    -webkit-transform 3s cubic-bezier(0.4, 0, 0.2, 1),
+    clip-path 3s cubic-bezier(0.4, 0, 0.2, 1),
+    -webkit-clip-path 3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, clip-path;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Register state: Gold panel visibly sweeps and slides completely to the left side */
+.auth-card.reg .gold-panel {
+  transform: translate3d(0%, 0, 0);
+  -webkit-transform: translate3d(0%, 0, 0);
+  -webkit-clip-path: polygon(0% 0%, 85% 0%, 71% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, 85% 0%, 71% 100%, 0% 100%);
+}
+
+.welcome-content {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Welcome copy layers synchronized with the panel translation */
+.w-login,
+.w-register {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 2.2rem;
+  color: var(--teal-deep);
+  transition:
+    opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+/* Initial Login Welcome: Active on the right side */
+.w-login {
+  right: 0;
+  left: auto;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* When in Register State: Login Welcome slides left along with gold panel and fades */
+.auth-card.reg .w-login {
+  opacity: 0;
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+/* Initial Register Welcome: Parked on the left side, comes in from right as panel glides left */
+.w-register {
+  left: 0;
+  right: auto;
+  opacity: 0;
+  transform: translateX(100%);
+  pointer-events: none;
+}
+
+/* When in Register State: Register Welcome slides smoothly into place on the left */
+.auth-card.reg .w-register {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  transition-delay: 0.15s;
+}
+
+.w-title {
+  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Poppins', 'Cairo', sans-serif;
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+  direction: ltr !important;
+  text-shadow: none;
+}
+
+.w-bar {
+  width: 46px;
+  height: 3px;
+  background: var(--teal-deep);
+  border-radius: 3px;
+  opacity: 0.7;
+  margin: 0.75rem auto;
+}
+
+.w-sub {
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--teal-dark);
+  margin-bottom: 0.35rem;
+}
+
+.w-desc {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  font-weight: 600;
+  color: var(--teal-dark);
+  max-width: 270px;
+  margin-bottom: 1.6rem;
+}
+
+.w-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 2.2rem;
+  border-radius: 50px;
+  border: 1.8px solid var(--teal-deep);
+  background: transparent;
+  color: var(--teal-deep);
+  font-size: 0.9rem;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  text-decoration: none;
+}
+
+.w-btn:hover {
+  background: var(--teal-deep);
+  color: var(--gold-light);
+  transform: translateY(-2px);
+}
+
+/* ============================================================================
+   6. FORM COLUMNS (SIMULTANEOUS SLIDING, FADING & BLURRING)
+   ============================================================================ */
+.forms-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
+.form-col {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 2.5rem;
+  transition:
+    opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+/* Login Column: Left side in initial state */
+.col-login {
+  left: 0;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* Register Column: Right side in register state */
+.col-register {
+  left: auto;
+  right: 0;
+  width: 55%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(30px);
+  pointer-events: none;
+  padding: 1.15rem 2.2rem 1.15rem 3.2rem;
+  overflow-y: visible;
+}
+
+/* Switching to Register: Outgoing Login slides slightly left and fades out */
+.auth-card.reg .col-login {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-30px);
+  pointer-events: none;
+}
+
+/* Switching to Register: Incoming Register slides smoothly into place on the right */
+.auth-card.reg .col-register {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  pointer-events: auto;
+  transition-delay: 0.15s;
+}
+
+/* ============================================================================
+   7. FORM INTERNALS
+   ============================================================================ */
+.form-title {
+  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Poppins', 'Cairo', sans-serif;
+  font-size: 1.95rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  color: var(--text-main);
+  margin-bottom: 0.2rem;
+}
+
+.col-register .form-title {
+  font-size: 1.62rem;
+}
+
+.form-sub {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--teal-light);
+  margin-bottom: 1.25rem;
+}
+
+.col-register .form-sub {
+  margin-bottom: 0.75rem;
+}
+
+/* Two-column responsive field row */
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.fg {
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.fg label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: var(--teal-pale);
+  margin-bottom: 0.3rem;
+}
+
+.fg label .star {
+  color: var(--rose-300);
+  margin-inline-start: 3px;
+}
+
+.iw {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.fi {
+  width: 100%;
+  height: 42px;
+  background: var(--input-bg);
+  border: 1.2px solid var(--input-border);
+  border-radius: 22px;
+  padding: 0 0.9rem 0 2.4rem;
+  font-size: 0.86rem;
+  color: var(--text-main);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+
+html[dir="rtl"] .fi {
+  padding: 0 2.4rem 0 0.9rem;
+}
+
+.fi::placeholder {
+  color: var(--teal-light);
+  opacity: 0.55;
+  font-size: 0.82rem;
+}
+
+.fi:focus {
+  border-color: var(--rose-300);
+  background: #24202a;
+  box-shadow: none;
+}
+
+select.fi {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+select.fi option {
+  background: var(--card-bg);
+  color: var(--text-main);
+}
+
+/* Field icons & chevrons */
+.ico {
+  position: absolute;
+  left: 0.85rem;
+  color: var(--teal-light);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+html[dir="rtl"] .ico {
+  left: auto;
+  right: 0.85rem;
+}
+
+.fi:focus ~ .ico {
+  color: var(--rose-200);
+}
+
+.chev {
+  position: absolute;
+  left: 0.85rem;
+  pointer-events: none;
+  color: var(--teal-light);
+  display: flex;
+  align-items: center;
+}
+
+html[dir="rtl"] .chev {
+  left: 0.85rem;
+  right: auto;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 0.8rem;
+  background: none;
+  border: none;
+  color: var(--teal-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  transition: color 0.2s;
+}
+
+html[dir="rtl"] .eye-btn {
+  right: auto;
+  left: 0.8rem;
+}
+
+.eye-btn:hover {
+  color: var(--rose-200);
+}
+
+/* Phone field with fixed +962 Jordanian badge */
+.phone-field-box {
+  display: flex !important;
+  align-items: center !important;
+  direction: ltr !important;
+  width: 100% !important;
+  background: var(--input-bg);
+  border: 1.2px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  height: 42px;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+
+.phone-field-box:focus-within {
+  border-color: var(--rose-300);
+  background: #24202a;
+  box-shadow: none;
+}
+
+.phone-prefix-badge {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.84rem;
+  color: #ffffff;
+  font-weight: 700;
+  white-space: nowrap;
+  height: 100%;
+  border-right: 1.2px solid var(--input-border);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.phone-input-element {
+  flex: 1 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 12px !important;
+  font-size: 0.88rem !important;
+  color: var(--text-main) !important;
+  outline: none !important;
+  direction: ltr !important;
+  text-align: left !important;
+  font-family: inherit !important;
+}
+
+.phone-input-element::placeholder {
+  color: var(--teal-light);
+  opacity: 0.55;
+  font-size: 0.82rem;
+}
+
+/* Extras row (Remember me / Forgot password) */
+.extras {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.1rem;
+  font-size: 0.82rem;
+}
+
+.rem-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--teal-pale);
+  cursor: pointer;
+  user-select: none;
+}
+
+.rem-label input[type="checkbox"] {
+  accent-color: var(--rose-300);
+  width: 15px;
+  height: 15px;
+}
+
+.forgot {
+  color: var(--teal-light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgot:hover {
+  color: var(--rose-200);
+  text-decoration: underline;
+}
+
+/* Main Action Button (PsyAI Warm Gold) */
+.btn-main {
+  width: 100%;
+  height: 44px;
+  border-radius: 50px;
+  border: none;
+  background: var(--gold-btn-gradient);
+  color: var(--teal-deep);
+  font-size: 0.96rem;
+  font-weight: 800;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: none;
+  transition: transform 0.2s var(--ease-out), filter 0.2s;
+}
+
+.btn-main:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: none;
+}
+
+.btn-main:active {
+  transform: translateY(0);
+}
+
+html[dir="rtl"] .btn-main svg {
+  transform: scaleX(-1);
+}
+
+.btn-google {
+  width: 100%;
+  height: 38px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  font-size: 0.86rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.btn-google:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(224, 142, 156, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-google:active {
+  transform: translateY(0);
+}
+
+.btn-google svg {
+  flex-shrink: 0;
+}
+
+/* Divider */
+.auth-sep {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 0.55rem 0 0.7rem;
+  color: var(--teal-light);
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.auth-sep::before,
+.auth-sep::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.auth-sep span {
+  padding: 0 0.6rem;
+}
+
+/* Bottom switch link */
+.switch-line {
+  text-align: center;
+  margin-top: 0.95rem;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.sw-btn {
+  color: var(--rose-200);
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  margin-inline-start: 0.35rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(240, 173, 182, 0.55);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.sw-btn:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+/* ============================================================================
+   8. STEP INDICATOR & REGISTER STEPS
+   ============================================================================ */
+.step-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.95rem;
+}
+
+.step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.3s, width 0.3s;
+}
+
+.step-dot.active {
+  background: var(--rose-btn-gradient);
+  width: 24px;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.step-dot.done {
+  background: var(--rose-500);
+}
+
+.reg-steps {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.reg-step {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition:
+    opacity 0.35s ease,
+    transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: opacity, transform;
+}
+
+.reg-step-1 {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.reg-step-2 {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateX(-30px);
+  pointer-events: none;
+}
+
+.col-register.step2 .reg-step-1 {
+  opacity: 0;
+  transform: translateX(30px);
+  pointer-events: none;
+}
+
+.col-register.step2 .reg-step-2 {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  transition-delay: 0.05s;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--teal-light);
+  font-size: 0.84rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  margin-bottom: 0.6rem;
+  padding: 0;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.back-btn:hover {
+  color: var(--rose-200);
+  transform: translateX(2px);
+}
+
+html[dir="rtl"] .back-btn:hover {
+  transform: translateX(-2px);
+}
+
+/* Conditional 'أخرى' Custom Case Description Textarea */
+.other-desc-wrap {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, transform 0.3s ease, margin-top 0.3s ease;
+  margin-top: 0;
+}
+
+.other-desc-wrap.visible {
+  display: block !important;
+  max-height: 180px;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 0.65rem;
+}
+
+.other-desc-textarea {
+  height: 80px !important;
+  padding: 0.65rem 0.9rem !important;
+  resize: none;
+  line-height: 1.6;
+  border-radius: 14px !important;
+}
+
+/* ============================================================================
+   9. FEEDBACK (TOAST) & MODALS
+   ============================================================================ */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  inset-inline-end: 24px;
+  background: #25232b;
+  border: 1.5px solid var(--rose-300);
+  color: #fff;
+  padding: 0.85rem 1.6rem;
+  border-radius: 30px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  z-index: 2000;
+  transform: translateY(80px);
+  opacity: 0;
+  box-shadow: none;
+  transition: transform 0.32s ease, opacity 0.32s ease;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Shared modal overlay */
+.otp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 17, 21, 0.88);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  padding: 1rem;
+  animation: fadeIn 0.25s ease;
+}
+
+.otp-modal-overlay.open {
+  display: flex;
+}
+
+.otp-modal-box {
+  background: linear-gradient(150deg, #2d2a36 0%, var(--card-bg) 60%, #1c1a22 100%);
+  border: 1.5px solid rgba(224, 142, 156, 0.4);
+  border-radius: var(--radius-lg);
+  padding: 2.2rem 2rem;
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+  position: relative;
+  box-shadow: none;
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.otp-close-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--teal-light);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.otp-close-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: var(--rose-300);
+}
+
+.otp-icon-wrap {
+  width: 64px;
+  height: 64px;
+  background: rgba(37, 211, 102, 0.12);
+  border: 2px solid rgba(37, 211, 102, 0.35);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.otp-title {
+  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Poppins', 'Cairo', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.otp-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.4rem;
+}
+
+.otp-inputs-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 1.2rem;
+  direction: ltr;
+}
+
+.otp-digit {
+  width: 48px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--rose-100);
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  font-family: monospace, sans-serif;
+}
+
+.otp-digit:focus {
+  border-color: var(--rose-300);
+  box-shadow: none;
+  background: #24202a;
+}
+
+.otp-error-msg {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: -0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+/* Dev code helper badge */
+#otpDevBadge {
+  background: rgba(224, 142, 156, 0.12);
+  border: 1px dashed var(--rose-300);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  font-size: 0.85rem;
+  color: var(--rose-200);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#otpDevBadge:hover {
+  background: rgba(224, 142, 156, 0.2);
+}
+
+/* ============================================================================
+   10. IMMEDIATE VISIBILITY (No staggered entrance / delayed animation)
+   ----------------------------------------------------------------------------
+   Form elements are immediately visible without delayed fading or blur.
+   ============================================================================ */
+.s {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+/* ============================================================================
+   11. MOBILE SEGMENTED TABS & RESPONSIVE LAYOUT
+   ----------------------------------------------------------------------------
+   - Desktop (> 768px): Full 3-second physical gold panel sliding animation.
+   - Mobile (<= 768px): Dedicated single-column full-width layout without heavy
+     slide animations, featuring 1-tap instant tab switching for mobile ergonomics.
+   ============================================================================ */
+.mobile-auth-tabs {
+  display: none;
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
+  :root {
+    --card-width: 94vw;
+    --card-height: 570px;
+  }
+  .form-col {
+    padding: 1.5rem 1.4rem;
+  }
+  .w-login,
+  .w-register {
+    padding: 1.5rem 1.2rem;
+  }
+  .w-title {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  .w-desc {
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .form-title {
+    font-size: 1.55rem;
+  }
+}
+
+/* Dedicated Mobile Viewport (<= 768px) */
+@media (max-width: 768px) {
+  .auth-topbar {
+    padding: 0.6rem 0.8rem 0.3rem;
+  }
+  .logo-img {
+    height: 36px;
+  }
+  .logo-text {
+    font-size: 1.3rem;
+  }
+  .top-btn {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+  }
+  .auth-wrapper {
+    padding: 0.5rem 0.6rem 1.8rem;
+    align-items: flex-start;
+  }
+
+  /* Single-column full-width card */
+  .auth-card {
+    width: 100% !important;
+    max-width: 480px !important;
+    min-height: auto !important;
+    height: auto !important;
+    border-radius: 16px !important;
+    padding-bottom: 0.5rem !important;
+    overflow: visible !important;
+  }
+
+  /* Hide sliding desktop panels on mobile */
+  .gold-panel,
+  .welcome-content {
+    display: none !important;
+  }
+
+  /* Mobile tabs */
+  .mobile-auth-tabs {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 168, 67, 0.25);
+    border-radius: 50px;
+    padding: 4px;
+    margin: 1.1rem 1.1rem 0.4rem;
+    gap: 4px;
+  }
+
+  .mobile-tab-btn {
+    flex: 1;
+    padding: 9px 14px;
+    border-radius: 40px;
+    border: none;
+    background: transparent;
+    color: var(--teal-pale);
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .mobile-tab-btn.active,
+  body:not(.is-reg) .mobile-tab-btn#mTabLogin {
+    background: var(--gold-gradient);
+    color: var(--teal-deep);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  body.is-reg .mobile-tab-btn#mTabLogin {
+    background: transparent;
+    color: var(--teal-pale);
+    box-shadow: none;
+  }
+
+  body.is-reg .mobile-tab-btn#mTabRegister {
+    background: var(--gold-gradient);
+    color: var(--teal-deep);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Forms Layer on Mobile */
+  .forms-layer {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .form-col {
+    position: relative !important;
+    width: 100% !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    padding: 1.1rem 1.25rem 1.4rem !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .col-login {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .col-register {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  /* In register state on mobile */
+  .auth-card.reg .col-login,
+  body.is-reg .col-login {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  .auth-card.reg .col-register,
+  body.is-reg .col-register {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .form-title {
+    font-size: 1.45rem !important;
+  }
+
+  .form-sub {
+    font-size: 0.82rem !important;
+    margin-bottom: 0.9rem !important;
+  }
+
+  .row2 {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .otp-inputs-row {
+    gap: 5px;
+  }
+  .otp-digit {
+    width: 38px;
+    height: 44px;
+    font-size: 1.15rem;
+  }
+  .mobile-tab-btn {
+    font-size: 0.82rem;
+    padding: 7px 10px;
+  }
+}

@@ -1,0 +1,16 @@
+# Netlify Redirects Rules for PsyAI
+
+/login                 /login.html                200
+/assessment            /assessment.html           200
+/specialists           /specialists.html          200
+/specialist            /specialist.html           200
+/blog                  /blog.html                 200
+/article               /article.html              200
+/business              /business.html             200
+/profile               /profile.html              200
+/admin                 /admin.html                200
+/values                /values.html               200
+/session               /session.html              200
+/service-individual    /service-individual.html   200
+/service-corporate     /service-corporate.html    200
+/service-kids          /service-kids.html         200

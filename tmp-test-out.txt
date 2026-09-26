@@ -1,0 +1,363 @@
+﻿TAP version 13
+# Subtest: auth controller — view switching
+    # Subtest: positive: showRegister switches the card to register mode
+    ok 1 - positive: showRegister switches the card to register mode
+      ---
+      duration_ms: 2.2404
+      ...
+    # Subtest: positive: showLogin returns to login mode
+    ok 2 - positive: showLogin returns to login mode
+      ---
+      duration_ms: 0.4429
+      ...
+    # Subtest: edge: showRegister resets a stale step-2 state back to step 1
+    ok 3 - edge: showRegister resets a stale step-2 state back to step 1
+      ---
+      duration_ms: 0.2948
+      ...
+    1..3
+ok 1 - auth controller — view switching
+  ---
+  duration_ms: 4.4081
+  type: 'suite'
+  ...
+# Subtest: auth controller — submitRegisterStep2
+    # Subtest: positive: valid data + successful OTP send opens the OTP modal
+    not ok 1 - positive: valid data + successful OTP send opens the OTP modal
+      ---
+      duration_ms: 3.1225
+      location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:198:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        + actual - expected
+        
+        + ''
+        - '0791234567'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: '0791234567'
+      actual: ''
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/user/Downloads/psyai/tests/auth.test.mjs:207:12)
+        async Test.run (node:internal/test_runner/test:790:9)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1131:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:517:7)
+      ...
+    # Subtest: negative: missing psychological condition blocks submission with no API call
+    ok 2 - negative: missing psychological condition blocks submission with no API call
+      ---
+      duration_ms: 0.6424
+      ...
+    # Subtest: negative: OTP send failure keeps the user on the form with an inline error
+    not ok 3 - negative: OTP send failure keeps the user on the form with an inline error
+      ---
+      duration_ms: 1.949
+      location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:221:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        false !== true
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: false
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/user/Downloads/psyai/tests/auth.test.mjs:226:12)
+        async Test.run (node:internal/test_runner/test:790:9)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:517:7)
+      ...
+    # Subtest: edge: network rejection during OTP send falls back to the offline dev code
+    ok 4 - edge: network rejection during OTP send falls back to the offline dev code
+      ---
+      duration_ms: 1.194
+      ...
+    1..4
+not ok 2 - auth controller — submitRegisterStep2
+  ---
+  duration_ms: 7.5543
+  type: 'suite'
+  location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:195:1'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: auth controller — verifyAndCompleteRegistration
+    # Subtest: negative: incomplete OTP shows an error and never calls verify-otp
+    ok 1 - negative: incomplete OTP shows an error and never calls verify-otp
+      ---
+      duration_ms: 0.9122
+      ...
+    # Subtest: negative: wrong code surfaces the backend message and re-enables the button
+    ok 2 - negative: wrong code surfaces the backend message and re-enables the button
+      ---
+      duration_ms: 0.9234
+      ...
+    # Subtest: positive: correct code completes registration, stores session, redirects
+    not ok 3 - positive: correct code completes registration, stores session, redirects
+      ---
+      duration_ms: 1415.5458
+      location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:274:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        false !== true
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: false
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/user/Downloads/psyai/tests/auth.test.mjs:286:12)
+        async Test.run (node:internal/test_runner/test:790:9)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:517:7)
+      ...
+    # Subtest: edge: unexpected exception is caught and shown as an error
+    ok 4 - edge: unexpected exception is caught and shown as an error
+      ---
+      duration_ms: 1.1016
+      ...
+    1..4
+not ok 3 - auth controller — verifyAndCompleteRegistration
+  ---
+  duration_ms: 1418.9482
+  type: 'suite'
+  location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:245:1'
+  failureType: 'subtestsFailed'
+  error: '1 subtest failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: auth controller — resendOtp
+    # Subtest: positive: resend with pending registration calls send-otp and refreshes dev code
+    not ok 1 - positive: resend with pending registration calls send-otp and refreshes dev code
+      ---
+      duration_ms: 0.6775
+      location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:308:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        0 !== 1
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 1
+      actual: 0
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/user/Downloads/psyai/tests/auth.test.mjs:316:12)
+        async Test.run (node:internal/test_runner/test:790:9)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1131:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:517:7)
+      ...
+    # Subtest: negative: resend without a pending registration is a safe no-op
+    ok 2 - negative: resend without a pending registration is a safe no-op
+      ---
+      duration_ms: 0.2254
+      ...
+    # Subtest: edge: resend failure shows an error message
+    not ok 3 - edge: resend failure shows an error message
+      ---
+      duration_ms: 0.5538
+      location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:326:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        false !== true
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: false
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/user/Downloads/psyai/tests/auth.test.mjs:334:12)
+        async Test.run (node:internal/test_runner/test:790:9)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:517:7)
+      ...
+    1..3
+not ok 4 - auth controller — resendOtp
+  ---
+  duration_ms: 1.7062
+  type: 'suite'
+  location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:305:1'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: auth controller — submitLogin
+    # Subtest: positive: valid credentials hit /api/auth/login and redirect
+    not ok 1 - positive: valid credentials hit /api/auth/login and redirect
+      ---
+      duration_ms: 1412.8564
+      location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:345:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        false !== true
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: false
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/user/Downloads/psyai/tests/auth.test.mjs:358:12)
+        async Test.run (node:internal/test_runner/test:790:9)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1131:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:517:7)
+      ...
+    # Subtest: negative: wrong password toasts the backend error and restores the button
+    ok 2 - negative: wrong password toasts the backend error and restores the button
+      ---
+      duration_ms: 0.8349
+      ...
+    # Subtest: edge: network failure surfaces a generic error and re-enables the button
+    ok 3 - edge: network failure surfaces a generic error and re-enables the button
+      ---
+      duration_ms: 0.4154
+      ...
+    1..3
+not ok 5 - auth controller — submitLogin
+  ---
+  duration_ms: 1414.3742
+  type: 'suite'
+  location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:342:1'
+  failureType: 'subtestsFailed'
+  error: '1 subtest failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: auth controller — submitGooglePhone
+    # Subtest: negative: non-gmail account is rejected before any network call
+    not ok 1 - negative: non-gmail account is rejected before any network call
+      ---
+      duration_ms: 1.3242
+      location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:391:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        1 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 1
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/user/Downloads/psyai/tests/auth.test.mjs:396:12)
+        async Test.run (node:internal/test_runner/test:790:9)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1131:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:517:7)
+      ...
+    # Subtest: negative: invalid Jordanian phone is rejected before any network call
+    ok 2 - negative: invalid Jordanian phone is rejected before any network call
+      ---
+      duration_ms: 0.3822
+      ...
+    # Subtest: positive: valid gmail + Jordanian phone completes and redirects
+    not ok 3 - positive: valid gmail + Jordanian phone completes and redirects
+      ---
+      duration_ms: 1414.6639
+      location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:406:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        null !== 'g-tok'
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 'g-tok'
+      actual: ~
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/user/Downloads/psyai/tests/auth.test.mjs:417:12)
+        async Test.run (node:internal/test_runner/test:790:9)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:517:7)
+      ...
+    # Subtest: edge: backend failure restores the submit button
+    ok 4 - edge: backend failure restores the submit button
+      ---
+      duration_ms: 0.9642
+      ...
+    1..4
+not ok 6 - auth controller — submitGooglePhone
+  ---
+  duration_ms: 1417.7917
+  type: 'suite'
+  location: 'C:\\Users\\user\\Downloads\\psyai\\tests\\auth.test.mjs:388:1'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: auth controller — handleForgot
+    # Subtest: opens the forgot-password modal
+    ok 1 - opens the forgot-password modal
+      ---
+      duration_ms: 0.4339
+      ...
+    1..1
+ok 7 - auth controller — handleForgot
+  ---
+  duration_ms: 0.569
+  type: 'suite'
+  ...
+# Subtest: ui utilities
+    # Subtest: showToast sets the message and the error variant
+    ok 1 - showToast sets the message and the error variant
+      ---
+      duration_ms: 0.3185
+      ...
+    # Subtest: withLoading disables the button and restores it afterwards
+    ok 2 - withLoading disables the button and restores it afterwards
+      ---
+      duration_ms: 0.203
+      ...
+    # Subtest: edge: withLoading on a null button is a safe no-op
+    ok 3 - edge: withLoading on a null button is a safe no-op
+      ---
+      duration_ms: 0.4576
+      ...
+    # Subtest: fillOtpInputs / readOtpValue / clearOtpInputs round-trip
+    ok 4 - fillOtpInputs / readOtpValue / clearOtpInputs round-trip
+      ---
+      duration_ms: 0.8405
+      ...
+    # Subtest: setStepDots marks the correct dot active per step
+    ok 5 - setStepDots marks the correct dot active per step
+      ---
+      duration_ms: 0.336
+      ...
+    # Subtest: togglePassword flips the input type
+    ok 6 - togglePassword flips the input type
+      ---
+      duration_ms: 0.3033
+      ...
+    1..6
+ok 8 - ui utilities
+  ---
+  duration_ms: 2.7622
+  type: 'suite'
+  ...
+1..8
+# tests 28
+# suites 8
+# pass 20
+# fail 8
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 62057.9434

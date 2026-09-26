@@ -1,0 +1,1761 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta
+      name="description"
+      content="تقييم نفسي ذاتي مجاني — مقاييس علمية معتمدة للقلق والاكتئاب والضغط النفسي. PHQ-9, GAD-7, PSS-10"
+    />
+    <meta
+      name="keywords"
+      content="تقييم نفسي, مقياس القلق, مقياس الاكتئاب, PHQ-9, GAD-7, PSS, صحة نفسية, PsyAI"
+    />
+    <meta property="og:title" content="تقييم نفسي ذاتي — PsyAI" />
+    <meta
+      property="og:description"
+      content="اعرف حالتك النفسية بدقة عبر مقاييس علمية معتمدة عالمياً. مجاني وسري تماماً."
+    />
+    <title>تقييم نفسي ذاتي — PsyAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* ── Assessment Page Styles ── */
+      :root {
+        --anim-dur: 0.45s;
+      }
+
+      body {
+        background: #ffffff;
+      }
+
+      /* ── Intro Screen ── */
+      .asm-intro {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6.5rem 1.5rem 3.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .asm-intro::before {
+        content: "";
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(212, 168, 67, 0.07) 0%,
+          transparent 70%
+        );
+        top: -100px;
+        left: -100px;
+        pointer-events: none;
+      }
+
+      .asm-hero-container {
+        max-width: 1180px;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+      }
+
+      .asm-hero-row {
+        margin-bottom: 3.5rem;
+      }
+
+      .asm-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(26, 46, 47, 0.06);
+        border: 1px solid rgba(26, 46, 47, 0.1);
+        border-radius: 50px;
+        padding: 0.4rem 1.1rem;
+        font-family: "Tajawal", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--teal-dark);
+        margin-bottom: 1.5rem;
+      }
+
+      .asm-badge span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        display: inline-block;
+        animation: pulse-green 2s infinite;
+      }
+
+      @keyframes pulse-green {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(1.3);
+        }
+      }
+
+      .asm-intro h1 {
+        font-family: "Tajawal", sans-serif;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-weight: 900;
+        color: var(--teal-deep);
+        line-height: 1.25;
+        margin-bottom: 1rem;
+        animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s both;
+      }
+
+      .asm-intro h1 em {
+        font-style: normal;
+        color: var(--gold);
+      }
+
+      .asm-intro-desc {
+        font-family: "Cairo", sans-serif;
+        font-size: 1.1rem;
+        color: var(--teal-deep);
+        line-height: 1.8;
+        margin-bottom: 2.5rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.3s both;
+      }
+
+      .asm-scales-preview {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
+        animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.45s both;
+      }
+
+      .asm-scale-chip {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 1rem;
+        padding: 0.9rem 1.4rem;
+        text-align: center;
+        min-width: 140px;
+        transition:
+          transform 0.25s,
+          box-shadow 0.25s;
+      }
+
+      .asm-scale-chip:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(26, 46, 47, 0.1);
+      }
+
+      .asm-scale-chip .chip-code {
+        font-family: "Tajawal", sans-serif;
+        font-weight: 900;
+        font-size: 1.15rem;
+        color: var(--teal-dark);
+        display: block;
+      }
+
+      .asm-scale-chip .chip-name {
+        font-size: 0.78rem;
+        color: var(--gray-text);
+        margin-top: 0.2rem;
+      }
+
+      .asm-scale-chip .chip-q {
+        font-size: 0.72rem;
+        color: var(--teal-light);
+        font-weight: 700;
+        margin-top: 0.3rem;
+      }
+
+      .asm-start-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        background: var(--teal-deep);
+        color: #fff;
+        padding: 1rem 2.5rem;
+        border-radius: 1rem;
+        font-family: "Tajawal", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        transition:
+          background 0.25s,
+          transform 0.25s,
+          box-shadow 0.25s;
+        text-decoration: none;
+      }
+
+      .asm-start-btn:hover {
+        background: var(--teal-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(26, 46, 47, 0.2);
+      }
+
+      .asm-disclaimer {
+        margin-top: 1.5rem;
+        font-size: 0.82rem;
+        color: #94a3b8;
+        line-height: 1.6;
+      }
+
+      /* ── Quiz Engine ── */
+      .asm-quiz {
+        display: none;
+        min-height: 100vh;
+        padding: 6rem 1rem 4rem;
+        background: #fdfaf3;
+      }
+
+      .asm-quiz.active {
+        display: block;
+      }
+
+      .asm-quiz-inner {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      /* Progress Header */
+      .asm-progress-header {
+        margin-bottom: 2.5rem;
+      }
+
+      .asm-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .asm-section-label {
+        font-family: "Tajawal", sans-serif;
+        font-weight: 800;
+        font-size: 0.92rem;
+        color: var(--teal-dark);
+        background: rgba(46, 82, 84, 0.08);
+        padding: 0.3rem 0.85rem;
+        border-radius: 50px;
+      }
+
+      .asm-counter {
+        font-family: "Cairo", sans-serif;
+        font-size: 0.88rem;
+        color: var(--gray-text);
+      }
+
+      .asm-progress-bar-track {
+        width: 100%;
+        height: 8px;
+        background: #e2e8f0;
+        border-radius: 50px;
+        overflow: hidden;
+      }
+
+      .asm-progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--teal) 0%, var(--gold) 100%);
+        border-radius: 50px;
+        transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Question Card */
+      .asm-question-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        padding: 2.5rem 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 20px rgba(26, 46, 47, 0.05);
+        animation: fadeSlideIn var(--anim-dur) cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      @keyframes fadeSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .asm-q-num {
+        font-family: "Tajawal", sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--teal-light);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+      }
+
+      .asm-q-text {
+        font-family: "Cairo", sans-serif;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--teal-deep);
+        line-height: 1.75;
+        margin-bottom: 2rem;
+      }
+
+      .asm-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .asm-option {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.9rem 1.2rem;
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+      }
+
+      .asm-option:hover {
+        border-color: var(--teal-light);
+        background: var(--teal-pale);
+      }
+
+      .asm-option.selected {
+        border-color: var(--teal-dark);
+        background: linear-gradient(135deg, var(--teal-pale) 0%, #f0f9fa 100%);
+      }
+
+      .asm-option.selected::after {
+        content: "✓";
+        position: absolute;
+        left: 1rem;
+        color: var(--teal-dark);
+        font-weight: 900;
+        font-size: 1rem;
+      }
+
+      .asm-option-radio {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #cbd5e1;
+        flex-shrink: 0;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .asm-option.selected .asm-option-radio {
+        border-color: var(--teal-dark);
+        background: var(--teal-dark);
+      }
+
+      .asm-option.selected .asm-option-radio::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #fff;
+      }
+
+      .asm-option-label {
+        font-family: "Cairo", sans-serif;
+        font-size: 1rem;
+        color: var(--teal-deep);
+        flex: 1;
+      }
+
+      .asm-option-score {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        font-family: "Tajawal", sans-serif;
+        font-weight: 700;
+      }
+
+      /* Nav Buttons */
+      .asm-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .asm-btn-prev {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: 2px solid var(--border);
+        border-radius: 0.85rem;
+        background: transparent;
+        color: var(--gray-text);
+        font-family: "Tajawal", sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .asm-btn-prev:hover {
+        border-color: var(--teal-light);
+        color: var(--teal-dark);
+      }
+
+      .asm-btn-prev:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .asm-btn-next {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        background: var(--teal-deep);
+        color: #fff;
+        border: none;
+        border-radius: 0.85rem;
+        font-family: "Tajawal", sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+
+      .asm-btn-next:hover:not(:disabled) {
+        background: var(--teal-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(26, 46, 47, 0.18);
+      }
+
+      .asm-btn-next:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Scale Transition Card */
+      .asm-section-break {
+        background: linear-gradient(
+          135deg,
+          var(--teal-deep) 0%,
+          var(--teal-dark) 100%
+        );
+        border-radius: 1.5rem;
+        padding: 3rem 2rem;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        animation: fadeSlideIn var(--anim-dur) ease;
+      }
+
+      .asm-section-break .break-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+        color: var(--gold-light);
+      }
+
+      .asm-section-break h2 {
+        font-family: "Tajawal", sans-serif;
+        font-size: 1.6rem;
+        font-weight: 900;
+        margin-bottom: 0.5rem;
+      }
+
+      .asm-section-break p {
+        font-family: "Cairo", sans-serif;
+        font-size: 0.97rem;
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 480px;
+        margin: 0 auto 1.5rem;
+        line-height: 1.75;
+      }
+
+      .asm-section-break .break-ref {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      /* ── Results Screen ── */
+      .asm-results {
+        display: none;
+        min-height: 100vh;
+        padding: 6rem 1rem 4rem;
+        background: #fdfaf3;
+      }
+
+      .asm-results.active {
+        display: block;
+      }
+
+      .asm-results-inner {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .asm-results-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .asm-results-header h1 {
+        font-family: "Tajawal", sans-serif;
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: var(--teal-deep);
+        margin-bottom: 0.5rem;
+      }
+
+      .asm-results-header p {
+        font-family: "Cairo", sans-serif;
+        color: var(--gray-text);
+        font-size: 1rem;
+      }
+
+      /* Score Cards */
+      .asm-score-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .asm-score-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 1.4rem;
+        padding: 1.75rem 2rem;
+        box-shadow: 0 4px 16px rgba(26, 46, 47, 0.05);
+      }
+
+      .asm-score-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .asm-score-card-title {
+        font-family: "Tajawal", sans-serif;
+        font-weight: 900;
+        font-size: 1.15rem;
+        color: var(--teal-deep);
+      }
+
+      .asm-score-card-code {
+        font-size: 0.78rem;
+        color: var(--gray-text);
+        margin-top: 0.15rem;
+      }
+
+      .asm-score-pill {
+        font-family: "Tajawal", sans-serif;
+        font-weight: 900;
+        font-size: 1.4rem;
+        padding: 0.4rem 1.1rem;
+        border-radius: 50px;
+        white-space: nowrap;
+      }
+
+      .asm-score-pill.level-0 {
+        background: #f0fdf4;
+        color: #16a34a;
+      }
+      .asm-score-pill.level-1 {
+        background: #fefce8;
+        color: #ca8a04;
+      }
+      .asm-score-pill.level-2 {
+        background: #fff7ed;
+        color: #ea580c;
+      }
+      .asm-score-pill.level-3 {
+        background: #fef2f2;
+        color: #dc2626;
+      }
+
+      .asm-score-bar-track {
+        width: 100%;
+        height: 10px;
+        background: #f1f5f9;
+        border-radius: 50px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+      }
+
+      .asm-score-bar-fill {
+        height: 100%;
+        border-radius: 50px;
+        transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .asm-score-bar-fill.level-0 {
+        background: linear-gradient(90deg, #4ade80, #22c55e);
+      }
+      .asm-score-bar-fill.level-1 {
+        background: linear-gradient(90deg, #fbbf24, #f59e0b);
+      }
+      .asm-score-bar-fill.level-2 {
+        background: linear-gradient(90deg, #fb923c, #f97316);
+      }
+      .asm-score-bar-fill.level-3 {
+        background: linear-gradient(90deg, #f87171, #ef4444);
+      }
+
+      .asm-score-desc {
+        font-family: "Cairo", sans-serif;
+        font-size: 0.92rem;
+        color: var(--gray-text);
+        line-height: 1.7;
+      }
+
+      .asm-score-levels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+      }
+
+      .asm-score-levels span {
+        font-size: 0.7rem;
+        color: #94a3b8;
+        font-family: "Cairo", sans-serif;
+      }
+
+      /* Overall Summary */
+      .asm-summary-box {
+        background: linear-gradient(135deg, var(--teal-deep), var(--teal-dark));
+        border-radius: 1.5rem;
+        padding: 2.5rem 2rem;
+        color: #fff;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .asm-summary-box h2 {
+        font-family: "Tajawal", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 900;
+        margin-bottom: 0.75rem;
+      }
+
+      .asm-summary-box p {
+        font-family: "Cairo", sans-serif;
+        font-size: 0.97rem;
+        color: rgba(255, 255, 255, 0.85);
+        line-height: 1.8;
+        max-width: 560px;
+        margin: 0 auto 1.75rem;
+      }
+
+      /* Recommendations */
+      .asm-recommendations {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+
+      @media (max-width: 600px) {
+        .asm-recommendations {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .asm-rec-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 1.1rem;
+        padding: 1.4rem 1.2rem;
+        display: flex;
+        gap: 0.85rem;
+        align-items: flex-start;
+      }
+
+      .asm-rec-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 0.85rem;
+        background: var(--teal-pale);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--teal-dark);
+        flex-shrink: 0;
+      }
+
+      .asm-rec-title {
+        font-family: "Tajawal", sans-serif;
+        font-weight: 800;
+        font-size: 0.95rem;
+        color: var(--teal-deep);
+        margin-bottom: 0.2rem;
+      }
+
+      .asm-rec-desc {
+        font-family: "Cairo", sans-serif;
+        font-size: 0.82rem;
+        color: var(--gray-text);
+        line-height: 1.6;
+      }
+
+      /* CTA */
+      .asm-cta-box {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .asm-cta-box h3 {
+        font-family: "Tajawal", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--teal-deep);
+        margin-bottom: 0.6rem;
+      }
+
+      .asm-cta-box p {
+        font-family: "Cairo", sans-serif;
+        font-size: 0.97rem;
+        color: var(--gray-text);
+        margin-bottom: 1.75rem;
+        line-height: 1.75;
+      }
+
+      .asm-cta-btns {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .asm-btn-gold {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        background: var(--gold);
+        color: #fff;
+        border-radius: 0.85rem;
+        font-family: "Tajawal", sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.25s;
+      }
+
+      .asm-btn-gold:hover {
+        background: var(--gold-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(212, 168, 67, 0.3);
+      }
+
+      .asm-btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        border: 2px solid var(--teal-deep);
+        color: var(--teal-deep);
+        border-radius: 0.85rem;
+        font-family: "Tajawal", sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
+        background: transparent;
+        transition: all 0.25s;
+      }
+
+      .asm-btn-outline:hover {
+        background: var(--teal-pale);
+      }
+
+      /* References */
+      .asm-references {
+        background: var(--teal-pale);
+        border: 1px solid var(--teal-light);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .asm-references h4 {
+        font-family: "Tajawal", sans-serif;
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: var(--teal-dark);
+        margin-bottom: 0.75rem;
+      }
+
+      .asm-references ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .asm-references li {
+        font-family: "Cairo", sans-serif;
+        font-size: 0.78rem;
+        color: var(--gray-text);
+        line-height: 1.65;
+        padding: 0.3rem 0;
+        border-bottom: 1px dashed rgba(122, 179, 183, 0.3);
+        direction: ltr;
+        text-align: left;
+      }
+
+      .asm-references li:last-child {
+        border: none;
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        .asm-question-card {
+          padding: 1.5rem 1.1rem;
+        }
+        .asm-score-card {
+          padding: 1.25rem 1rem;
+        }
+        .asm-nav {
+          flex-wrap: wrap;
+        }
+        .asm-btn-next,
+        .asm-btn-prev {
+          flex: 1;
+          justify-content: center;
+        }
+      }
+
+      /* Animated check mark */
+      .asm-check-anim {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #f0fdf4;
+        border: 3px solid #22c55e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2.2rem;
+        animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    </style>
+      <link rel="stylesheet" href="assets/css/fonts.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <img src="psyai.png" alt="PsyAI" class="logo-img" />
+            <span class="logo-text">PsyaI</span>
+          </a>
+          <nav class="nav desktop-nav">
+            <a href="index.html" class="nav-link">الرئيسية</a>
+            <a href="specialists.html" class="nav-link">المختصين</a>
+            <div class="nav-item">
+              <a href="service-individual.html" class="nav-link">
+                <span>خدماتنا</span>
+                <svg
+                  class="svg-icon dd-chevron"
+                  viewBox="0 0 24 24"
+                  width="14"
+                  height="14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </a>
+              <div class="nav-dropdown">
+                <a href="service-individual.html" class="dropdown-item bold"
+                  >دعم نفسي فردي</a
+                >
+                <a href="service-corporate.html" class="dropdown-item"
+                  >برامج الشركات <span class="dd-arrow">←</span></a
+                >
+                <a href="service-kids.html" class="dropdown-item"
+                  >برامج الأطفال</a
+                >
+                <div class="dropdown-divider"></div>
+                <a href="values.html" class="dropdown-item highlighted"
+                  >قيمنا</a
+                >
+              </div>
+            </div>
+            <a href="assessment.html" class="nav-link active">التقييم الذاتي</a>
+            <a href="blog.html" class="nav-link">المدونة</a>
+          </nav>
+          <div class="header-actions desktop-nav">
+            <a href="#" class="lang-btn">EN</a>
+            <a href="login.html" class="btn btn-gold"
+              >احجز جلسة</a
+            >
+          </div>
+          <button class="hamburger mobile-nav-toggle" aria-label="قائمة التصفح">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html" class="nav-link">الرئيسية</a>
+        <a href="specialists.html" class="nav-link">المختصين</a>
+        <a href="service-individual.html" class="nav-link">دعم نفسي فردي</a>
+        <a href="service-corporate.html" class="nav-link">برامج الشركات</a>
+        <a href="service-kids.html" class="nav-link">برامج الأطفال</a>
+        <a href="assessment.html" class="nav-link active">التقييم الذاتي</a>
+        <a href="blog.html" class="nav-link">المدونة</a>
+        <a href="login.html" class="btn btn-gold"
+          >احجز جلسة</a
+        >
+      </nav>
+    </header>
+
+    <!-- ══ Intro Screen ══ -->
+    <div id="screenIntro" class="asm-intro">
+      <div class="asm-hero-container">
+        <div class="alt-feature-row asm-hero-row">
+          <div class="alt-feature-text">
+            <div class="alt-icon-badge">
+              <svg
+                class="svg-icon"
+                viewBox="0 0 24 24"
+                width="26"
+                height="26"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+                <path d="M3 20h18" />
+              </svg>
+            </div>
+            <h1 data-anim="fade-up" class="alt-feature-title">
+              مؤشر المرونة والرفاه اليومي
+            </h1>
+            <div class="alt-feature-subtitle">PsyAI Wellbeing Index</div>
+            <p class="alt-feature-desc">
+              8 أسئلة مصمّمة لتعكس واقع حياتك اليومية — من مستوى طاقتك وجودة
+              نومك إلى قدرتك على وضع الحدود الصحية وبناء العلاقات الداعمة.
+              احصل على صورة واضحة عن رفاهك النفسي في دقيقتين.
+            </p>
+            <div class="alt-feature-tags">
+              <span>8 أسئلة فقط</span>
+              <span>رفاه يومي</span>
+              <span>مرونة نفسية</span>
+              <span>نتائج فورية</span>
+            </div>
+
+            <button class="asm-start-btn" id="btnStartQuiz">
+              <span>ابدأ التقييم الآن</span>
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="alt-feature-img-box">
+            <div class="alt-feature-img-wrap">
+              <img
+                src="storybook_card_6.png"
+                alt="المقاييس النفسية"
+                class="alt-feature-img"
+              />
+            </div>
+            <div class="alt-floating-badge">
+              <div class="alt-badge-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+              </div>
+              <div class="alt-badge-info">
+                <span class="alt-badge-title">مؤشرات دقيقة</span>
+                <span class="alt-badge-sub">تحليل فوري للحالة النفسية</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scales info chips -->
+        <div class="asm-scales-preview">
+          <div class="asm-scale-chip">
+            <div class="chip-name">الطاقة والنشاط</div>
+            <div class="chip-q">سؤالان</div>
+          </div>
+          <div class="asm-scale-chip">
+            <div class="chip-name">الذهن والتوازن</div>
+            <div class="chip-q">3 أسئلة</div>
+          </div>
+          <div class="asm-scale-chip">
+            <div class="chip-name">العلاقات والدعم</div>
+            <div class="chip-q">3 أسئلة</div>
+          </div>
+        </div>
+
+        <p class="asm-disclaimer">
+          هذا التقييم للأغراض الإرشادية فقط ولا يُعدّ تشخيصاً طبياً. لا يتم
+          حفظ أي بيانات شخصية.<br />
+          إذا كانت لديك أفكار عن إيذاء النفس فتواصل فوراً مع مختص.
+        </p>
+      </div>
+    </div>
+
+    <!-- ══ Quiz Screen ══ -->
+    <div id="screenQuiz" class="asm-quiz">
+      <div class="asm-quiz-inner">
+        <!-- Progress Header -->
+        <div class="asm-progress-header">
+          <div class="asm-meta">
+            <span class="asm-section-label" id="sectionLabel"
+              >PsyAI Wellbeing Index</span
+            >
+            <span class="asm-counter" id="qCounter">سؤال 1 من 8</span>
+          </div>
+          <div class="asm-progress-bar-track">
+            <div
+              class="asm-progress-bar-fill"
+              id="progressFill"
+              style="width: 4%"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Section Break (hidden initially) -->
+        <div class="asm-section-break" id="sectionBreak" style="display: none">
+          <div class="break-icon" id="breakIcon">
+            <svg
+              viewBox="0 0 24 24"
+              width="28"
+              height="28"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="9 11 12 14 22 4" />
+              <path
+                d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+              />
+            </svg>
+          </div>
+          <h2 id="breakTitle">أحسنت! انتهيت من القسم الأول</h2>
+          <p id="breakBody">
+            الآن ننتقل إلى مقياس القلق العام (GAD-7). يقيس هذا المقياس شدة أعراض
+            القلق خلال الأسبوعين الماضيين.
+          </p>
+          <div class="break-ref" id="breakRef">
+            Spitzer et al. (2006). A brief measure for assessing generalized
+            anxiety disorder. Archives of Internal Medicine.
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="asm-question-card" id="questionCard" style="display: none">
+          <div class="asm-q-num" id="qNum">السؤال 1</div>
+          <div class="asm-q-text" id="qText">
+            على مدى الأسبوعين الماضيين، كم عدد المرات التي شعرت فيها بالإزعاج
+            من...
+          </div>
+          <div class="asm-options" id="optionsContainer"></div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="asm-nav" id="quizNav">
+          <button class="asm-btn-prev" id="btnPrev" disabled>
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+            السابق
+          </button>
+          <button class="asm-btn-next" id="btnNext" disabled>
+            التالي
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Results Screen ══ -->
+    <div id="screenResults" class="asm-results">
+      <div class="asm-results-inner">
+        <div class="asm-results-header">
+          <div class="asm-check-anim">✓</div>
+          <h1 data-anim="fade-up">نتائج مؤشر رفاهك اليومي</h1>
+          <p>
+            بناءً على إجاباتك على مؤشر المرونة والرفاه اليومي — يوم
+            <span id="resultDate"></span>
+          </p>
+        </div>
+
+        <!-- Score Cards -->
+        <div class="asm-score-cards" id="scoreCards">
+          <!-- Injected by JS -->
+        </div>
+
+        <!-- Summary -->
+        <div class="asm-summary-box" id="summaryBox">
+          <h2 id="summaryTitle">ملخص حالتك</h2>
+          <p id="summaryBody">
+            يعكس تقييمك مستوى عاماً يستحق الاهتمام. التوجه للدعم المتخصص يساعدك
+            على فهم نفسك بشكل أعمق وتطوير آليات تكيّف أفضل.
+          </p>
+          <a href="login.html" class="btn btn-gold"
+            >احجز جلسة مع مختص الآن</a
+          >
+        </div>
+
+        <!-- Recommendations -->
+        <div class="asm-recommendations">
+          <div class="asm-rec-card">
+            <div class="asm-rec-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <div>
+              <div class="asm-rec-title">جلسة مع مختص معتمد</div>
+              <div class="asm-rec-desc">
+                التحدث مع مرشد متخصص يمنحك دعماً حقيقياً وتمارين وإرشاداً يومياً لتحسين جودة حياتك.
+              </div>
+            </div>
+          </div>
+          <div class="asm-rec-card">
+            <div class="asm-rec-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                <line x1="9" y1="9" x2="9.01" y2="9" />
+                <line x1="15" y1="9" x2="15.01" y2="9" />
+              </svg>
+            </div>
+            <div>
+              <div class="asm-rec-title">مجموعات الدعم النفسي</div>
+              <div class="asm-rec-desc">
+                الانضمام لمجموعة دعم يقلل العزلة ويساعدك على رؤية تجارب الآخرين.
+              </div>
+            </div>
+          </div>
+          <div class="asm-rec-card">
+            <div class="asm-rec-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              </svg>
+            </div>
+            <div>
+              <div class="asm-rec-title">النشاط البدني المنتظم</div>
+              <div class="asm-rec-desc">
+                تمارين رياضية بسيطة 30 دقيقة يومياً تُحسّن الحالة المزاجية وتقلل
+                الضغط النفسي.
+              </div>
+            </div>
+          </div>
+          <div class="asm-rec-card">
+            <div class="asm-rec-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path
+                  d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="asm-rec-title">تقنيات الاسترخاء والتأمل</div>
+              <div class="asm-rec-desc">
+                التنفس العميق واليقظة الذهنية (Mindfulness) أدوات علمية فعّالة
+                لإدارة القلق والضغط.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="asm-cta-box">
+          <h3>هل تريد دعماً متخصصاً؟</h3>
+          <p>
+            فريق أخصائيينا المعتمدين مستعد لمساعدتك. الجلسة الأولى للتعرف عليك
+            وعلى احتياجاتك.
+          </p>
+          <div class="asm-cta-btns">
+            <a href="specialists.html" class="asm-btn-gold">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              تصفح المختصين
+            </a>
+            <a href="tel:0775666346" class="asm-btn-outline" style="display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none;">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.19 15.6a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 5h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 12.91a16 16 0 0 0 5.99 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              اتصل بنا: 0775666346
+            </a>
+            <button class="asm-btn-outline" id="btnRetake">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 4 23 10 17 10" />
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+              </svg>
+              إعادة التقييم
+            </button>
+          </div>
+        </div>
+
+        <!-- References -->
+        <div class="asm-references">
+          <h4>الرفاه وجودة الحياة</h4>
+          <ul>
+            <li>تقييمك هذا يهدف إلى دعمك في فهم حالتك الراهنة وتوجيهك نحو الرفاه وجودة الحياة الأفضل.</li>
+            <li>يُوصى بالتحدث مع مرشد متخصص للحصول على تمارين وإرشاد يومي مناسب لوضعك.</li>
+            <li>مركزنا يركز على الدعم النفسي والرفاه، ومساعدتك على بناء مهارات التكيف الإيجابي.</li>
+            <li>للتواصل المباشر يمكنك الاتصال على: <strong>0775666346</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      // ═══════════════════════════════════════════════
+      //   PsyAI — Self-Assessment Engine
+      //   Scale: PsyAI Wellbeing Index (8 questions, 0–3)
+      // ═══════════════════════════════════════════════
+
+      const SCALES = [
+        {
+          id: "pwi",
+          code: "PsyAI-WI",
+          name: "مؤشر المرونة والرفاه اليومي",
+          nameShort: "مؤشر الرفاه اليومي",
+          intro: "",
+          ref: "PsyAI Wellbeing Index — مقياس داخلي معتمد من فريق PsyAI للدعم النفسي والرفاه.",
+          maxScore: 24,
+          options: [
+            { label: "", score: 3 },
+            { label: "", score: 2 },
+            { label: "", score: 1 },
+            { label: "", score: 0 },
+          ],
+          // Each question has its own option labels
+          questionData: [
+            {
+              text: "كيف تصف مستويات طاقتك ونشاطك لبدء يومك وإنجاز التزاماتك؟",
+              opts: [
+                "أستيقظ بنشاط وحيوية لمعظم الأيام",
+                "طاقتي جيدة في أكثر من نصف الأيام",
+                "أشعر بالخمول وأحتاج لجهد مضاعف للبدء",
+                "استنزاف كامل وإنهاك شبه دائم",
+              ],
+            },
+            {
+              text: "عند مواجهة ضغوط العمل أو المسؤوليات المتراكمة، كيف تتعامل معها؟",
+              opts: [
+                "بهدوء وقدرة واضحة على ترتيب الأولويات",
+                "أتوتر قليلاً لكنني أستعيد توازني سريعاً",
+                "أشعر بتشتت وصعوبة في التركيز وضيق الوقت",
+                "شعور بالعجز والغرق تحت وطأة الضغوط",
+              ],
+            },
+            {
+              text: "ما مدى هدوء ذهنك قبل النوم أو خلال ساعات راحتك؟",
+              opts: [
+                "أتمتع بنوم مريح وذهن صافٍ",
+                "تراودني بعض الأفكار لكنها لا تعطل نومي",
+                "أستغرق وقتاً طويلاً في التفكير المفرط (Overthinking)",
+                "أرق مستمر وصعوبة بالغة في إيقاف الأفكار المقلقة",
+              ],
+            },
+            {
+              text: "كيف ترى شغفك وحماسك تجاه مهامك اليومية واهتماماتك الشخصية؟",
+              opts: [
+                "أشعر بالحافز والشغف والإنجاز المستمر",
+                "حماسي موجود لمعظم المهام اليومية",
+                "أؤدي واجباتي بروتين وإحساس بفقدان الشغف",
+                "غياب تام للدافع وإرهاق ذهني متكرر",
+              ],
+            },
+            {
+              text: "ما مدى قدرتك على وضع حدود صحية تفصل بين العمل ومساحتك الشخصية والراحة؟",
+              opts: [
+                "أفصل بوضوح وأمنح نفسي فترات استرخاء كافية",
+                "أفصل جيداً في أغلب الأيام",
+                "ضغوط العمل تتسرب بانتظام إلى وقتي الخاص",
+                "تداخل كامل يؤدي إلى احتراق واستنزاف مستمر",
+              ],
+            },
+            {
+              text: "عند حدوث خلافات أسرية أو اجتماعية، كيف تصف استجابتك الانفعالية؟",
+              opts: [
+                "تحكم متزن في الغضب وتواصل فعال وحواري",
+                "انفعال بسيط سرعان ما أتمكن من احتوائه",
+                "تقلب في المزاج وردود فعل سريعة وعصبية",
+                "انفعالات حادة تؤثر على علاقاتي بشكل متكرر",
+              ],
+            },
+            {
+              text: "كيف تقيّم ثقتك بقراراتك وتقديرك لإنجازاتك الحالية؟",
+              opts: [
+                "ثقة عالية ورضا تام عن مساري وقراراتي",
+                "تقدير جيد للذات مع وجود تردد عابر أحياناً",
+                "تشكيك متكرر في قدراتي وكفاءتي الشخصية",
+                "لوم مستمر للذات وشعور عام بعدم الكفاءة",
+              ],
+            },
+            {
+              text: "إلى أي مدى تشعر بوجود بيئة داعمة ومساحة حوار آمنة لمشاركة مشاعرك؟",
+              opts: [
+                "أجد دعماً وتواصلاً حقيقياً ومطمئناً دائماً",
+                "لدي شخص أو شخصان يمكنني التحدث معهما بحرية",
+                "أشعر أحياناً بالعزلة وصعوبة التعبير عمّا بداخلي",
+                "عزلة تامة وخوف دائم من إطلاق الأحكام",
+              ],
+            },
+          ],
+          get questions() {
+            return this.questionData.map((q) => q.text);
+          },
+          levels: [
+            {
+              max: 6,
+              label: "يحتاج اهتماماً عاجلاً",
+              desc: "تشير نتيجتك إلى استنزاف واضح في عدة جوانب من رفاهك اليومي. التواصل مع مختص متخصص سيمنحك الأدوات والدعم اللازمَين للنهوض من جديد.",
+              level: 3,
+            },
+            {
+              max: 12,
+              label: "رفاه محدود — يستحق الانتباه",
+              desc: "هناك ضغوط متراكمة تؤثر على جودة حياتك اليومية. الدعم النفسي المبكر يساعدك على استعادة التوازن قبل أن تتفاقم الأعراض.",
+              level: 2,
+            },
+            {
+              max: 18,
+              label: "رفاه جيد — مع مساحة للنمو",
+              desc: "أنت في حالة جيدة عموماً لكن هناك جوانب تستحق المزيد من الاهتمام. جلسة مع مختص ستساعدك على تطوير مهاراتك وتعزيز توازنك.",
+              level: 1,
+            },
+            {
+              max: 24,
+              label: "رفاه ممتاز",
+              desc: "تعكس إجاباتك مستوى عالياً من المرونة النفسية والتوازن اليومي. استمر في الاهتمام بصحتك النفسية — الوقاية دائماً أفضل من العلاج.",
+              level: 0,
+            },
+          ],
+        },
+      ];
+
+      // ── State ──
+      let currentScaleIdx = 0;
+      let currentQIdx = 0;
+      let answers = { pwi: [] };
+      let inBreak = false;
+
+      const allQuestions = buildAllQuestions();
+
+      function buildAllQuestions() {
+        const list = [];
+        SCALES.forEach((scale, si) => {
+          scale.questions.forEach((q, qi) => {
+            list.push({ scale, scaleIdx: si, qIdx: qi, text: q });
+          });
+        });
+        return list;
+      }
+
+      let globalQIdx = 0;
+      const TOTAL_Q = allQuestions.length; // 26
+
+      // ── DOM ──
+      const screenIntro = document.getElementById("screenIntro");
+      const screenQuiz = document.getElementById("screenQuiz");
+      const screenResults = document.getElementById("screenResults");
+      const sectionLabel = document.getElementById("sectionLabel");
+      const qCounter = document.getElementById("qCounter");
+      const progressFill = document.getElementById("progressFill");
+      const sectionBreak = document.getElementById("sectionBreak");
+      const questionCard = document.getElementById("questionCard");
+      const qNum = document.getElementById("qNum");
+      const qText = document.getElementById("qText");
+      const optsCont = document.getElementById("optionsContainer");
+      const btnPrev = document.getElementById("btnPrev");
+      const btnNext = document.getElementById("btnNext");
+      const quizNav = document.getElementById("quizNav");
+      const btnStartQuiz = document.getElementById("btnStartQuiz");
+      const btnRetake = document.getElementById("btnRetake");
+
+      // ── Init ──
+      btnStartQuiz.addEventListener("click", startQuiz);
+      btnRetake.addEventListener("click", resetAll);
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (
+          urlParams.get("start") === "true" ||
+          window.location.hash === "#start" ||
+          window.location.hash === "#quiz"
+        ) {
+          startQuiz();
+        }
+      });
+
+      function startQuiz() {
+        screenIntro.style.display = "none";
+        screenQuiz.classList.add("active");
+        globalQIdx = 0;
+        SCALES.forEach((s) => {
+          answers[s.id] = new Array(s.questions.length).fill(null);
+        });
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function renderQuestion(skipBreak = false) {
+        const entry = allQuestions[globalQIdx];
+        const scale = entry.scale;
+        const qi = entry.qIdx;
+        const isFirstOfNewScale = qi === 0 && globalQIdx > 0;
+
+        // Show break screen between scales
+        if (isFirstOfNewScale && !skipBreak && !inBreak) {
+          inBreak = true;
+          sectionBreak.style.display = "block";
+          questionCard.style.display = "none";
+
+          document.getElementById("breakTitle").textContent = scale.breakTitle;
+          document.getElementById("breakBody").textContent = scale.breakBody;
+          document.getElementById("breakRef").textContent = scale.ref;
+
+          sectionLabel.textContent = `${scale.code} — ${scale.nameShort}`;
+          qCounter.textContent = `سؤال ${globalQIdx + 1} من ${TOTAL_Q}`;
+
+          btnNext.innerHTML =
+            '<span>ابدأ القسم التالي</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>';
+          btnNext.disabled = false;
+          btnPrev.disabled = globalQIdx === 0;
+          updateProgress();
+          return;
+        }
+
+        inBreak = false;
+        sectionBreak.style.display = "none";
+        questionCard.style.display = "block";
+
+        // Labels
+        sectionLabel.textContent = `${scale.code} — ${scale.nameShort}`;
+        qCounter.textContent = `سؤال ${globalQIdx + 1} من ${TOTAL_Q}`;
+        qNum.textContent = `السؤال ${qi + 1} من ${scale.questions.length}`;
+        const introText = scale.intro ? scale.intro + " " : "";
+        qText.textContent = introText + entry.text;
+
+        // Reset & rebuild options
+        optsCont.innerHTML = "";
+        const qData = scale.questionData ? scale.questionData[qi] : null;
+        scale.options.forEach((opt, oi) => {
+          const label = qData ? qData.opts[oi] : opt.label;
+          const div = document.createElement("div");
+          div.className =
+            "asm-option" + (answers[scale.id][qi] === oi ? " selected" : "");
+          div.innerHTML = `
+                <div class="asm-option-radio"></div>
+                <span class="asm-option-label">${label}</span>
+                <span class="asm-option-score">${opt.score} نقطة</span>
+            `;
+          div.addEventListener("click", () => selectOption(oi, scale.id, qi));
+          optsCont.appendChild(div);
+        });
+
+        btnPrev.disabled = globalQIdx === 0;
+        btnNext.innerHTML =
+          globalQIdx === TOTAL_Q - 1
+            ? '<span>عرض النتائج</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/></svg>'
+            : '<span>التالي</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>';
+
+        // Enable next only if answered
+        btnNext.disabled = answers[scale.id][qi] === null;
+
+        updateProgress();
+
+        // Animate card
+        questionCard.style.animation = "none";
+        void questionCard.offsetHeight;
+        questionCard.style.animation =
+          "fadeSlideIn 0.45s cubic-bezier(0.23,1,0.32,1)";
+      }
+
+      function selectOption(oi, scaleId, qi) {
+        answers[scaleId][qi] = oi;
+        document.querySelectorAll(".asm-option").forEach((el, idx) => {
+          el.classList.toggle("selected", idx === oi);
+        });
+        btnNext.disabled = false;
+      }
+
+      btnNext.addEventListener("click", () => {
+        if (inBreak) {
+          inBreak = false;
+          renderQuestion(true);
+          return;
+        }
+
+        const entry = allQuestions[globalQIdx];
+        if (answers[entry.scale.id][entry.qIdx] === null) return;
+
+        if (globalQIdx === TOTAL_Q - 1) {
+          showResults();
+          return;
+        }
+
+        globalQIdx++;
+        renderQuestion(false);
+      });
+
+      btnPrev.addEventListener("click", () => {
+        if (inBreak) {
+          inBreak = false;
+          if (globalQIdx > 0) {
+            globalQIdx--;
+          }
+          renderQuestion(true);
+          return;
+        }
+        if (globalQIdx > 0) {
+          globalQIdx--;
+          renderQuestion(true);
+        }
+      });
+
+      function updateProgress() {
+        const pct = Math.round((globalQIdx / TOTAL_Q) * 100);
+        progressFill.style.width = Math.max(4, pct) + "%";
+      }
+
+      // ── Calculate Scores ──
+      function calcScore(scale) {
+        const ans = answers[scale.id];
+        let total = 0;
+        ans.forEach((val, idx) => {
+          if (val === null) return;
+          const rawScore = scale.options[val].score;
+          if (scale.reversed && scale.reversed.includes(idx)) {
+            total += scale.options.length - 1 - rawScore;
+          } else {
+            total += rawScore;
+          }
+        });
+        return total;
+      }
+
+      function getLevel(scale, score) {
+        for (const lvl of scale.levels) {
+          if (score <= lvl.max) return lvl;
+        }
+        return scale.levels[scale.levels.length - 1];
+      }
+
+      // ── Show Results ──
+      function showResults() {
+        screenQuiz.classList.remove("active");
+        screenResults.classList.add("active");
+
+        document.getElementById("resultDate").textContent =
+          new Date().toLocaleDateString("ar-SA", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+
+        const scoreCards = document.getElementById("scoreCards");
+        scoreCards.innerHTML = "";
+
+        let overallMax = 0;
+
+        SCALES.forEach((scale) => {
+          const score = calcScore(scale);
+          const lvl = getLevel(scale, score);
+          const pct = Math.round((score / scale.maxScore) * 100);
+          overallMax = Math.max(overallMax, lvl.level);
+
+          const card = document.createElement("div");
+          card.className = "asm-score-card";
+          card.innerHTML = `
+                <div class="asm-score-card-top">
+                    <div>
+                        <div class="asm-score-card-title">${scale.nameShort}</div>
+                        <div class="asm-score-card-code">${scale.code} — ${scale.name}</div>
+                    </div>
+                    <div class="asm-score-pill level-${lvl.level}">
+                        ${score}/${scale.maxScore} &nbsp;•&nbsp; ${lvl.label}
+                    </div>
+                </div>
+                <div class="asm-score-bar-track">
+                    <div class="asm-score-bar-fill level-${lvl.level}" style="width: 0%" data-target="${pct}"></div>
+                </div>
+                <div class="asm-score-levels">
+                    <span>0</span>
+                    <span>${scale.maxScore}</span>
+                </div>
+                <p class="asm-score-desc">${lvl.desc}</p>
+            `;
+          scoreCards.appendChild(card);
+        });
+
+        // Set summary
+        const sumTitles = [
+          "رفاهك ممتاز — استمر!",
+          "رفاه جيد مع مساحة للنمو",
+          "يستحق اهتمامك الآن",
+          "أنت تستحق الدعم المتخصص",
+        ];
+        const sumBodies = [
+          "تعكس إجاباتك توازناً نفسياً حقيقياً ومرونة عالية في مواجهة تحديات الحياة. استمر في الاهتمام بصحتك النفسية — الوقاية دائماً أفضل من العلاج.",
+          "أنت في حالة جيدة عموماً، لكن هناك جوانب تستحق مزيداً من الاهتمام. جلسة مع مختص ستساعدك على تعزيز مهاراتك وتطوير توازنك اليومي.",
+          "تشير نتيجتك إلى ضغوط متراكمة تؤثر على رفاهك اليومي. الدعم النفسي المبكر سيساعدك على استعادة التوازن قبل أن تتفاقم الأمور.",
+          "تشير نتيجتك إلى استنزاف واضح يستدعي اهتماماً متخصصاً. لست وحدك — فريق PsyAI هنا لمساعدتك على النهوض واستعادة رفاهك.",
+        ];
+
+        document.getElementById("summaryTitle").textContent =
+          sumTitles[overallMax];
+        document.getElementById("summaryBody").textContent =
+          sumBodies[overallMax];
+
+        // Animate bars after render
+        setTimeout(() => {
+          document
+            .querySelectorAll(".asm-score-bar-fill[data-target]")
+            .forEach((el) => {
+              el.style.width = el.dataset.target + "%";
+            });
+        }, 300);
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function resetAll() {
+        globalQIdx = 0;
+        inBreak = false;
+        SCALES.forEach((s) => {
+          answers[s.id] = new Array(s.questions.length).fill(null);
+        });
+        screenResults.classList.remove("active");
+        screenIntro.style.display = "flex";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="description" content="منصة PsyAI — إدارة الحساب والملف الشخصي، مواعيد الجلسات، روابط الاجتماعات، والأمان." />
+  <title>لوحة تحكم الحساب والجلسات | PsyAI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/profile.css?v=20260916-1" />
+    <link rel="stylesheet" href="assets/css/fonts.css" />
+  </head>
+
+<body>
+
+  <!-- ── TOAST NOTIFICATION ── -->
+  <div class="profile-toast" id="profileToast" role="alert" aria-live="polite">
+    <div class="toast-icon" id="toastIcon">✓</div>
+    <div class="toast-msg" id="toastMsg">تم تنفيذ العملية بنجاح</div>
+  </div>
+
+  <!-- ── TOP BAR ── -->
+  <header class="prof-topbar">
+    <div class="prof-topbar-inner">
+      <a href="index.html" class="logo" title="الرئيسية">
+        <img src="psyai.png" alt="PsyAI" class="logo-img" />
+        <span class="logo-text">PsyaI</span>
+      </a>
+
+      <nav class="topbar-nav">
+        <a href="index.html" class="top-nav-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span>الرئيسية</span>
+        </a>
+        <a href="specialists.html" class="top-nav-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>الأخصائيين</span>
+        </a>
+      </nav>
+
+      <div class="topbar-actions">
+        <button class="top-btn" id="langBtn" type="button" aria-label="تبديل اللغة">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span id="langLabel">English</span>
+        </button>
+
+        <button class="top-btn btn-logout-top" id="topLogoutBtn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>تسجيل الخروج</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── MAIN WRAPPER ── -->
+  <main class="prof-main">
+    <div class="prof-container">
+
+      <!-- ── USER HERO HEADER ── -->
+      <section class="prof-hero-card">
+        <div class="user-hero-left">
+          <div class="user-avatar" id="uAvatar">
+            <span id="uAvatarLetters">P</span>
+            <div class="verified-badge-icon" id="uVerifiedBadge" title="حساب موثق">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="user-meta">
+            <div class="user-name-row">
+              <h1 class="user-full-name" id="uFullName">جاري التحميل...</h1>
+              <span class="user-role-badge" id="uRoleBadge">مستخدم</span>
+            </div>
+            <div class="user-contact-chips">
+              <span class="chip" id="uEmailChip">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <span id="uEmailText">user@gmail.com</span>
+              </span>
+              <span class="chip" id="uPhoneChip">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span id="uPhoneText">+9627XXXXXXXX</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-hero-stats">
+          <div class="stat-box">
+            <span class="stat-num" id="uTotalSessions">0</span>
+            <span class="stat-lbl">إجمالي الجلسات</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num" id="uUpcomingSessions">0</span>
+            <span class="stat-lbl">جلسات قادمة</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TABS NAVIGATION ── -->
+      <nav class="prof-tabs-bar" role="tablist">
+        <button class="prof-tab-btn active" id="tabBtnProfile" type="button" role="tab" aria-selected="true" onclick="window.switchProfTab('profile')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>الملف الشخصي والبيانات</span>
+        </button>
+
+        <button class="prof-tab-btn" id="tabBtnSessions" type="button" role="tab" aria-selected="false" onclick="window.switchProfTab('sessions')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>مواعيدي وجلساتي</span>
+          <span class="badge-count" id="sessionsCountBadge">0</span>
+        </button>
+
+        <button class="prof-tab-btn" id="tabBtnSecurity" type="button" role="tab" aria-selected="false" onclick="window.switchProfTab('security')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>الأمان وإعدادات الحساب</span>
+        </button>
+      </nav>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 1: PERSONAL INFORMATION
+           ══════════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel active" id="panelProfile" role="tabpanel">
+        <div class="grid-2col">
+
+          <!-- Left Column: Personal Data Form -->
+          <div class="card-section">
+            <div class="sec-header">
+              <h2 class="sec-title">البيانات الأساسية</h2>
+              <p class="sec-desc">تعديل الاسم والبريد الإلكتروني وتفضيلات الاستشارة</p>
+            </div>
+
+            <form id="profileForm" class="prof-form">
+              <div class="row-2">
+                <div class="form-group">
+                  <label for="pFirstName">الاسم الأول <span class="star">*</span></label>
+                  <input type="text" id="pFirstName" class="prof-input" required placeholder="مثال: أحمد" />
+                </div>
+                <div class="form-group">
+                  <label for="pLastName">اسم العائلة <span class="star">*</span></label>
+                  <input type="text" id="pLastName" class="prof-input" required placeholder="مثال: الغامدي" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="pEmail">البريد الإلكتروني (Gmail) <span class="star">*</span></label>
+                <div class="input-with-icon">
+                  <input type="email" id="pEmail" class="prof-input" required placeholder="name@gmail.com" />
+                  <span class="input-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="pCondition">الحالة / المشكلة النفسية المحددة</label>
+                <select id="pCondition" class="prof-input select-styled">
+                  <option value="">-- اختر وصف الحالة --</option>
+                  <option value="anxiety">القلق والتوتر المستمر</option>
+                  <option value="depression">الحزن وفقدان الشغف والحماس</option>
+                  <option value="stress">ضغط العمل والإرهاق المهني</option>
+                  <option value="burnout">الاحتراق الوظيفي وضعف الإنتاجية</option>
+                  <option value="relationships">مشاكل العلاقات الأسرية والاجتماعية</option>
+                  <option value="anger">إدارة الغضب والتوازن العاطفي</option>
+                  <option value="self_esteem">تدني الثقة بالنفس وتقدير الذات</option>
+                  <option value="sleep">اضطرابات وجودة النوم</option>
+                  <option value="overthinking">التفكير المفرط والتشوش الذهني</option>
+                  <option value="other">أخرى</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>تفضيل جنس الأخصائي</label>
+                <div class="gender-chips-row">
+                  <label class="gender-radio">
+                    <input type="radio" name="pSpecGender" value="any" checked />
+                    <span>لا يهم</span>
+                  </label>
+                  <label class="gender-radio">
+                    <input type="radio" name="pSpecGender" value="male" />
+                    <span>أخصائي (ذكر)</span>
+                  </label>
+                  <label class="gender-radio">
+                    <input type="radio" name="pSpecGender" value="female" />
+                    <span>أخصائية (أنثى)</span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-gold" id="saveProfileBtn">
+                <span>حفظ التعديلات</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </button>
+            </form>
+          </div>
+
+          <!-- Right Column: Phone Number & Verification -->
+          <div class="card-section">
+            <div class="sec-header">
+              <h2 class="sec-title">رقم الهاتف وتأكيد WhatsApp</h2>
+              <p class="sec-desc">رقمك المعتمد لتلقي إشعارات المواعيد ورموز الأمان</p>
+            </div>
+
+            <div class="phone-status-box">
+              <div class="phone-icon-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+              </div>
+              <div class="phone-info">
+                <span class="phone-label">الرقم الحالي الموثق:</span>
+                <strong class="phone-val" id="currentPhoneDisplay">+9627XXXXXXXX</strong>
+                <span class="phone-badge" id="phoneStatusBadge">✓ موثق عبر WhatsApp</span>
+              </div>
+            </div>
+
+            <div class="phone-change-action">
+              <p class="phone-hint">
+                عند تغيير رقم هاتفك، سيتم إرسال رمز تحقق سري (OTP) عبر واتساب إلى الرقم الجديد لتأكيده وحماية حسابك.
+              </p>
+              <button type="button" class="btn-outline-gold" onclick="window.openChangePhoneModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                <span>تعديل رقم الهاتف الآن</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 2: MY SESSIONS & APPOINTMENTS (مواعيدي وجلساتي)
+           ══════════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="panelSessions" role="tabpanel">
+        <div class="sessions-header-row">
+          <div>
+            <h2 class="sec-title">جلساتي واستشاراتي</h2>
+            <p class="sec-desc">عرض تفاصيل مواعيدك القادمة، حالة الجلسة، ورابط اللقاء المباشر بالفيديو</p>
+          </div>
+          <a href="specialists.html" class="btn-gold btn-book-new">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>حجز جلسة جديدة</span>
+          </a>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="sessions-filters">
+          <button class="filter-chip active" data-filter="all" onclick="window.filterSessions('all')">الكل (<span id="countAll">0</span>)</button>
+          <button class="filter-chip" data-filter="upcoming" onclick="window.filterSessions('upcoming')">القادمة والمؤكدة (<span id="countUpcoming">0</span>)</button>
+          <button class="filter-chip" data-filter="pending" onclick="window.filterSessions('pending')">بانتظار التأكيد (<span id="countPending">0</span>)</button>
+          <button class="filter-chip" data-filter="completed" onclick="window.filterSessions('completed')">المكتملة (<span id="countCompleted">0</span>)</button>
+        </div>
+
+        <!-- Sessions List Container -->
+        <div class="sessions-list" id="sessionsList">
+          <!-- Loading placeholder -->
+          <div class="empty-state" id="sessionsLoading">
+            <div class="spinner"></div>
+            <p>جاري تحميل قائمة جلساتك ومواعيدك...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 3: SECURITY & ACCOUNT ACTIONS (الأمان والحساب)
+           ══════════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="panelSecurity" role="tabpanel">
+        <div class="grid-2col">
+
+          <!-- Change Password Card -->
+          <div class="card-section">
+            <div class="sec-header">
+              <h2 class="sec-title">تغيير كلمة المرور</h2>
+              <p class="sec-desc">تشفير قوي بتقنية Argon2id وإنهاء الجلسات الأخرى فوراً</p>
+            </div>
+
+            <form id="changePasswordForm" class="prof-form">
+              <div class="form-group">
+                <label for="currPass">كلمة المرور الحالية <span class="star">*</span></label>
+                <div class="input-with-icon">
+                  <input type="password" id="currPass" class="prof-input" required placeholder="••••••••" />
+                  <button type="button" class="eye-toggle" onclick="window.toggleInputPass('currPass')">👁</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="newPass">كلمة المرور الجديدة <span class="star">*</span></label>
+                <div class="input-with-icon">
+                  <input type="password" id="newPass" class="prof-input" required minlength="6" placeholder="••••••••" />
+                  <button type="button" class="eye-toggle" onclick="window.toggleInputPass('newPass')">👁</button>
+                </div>
+                <span class="field-hint">يجب أن لا تقل عن 6 أحرف أو أرقام</span>
+              </div>
+
+              <div class="form-group">
+                <label for="confirmNewPass">تأكيد كلمة المرور الجديدة <span class="star">*</span></label>
+                <div class="input-with-icon">
+                  <input type="password" id="confirmNewPass" class="prof-input" required minlength="6" placeholder="••••••••" />
+                  <button type="button" class="eye-toggle" onclick="window.toggleInputPass('confirmNewPass')">👁</button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-gold" id="changePassBtn">
+                <span>تحديث كلمة المرور</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </button>
+            </form>
+          </div>
+
+          <!-- Account Controls & Danger Zone -->
+          <div class="card-section">
+            <div class="sec-header">
+              <h2 class="sec-title">إدارة الجلسة والحساب</h2>
+              <p class="sec-desc">التحكم في تسجيل الخروج وحذف البيانات نهائياً</p>
+            </div>
+
+            <!-- Logout Box -->
+            <div class="action-card-item">
+              <div class="action-card-info">
+                <h4>تسجيل الخروج من الحساب</h4>
+                <p>إنهاء الجلسة الحالية والعودة إلى شاشة تسجيل الدخول</p>
+              </div>
+              <button type="button" class="btn-outline-gold" onclick="window.handleLogout()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>خروج</span>
+              </button>
+            </div>
+
+            <!-- Danger Zone: Delete Account -->
+            <div class="danger-zone-box">
+              <div class="danger-icon">⚠️</div>
+              <div class="danger-info">
+                <h4>منطقة الخطر: حذف الحساب</h4>
+                <p>حذف الحساب نهائياً مع إلغاء تنشيط بياناتك وسجلاتك. لا يمكن التراجع عن هذا الإجراء.</p>
+              </div>
+              <button type="button" class="btn-danger" onclick="window.openDeleteAccountModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                <span>حذف الحساب نهائياً</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       MODAL 1: CHANGE PHONE & OTP CONFIRMATION
+       ══════════════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="phoneModal">
+    <div class="modal-box">
+      <button type="button" class="modal-close" onclick="window.closePhoneModal()">✕</button>
+
+      <div class="modal-icon-circle gold">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+      </div>
+
+      <!-- Step A: Enter New Phone -->
+      <div id="phoneStep1">
+        <h3 class="modal-title">تحديث رقم الهاتف</h3>
+        <p class="modal-desc">أدخل رقم هاتفك الأردني الجديد لتلقي رمز التأكيد عبر واتساب:</p>
+
+        <form id="sendPhoneOtpForm" class="prof-form">
+          <div class="form-group">
+            <label for="newPhoneInput">رقم الهاتف الجديد <span class="star">*</span></label>
+            <div class="input-with-icon">
+              <input type="tel" id="newPhoneInput" class="prof-input" dir="ltr" required placeholder="+962791234567" />
+              <span class="input-icon">📱</span>
+            </div>
+            <span class="field-hint">مثال: +962791234567 أو 0791234567</span>
+          </div>
+
+          <button type="submit" class="btn-gold" id="btnSendPhoneOtp" style="width: 100%;">
+            <span>إرسال رمز التحقق (WhatsApp)</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Step B: Enter 6-digit OTP -->
+      <div id="phoneStep2" style="display: none;">
+        <h3 class="modal-title">تأكيد رمز التحقق</h3>
+        <p class="modal-desc">
+          تم إرسال رمز مكون من 6 أرقام عبر واتساب إلى <strong id="targetPhoneLabel" style="color:var(--gold-light); direction:ltr; display:inline-block;"></strong>:
+        </p>
+
+        <!-- Dev OTP helper badge if simulator -->
+        <div id="phoneDevOtpBadge" style="display:none;" onclick="window.autoFillPhoneOtp()">
+          رمز المطور للتجربة: <strong id="phoneDevOtpCode">123456</strong> (انقر للتعبئة)
+        </div>
+
+        <form id="verifyPhoneOtpForm" class="prof-form">
+          <div class="otp-row" dir="ltr">
+            <input type="text" maxlength="1" class="otp-box" id="pDigit1" />
+            <input type="text" maxlength="1" class="otp-box" id="pDigit2" />
+            <input type="text" maxlength="1" class="otp-box" id="pDigit3" />
+            <input type="text" maxlength="1" class="otp-box" id="pDigit4" />
+            <input type="text" maxlength="1" class="otp-box" id="pDigit5" />
+            <input type="text" maxlength="1" class="otp-box" id="pDigit6" />
+          </div>
+
+          <div class="modal-actions-row">
+            <button type="button" class="btn-outline-gold" onclick="window.backToPhoneStep1()">رجوع</button>
+            <button type="submit" class="btn-gold" id="btnConfirmPhoneOtp" style="flex: 1;">
+              <span>تأكيد وحفظ الرقم</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       MODAL 2: DELETE ACCOUNT CONFIRMATION
+       ══════════════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-box">
+      <button type="button" class="modal-close" onclick="window.closeDeleteModal()">✕</button>
+
+      <div class="modal-icon-circle red">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+
+      <h3 class="modal-title" style="color: #f87171;">تأكيد حذف الحساب نهائياً</h3>
+      <p class="modal-desc">
+        هذا الإجراء نهائي وسيتم إلغاء تنشيط حسابك وإلغاء أي جلسات مستقبلية. يرجى إدخال كلمة المرور لتأكيد رغبتك:
+      </p>
+
+      <form id="deleteAccountForm" class="prof-form">
+        <div class="form-group">
+          <label for="deletePassInput">كلمة المرور الحالية <span class="star">*</span></label>
+          <input type="password" id="deletePassInput" class="prof-input" required placeholder="••••••••" />
+        </div>
+
+        <div class="modal-actions-row">
+          <button type="button" class="btn-outline-gold" onclick="window.closeDeleteModal()">إلغاء</button>
+          <button type="submit" class="btn-danger" id="btnConfirmDelete" style="flex: 1;">
+            <span>نعم، احذف حسابي نهائياً</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/profile.js?v=20260916-1"></script>
+</body>
+
+</html>

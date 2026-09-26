@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="description" content="منصة PsyAI تسجيل الدخول وإنشاء حساب الأفراد للرفاه النفسي." />
+  <title>تسجيل الدخول وإنشاء الحساب PsyAI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/login.css?v=20260916-4" />
+  <script>
+    // Universal direct fallback for instant sliding transition
+    window.PsyAIShowRegister = function() {
+      var card = document.getElementById('authCard');
+      if (card) {
+        card.classList.add('reg');
+        card.classList.add('is-switching');
+        setTimeout(function() { card.classList.remove('is-switching'); }, 3000);
+      }
+      document.body.classList.add('is-reg');
+      if (window.PsyAIAuth && window.PsyAIAuth.showRegister) window.PsyAIAuth.showRegister();
+    };
+    window.PsyAIShowLogin = function() {
+      var card = document.getElementById('authCard');
+      if (card) {
+        card.classList.remove('reg');
+        card.classList.add('is-switching');
+        setTimeout(function() { card.classList.remove('is-switching'); }, 3000);
+      }
+      document.body.classList.remove('is-reg');
+      if (window.PsyAIAuth && window.PsyAIAuth.showLogin) window.PsyAIAuth.showLogin();
+    };
+  </script>
+    <link rel="stylesheet" href="assets/css/fonts.css" />
+  </head>
+
+<body>
+
+  <!-- ── TOP BAR ── -->
+  <header class="auth-topbar">
+    <a href="index.html" class="logo" title="الرئيسية">
+      <img src="psyai.png" alt="PsyAI" class="logo-img" />
+      <span class="logo-text">PsyaI</span>
+    </a>
+
+    <div class="topbar-controls">
+      <button class="top-btn" id="langBtn" type="button" aria-label="تبديل اللغة">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span id="langLabel">English</span>
+      </button>
+
+      <a href="index.html" class="top-btn" id="homeBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span id="homeLbl">الرئيسية</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ── AUTH CARD ── -->
+  <main class="auth-wrapper">
+    <div class="auth-card" id="authCard">
+
+      <!-- ─ GOLD SLIDING PANEL ─ -->
+      <div class="gold-panel" aria-hidden="true"></div>
+
+      <!-- ─ WELCOME CONTENT OVER GOLD PANEL ─ -->
+      <div class="welcome-content" aria-hidden="true">
+
+        <!-- Login welcome (right half initially) -->
+        <div class="w-login">
+          <h2 class="w-title" data-i18n="loginWelcomeTitle">WELCOME</h2>
+          <div class="w-bar"></div>
+          <p class="w-sub" data-i18n="loginWelcomeSub">في منصة PsyAI</p>
+          <p class="w-desc" data-i18n="loginWelcomeDesc">بوابتك الموثوقة للرفاه النفسي والاستشارات المعتمدة بخصوصية
+            تامة.</p>
+          <button class="w-btn" type="button" data-action="go-register" onclick="window.PsyAIShowRegister()" data-i18n="btnToRegister">إنشاء حساب
+            جديد</button>
+        </div>
+
+        <!-- Register welcome (left half when active) -->
+        <div class="w-register">
+          <h2 class="w-title" data-i18n="regWelcomeTitle">WELCOME!</h2>
+          <div class="w-bar"></div>
+          <p class="w-desc" data-i18n="regWelcomeDesc">يسعدنا انضمامك! سجّل بياناتك وابدأ رحلتك نحو الرفاه النفسي.</p>
+          <button class="w-btn" type="button" data-action="go-login" onclick="window.PsyAIShowLogin()" data-i18n="btnToLogin">تسجيل الدخول</button>
+        </div>
+
+      </div>
+
+      <!-- ─ FORMS LAYER ─ -->
+      <div class="forms-layer">
+
+        <!-- Mobile-only segmented tab switcher -->
+        <div class="mobile-auth-tabs" aria-label="تبديل العرض للهاتف">
+          <button type="button" class="mobile-tab-btn active" id="mTabLogin" onclick="window.PsyAIShowLogin()">تسجيل الدخول</button>
+          <button type="button" class="mobile-tab-btn" id="mTabRegister" onclick="window.PsyAIShowRegister()">إنشاء حساب</button>
+        </div>
+
+        <!-- LOGIN COLUMN (left) -->
+        <div class="form-col col-login" id="colLogin">
+          <div class="s">
+            <h1 class="form-title" data-i18n="loginHeading">تسجيل الدخول</h1>
+            <p class="form-sub" data-i18n="loginSub">أدخل بياناتك للوصول إلى حسابك</p>
+          </div>
+
+          <!-- Google Login Button -->
+          <div class="s">
+            <button type="button" class="btn-google" id="googleLoginBtn">
+              <svg width="17" height="17" viewBox="0 0 24 24">
+                <path fill="#4285F4"
+                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z" />
+                <path fill="#34A853"
+                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24Z" />
+                <path fill="#FBBC05"
+                  d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15Z" />
+                <path fill="#EA4335"
+                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z" />
+              </svg>
+              <span data-i18n="btnGoogleLogin">الدخول السريع عبر Google</span>
+            </button>
+          </div>
+
+          <!-- Divider -->
+          <div class="auth-sep s">
+            <span data-i18n="sepOrLogin">أو عبر البريد الإلكتروني</span>
+          </div>
+
+          <form id="loginForm">
+            <!-- Email / Username -->
+            <div class="fg s">
+              <label for="lIdent" data-i18n="lblIdent">اسم المستخدم أو البريد الإلكتروني</label>
+              <div class="iw">
+                <input class="fi" type="text" id="lIdent" placeholder="name@gmail.com" data-i18n-ph="phIdent" required
+                  autocomplete="username" />
+                <span class="ico">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="fg s">
+              <label for="lPass" data-i18n="lblPassword">كلمة المرور</label>
+              <div class="iw">
+                <input class="fi" type="password" id="lPass" placeholder="••••••••" required
+                  autocomplete="current-password" />
+                <span class="ico">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </span>
+                <button type="button" class="eye-btn" data-toggle-password="lPass" aria-label="إظهار كلمة المرور">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Remember me + Forgot link -->
+            <div class="extras s">
+              <label class="rem-label">
+                <input type="checkbox" id="lRemember" checked />
+                <span data-i18n="rememberMe">تذكرني</span>
+              </label>
+              <a href="#" class="forgot" id="forgotLink" data-i18n="forgotPass">نسيت كلمة المرور؟</a>
+            </div>
+
+            <!-- Submit button -->
+            <div class="s">
+              <button type="submit" class="btn-main" id="loginBtn">
+                <span data-i18n="btnLogin">دخول الحساب</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Switch to Register -->
+            <div class="switch-line s">
+              <span data-i18n="noAccount">ليس لديك حساب؟</span>
+              <button type="button" class="sw-btn" data-action="go-register" onclick="window.PsyAIShowRegister()" data-i18n="linkRegister">إنشاء حساب
+                جديد</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- REGISTER COLUMN (right) -->
+        <div class="form-col col-register" id="colRegister">
+
+          <!-- Step dots indicator -->
+          <div class="step-dots s" id="stepDots">
+            <div class="step-dot active" id="dot1"></div>
+            <div class="step-dot" id="dot2"></div>
+          </div>
+
+          <!-- Step Panels Container -->
+          <div class="reg-steps">
+
+            <!-- ── STEP 1: Basic Information ── -->
+            <div class="reg-step reg-step-1" id="regStep1">
+              <div class="s">
+                <h1 class="form-title" data-i18n="regHeading">إنشاء حساب</h1>
+                <p class="form-sub" data-i18n="regSub">أنشئ حسابك وابدأ رحلة الرفاه النفسي</p>
+              </div>
+
+              <!-- Google Register Button -->
+              <div class="s">
+                <button type="button" class="btn-google" id="googleRegBtn">
+                  <svg width="17" height="17" viewBox="0 0 24 24">
+                    <path fill="#4285F4"
+                      d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z" />
+                    <path fill="#34A853"
+                      d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24Z" />
+                    <path fill="#FBBC05"
+                      d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15Z" />
+                    <path fill="#EA4335"
+                      d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z" />
+                  </svg>
+                  <span data-i18n="btnGoogleReg">التسجيل السريع عبر Google</span>
+                </button>
+              </div>
+
+              <!-- Divider -->
+              <div class="auth-sep s">
+                <span data-i18n="sepOr">أو بالبيانات التالية</span>
+              </div>
+
+              <form id="registerForm">
+                <!-- Row: First Name + Last Name -->
+                <div class="row2 s">
+                  <div class="fg">
+                    <label for="rFirst"><span data-i18n="lblFirst">الاسم الأول</span><span class="star">*</span></label>
+                    <div class="iw">
+                      <input class="fi" type="text" id="rFirst" placeholder="مثال: أحمد" data-i18n-ph="phFirst" required
+                        autocomplete="given-name" />
+                      <span class="ico">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="fg">
+                    <label for="rLast"><span data-i18n="lblLast">اسم العائلة</span><span class="star">*</span></label>
+                    <div class="iw">
+                      <input class="fi" type="text" id="rLast" placeholder="مثال: الغامدي" data-i18n-ph="phLast"
+                        required autocomplete="family-name" />
+                      <span class="ico">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Row: Email + Phone Number -->
+                <div class="row2 s">
+                  <div class="fg">
+                    <label for="rEmail"><span data-i18n="lblEmail">البريد الإلكتروني (Gmail)</span><span
+                        class="star">*</span></label>
+                    <div class="iw">
+                      <input class="fi" type="email" id="rEmail" placeholder="name@gmail.com" required
+                        autocomplete="email" />
+                      <span class="ico">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                          <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="fg">
+                    <label for="rPhone"><span data-i18n="lblPhone">رقم الهاتف</span><span class="star">*</span></label>
+                    <div class="phone-field-box">
+                      <div class="phone-prefix-badge">+962</div>
+                      <input class="phone-input-element" type="tel" id="rPhone" placeholder="0791234567" required
+                        autocomplete="tel" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Row: Gender + Password -->
+                <div class="row2 s">
+                  <div class="fg">
+                    <label for="rGender"><span data-i18n="lblGender">الجنس</span><span class="star">*</span></label>
+                    <div class="iw">
+                      <select class="fi" id="rGender" required>
+                        <option value="" disabled selected data-i18n="phGender">اختر الجنس</option>
+                        <option value="male" data-i18n="optMale">ذكر</option>
+                        <option value="female" data-i18n="optFemale">أنثى</option>
+                      </select>
+                      <span class="ico">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <path d="M12 8v8M8 12h8"></path>
+                        </svg>
+                      </span>
+                      <span class="chev">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="fg">
+                    <label for="rPass"><span data-i18n="lblPassword">كلمة المرور</span><span
+                        class="star">*</span></label>
+                    <div class="iw">
+                      <input class="fi" type="password" id="rPass" placeholder="••••••••" required
+                        autocomplete="new-password" />
+                      <span class="ico">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                      </span>
+                      <button type="button" class="eye-btn" data-toggle-password="rPass" aria-label="إظهار كلمة المرور">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Next Step Button -->
+                <div class="s" style="margin-top:0.6rem">
+                  <button type="submit" class="btn-main" id="regNextBtn">
+                    <span data-i18n="btnNextStep">التالي: اختر أخصائيك</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="switch-line s">
+                  <span data-i18n="hasAccount">لديك حساب؟</span>
+                  <button type="button" class="sw-btn" data-action="go-login" onclick="window.PsyAIShowLogin()" data-i18n="linkLogin">تسجيل
+                    الدخول</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- ── STEP 2: Condition + Specialist Preference ── -->
+            <div class="reg-step reg-step-2" id="regStep2">
+              <button type="button" class="back-btn" id="backToStep1Btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span data-i18n="backBtn">رجوع</span>
+              </button>
+
+              <!-- Google Registration Info Badge -->
+              <div id="googleRegBadge" style="display:none; align-items:center; gap:8px; background:rgba(66, 133, 244, 0.12); border:1.2px solid rgba(66, 133, 244, 0.35); border-radius:10px; padding:7px 12px; margin-bottom:12px; font-size:0.82rem; color:#fff;">
+                <svg width="15" height="15" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z" />
+                  <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24Z" />
+                  <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15Z" />
+                  <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z" />
+                </svg>
+                <span>متابعة التسجيل عبر Google: <strong id="googleRegBadgeEmail" style="color:var(--gold-light);"></strong></span>
+              </div>
+
+              <h1 class="form-title" style="font-size:1.6rem; margin-bottom:0.15rem" data-i18n="step2Heading">أخبرنا عن
+                حالتك</h1>
+              <p class="form-sub" style="margin-bottom:0.85rem" data-i18n="step2Sub">لنرشح لك الأخصائي الأنسب</p>
+
+              <form id="step2Form">
+                <!-- Condition dropdown -->
+                <div class="fg">
+                  <label for="rCondition"><span data-i18n="lblCondition">وصف الحالة / المشكلة</span><span
+                      class="star">*</span></label>
+                  <div class="iw">
+                    <select class="fi" id="rCondition" required>
+                      <option value="" disabled selected data-i18n="phCondition">اختر ما يصف حالتك</option>
+                      <option value="anxiety" data-i18n="condAnxiety">القلق والتوتر المستمر</option>
+                      <option value="depression" data-i18n="condDepression">الحزن وفقدان الشغف والحماس</option>
+                      <option value="stress" data-i18n="condStress">ضغط العمل والإرهاق المهني</option>
+                      <option value="burnout" data-i18n="condBurnout">الاحتراق الوظيفي وضعف الإنتاجية</option>
+                      <option value="relationships" data-i18n="condRelationships">مشاكل العلاقات الأسرية والاجتماعية
+                      </option>
+                      <option value="anger" data-i18n="condAnger">إدارة الغضب والتوازن العاطفي</option>
+                      <option value="selfesteem" data-i18n="condSelfEsteem">تدني الثقة بالنفس وتقدير الذات</option>
+                      <option value="sleep" data-i18n="condSleep">اضطرابات وجودة النوم</option>
+                      <option value="overthinking" data-i18n="condOverthinking">التفكير المفرط والتشوش الذهني</option>
+                      <option value="worklife" data-i18n="condWorkLife">الموازنة بين العمل والمسؤوليات الشخصية</option>
+                      <option value="procrastination" data-i18n="condProcrastination">التسويف وصعوبات التركيز والإنجاز
+                      </option>
+                      <option value="communication" data-i18n="condCommunication">تطوير مهارات التواصل وحل الخلافات
+                      </option>
+                      <option value="parenting" data-i18n="condParenting">ضغوط التربية وبناء الذكاء العاطفي للأبناء
+                      </option>
+                      <option value="resilience" data-i18n="condResilience">بناء المرونة النفسية والتكيف مع التغيرات
+                      </option>
+                      <option value="fatigue" data-i18n="condFatigue">الإجهاد والإنهاك العام بدون سبب واضح</option>
+                      <option value="venting" data-i18n="condVenting">مساحة للفضفضة وتفريغ المشاعر</option>
+                      <option value="other" data-i18n="condOther">أخرى</option>
+                    </select>
+                    <span class="ico">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                          d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                      </svg>
+                    </span>
+                    <span class="chev">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Custom Description for 'أخرى' (Conditional Smooth Reveal) -->
+                <div class="fg other-desc-wrap" id="otherDescWrap" style="display: none;">
+                  <label for="rOtherDesc"><span data-i18n="lblOtherDesc">اكتب ما يصف حالتك</span><span class="star">*</span></label>
+                  <div class="iw">
+                    <textarea class="fi other-desc-textarea" id="rOtherDesc" rows="3" placeholder="اكتب وصفًا مختصرًا للحالة أو ما تشعر به..." data-i18n-ph="phOtherDesc"></textarea>
+                  </div>
+                </div>
+
+                <!-- Specialist Gender preference (Dropdown) -->
+                <div class="fg" style="margin-bottom:0.9rem">
+                  <label for="rSpecGender"><span data-i18n="lblSpecGender">جنس الأخصائي المفضّل</span><span
+                      class="star">*</span></label>
+                  <div class="iw">
+                    <select class="fi" id="rSpecGender" required>
+                      <option value="all" data-i18n="gcAny">لا يهم (الكل)</option>
+                      <option value="male" data-i18n="gcMale">ذكر</option>
+                      <option value="female" data-i18n="gcFemale">أنثى</option>
+                    </select>
+                    <span class="ico">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      </svg>
+                    </span>
+                    <span class="chev">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Final Submit -->
+                <div style="margin-top:1rem">
+                  <button type="submit" class="btn-main" id="finalRegBtn">
+                    <span data-i18n="btnFindSpec">ابحث عن أخصائيك الآن</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+          </div><!-- /reg-steps -->
+        </div>
+
+      </div><!-- /forms-layer -->
+    </div><!-- /auth-card -->
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span id="toastMsg">تمت العملية بنجاح!</span>
+  </div>
+
+  <!-- WhatsApp OTP Modal -->
+  <div class="otp-modal-overlay" id="otpModal">
+    <div class="otp-modal-box">
+      <button type="button" class="otp-close-btn" id="closeOtpModalBtn" aria-label="إغلاق">✕</button>
+
+      <div class="otp-icon-wrap">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="#25D366">
+          <path
+            d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92zM12.04 20.14c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a7.88 7.88 0 0 1-1.21-4.28c0-4.37 3.56-7.93 7.94-7.93 4.38 0 7.93 3.56 7.93 7.93 0 4.38-3.56 7.94-7.94 7.94zm4.35-5.93c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.41-.54-.42l-.46-.01c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28z" />
+        </svg>
+      </div>
+
+      <h2 class="otp-title">تأكيد رقم الهاتف عبر WhatsApp</h2>
+      <p class="otp-desc">
+        أرسلنا رمز تحقق مكوّن من 6 أرقام إلى رقمك:<br>
+        <strong id="otpPhoneDisplay"
+          style="color:var(--gold-light); font-size:1.05rem; direction:ltr; display:inline-block; margin-top:4px;"></strong>
+      </p>
+
+      <!-- Dev Code Helper Badge -->
+      <div id="otpDevBadge"
+        style="display:none; background:rgba(212,168,67,0.15); border:1px dashed var(--gold); border-radius:10px; padding:8px 12px; margin-bottom:14px; font-size:0.85rem; color:var(--gold-light); cursor:pointer;">
+        كود WhatsApp السريع (تجريبي): <strong id="otpDevCodeVal"
+          style="font-size:1.1rem; letter-spacing:2px; color:#fff;"></strong> <span
+          style="font-size:0.75rem; opacity:0.8;">(انقر للتعبئة)</span>
+      </div>
+
+      <form id="otpConfirmForm">
+        <div class="otp-inputs-row" dir="ltr" id="otpInputsRow">
+          <input type="text" maxlength="1" class="otp-digit" data-idx="0" inputmode="numeric" />
+          <input type="text" maxlength="1" class="otp-digit" data-idx="1" inputmode="numeric" />
+          <input type="text" maxlength="1" class="otp-digit" data-idx="2" inputmode="numeric" />
+          <input type="text" maxlength="1" class="otp-digit" data-idx="3" inputmode="numeric" />
+          <input type="text" maxlength="1" class="otp-digit" data-idx="4" inputmode="numeric" />
+          <input type="text" maxlength="1" class="otp-digit" data-idx="5" inputmode="numeric" />
+        </div>
+
+        <p class="otp-error-msg" id="otpErrorMsg" style="display:none;"></p>
+
+        <button type="submit" class="btn-main" id="btnConfirmOtp" style="margin-top:0.6rem; width:100%;">
+          <span>تأكيد وتفعيل الحساب</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </button>
+      </form>
+
+      <div class="otp-resend-row"
+        style="margin-top:1.1rem; font-size:0.88rem; color:var(--text-muted); text-align:center;">
+        <span>لم يصلك الرمز؟ </span>
+        <button type="button" id="otpResendBtn"
+          style="background:none; border:none; color:var(--gold-light); font-weight:700; cursor:pointer; font-family:inherit;">إعادة
+          الإرسال (<span id="otpTimer">60</span>ث)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Phone Complete Modal -->
+  <div class="otp-modal-overlay" id="googlePhoneModal">
+    <div class="otp-modal-box" style="border-color: rgba(66, 133, 244, 0.4); max-width: 440px;">
+      <button type="button" class="otp-close-btn" id="closeGoogleModalBtn" aria-label="إغلاق">✕</button>
+
+      <div
+        style="width: 58px; height: 58px; background: rgba(66, 133, 244, 0.12); border: 2px solid rgba(66, 133, 244, 0.35); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+        <svg width="28" height="28" viewBox="0 0 24 24">
+          <path fill="#4285F4"
+            d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z" />
+          <path fill="#34A853"
+            d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24Z" />
+          <path fill="#FBBC05"
+            d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15Z" />
+          <path fill="#EA4335"
+            d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z" />
+        </svg>
+      </div>
+
+      <h2 class="otp-title" style="margin-bottom: 0.25rem;">إكمال الدخول عبر Google</h2>
+      <p class="otp-desc" style="font-size: 0.86rem; margin-bottom: 1.1rem;">
+        تم جلب بيانات حسابك بنجاح. يرجى إضافة رقم الهاتف لإرسال كود التأكيد عبر WhatsApp:
+      </p>
+
+      <!-- Google Profile Badge (Auto-fetched from Google Account) -->
+      <div
+        style="background: rgba(66, 133, 244, 0.08); border: 1.2px solid rgba(66, 133, 244, 0.3); border-radius: 12px; padding: 10px 14px; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 12px; text-align: right;">
+        <div
+          style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #4285F4, #34A853); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;"
+          id="gAccountAvatar">
+          G
+        </div>
+        <div style="flex: 1; min-width: 0;">
+          <div
+            style="font-size: 0.92rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+            id="gAccountName">
+            مستخدم Google
+          </div>
+          <div
+            style="font-size: 0.78rem; color: var(--text-muted); direction: ltr; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+            id="gAccountEmail">
+            user@gmail.com
+          </div>
+        </div>
+        <div
+          style="font-size: 0.72rem; color: #34A853; font-weight: 700; display: flex; align-items: center; gap: 3px; background: rgba(52, 168, 83, 0.12); padding: 3px 8px; border-radius: 20px; white-space: nowrap;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Google
+        </div>
+      </div>
+
+      <form id="googlePhoneForm">
+        <!-- Hidden Google Fields (auto-filled) -->
+        <input type="hidden" id="gEmail" value="" />
+        <input type="hidden" id="gName" value="" />
+
+        <!-- Jordanian Phone Input (Only field user inputs) -->
+        <div class="fg" style="text-align: right; margin-bottom: 1.3rem;">
+          <label
+            style="font-size: 0.84rem; color: var(--gold-light); font-weight: 700; margin-bottom: 6px; display: block;">
+            رقم الهاتف الأردني (WhatsApp) *
+          </label>
+          <div class="phone-field-box">
+            <div class="phone-prefix-badge">+962</div>
+            <input class="phone-input-element" type="tel" id="gPhone" placeholder="0791234567" required
+              autocomplete="tel" />
+          </div>
+          <span style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-top: 5px;">
+            سيتم إرسال رمز التحقق (OTP) إلى حسابك على WhatsApp لتأكيد الرقم
+          </span>
+        </div>
+
+        <button type="submit" class="btn-main" id="gSubmitBtn"
+          style="width: 100%; justify-content: center; background: linear-gradient(135deg, #4285F4, #2b6cb0); border-color: #4285F4;">
+          <span id="gSubmitBtnText">المتابعة لاختيار حالتك وتأكيد الرقم</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </button>
+      </form>
+    </div><!-- /otp-modal-box -->
+  </div><!-- /googlePhoneModal -->
+
+  <!-- Forgot Password Recovery Modal -->
+  <div class="otp-modal-overlay" id="fModal">
+    <div class="otp-modal-box" style="max-width: 440px;">
+      <button type="button" class="otp-close-btn" id="closeForgotModalBtn" onclick="document.getElementById('fModal').classList.remove('open')" aria-label="إغلاق">✕</button>
+
+      <div style="width: 58px; height: 58px; background: rgba(212, 168, 67, 0.12); border: 2px solid var(--gold); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1.1rem; color: var(--gold-light);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+
+      <h2 class="otp-title" style="margin-bottom: 0.35rem;">استعادة كلمة المرور</h2>
+      <p class="otp-desc" style="font-size: 0.88rem; margin-bottom: 1.3rem;">
+        أدخل بريدك الإلكتروني المسجل وسنرسل لك رابط إعادة تعيين كلمة المرور فوراً:
+      </p>
+
+      <form id="forgotForm" onsubmit="event.preventDefault(); document.getElementById('fModal').classList.remove('open');">
+        <div class="fg" style="text-align: right; margin-bottom: 1.2rem;">
+          <label style="font-size: 0.82rem; color: var(--teal-pale); font-weight: 600; margin-bottom: 5px; display: block;">
+            البريد الإلكتروني *
+          </label>
+          <div class="iw">
+            <input class="fi" type="email" id="fEmail" placeholder="name@gmail.com" required autocomplete="email" />
+            <span class="ico">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-main" id="fSubmitBtn" style="width: 100%;">
+          <span>إرسال رابط الاستعادة</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/auth-page.js?v=20260916-4"></script>
+</body>
+
+</html>

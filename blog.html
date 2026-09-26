@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta
+      name="description"
+      content="مدونة PsyAI للتثقيف النفسي مقالات علمية، الرفاه وجودة الحياة، واستراتيجيات عملية للدعم النفسي."
+    />
+    <meta
+      name="keywords"
+      content="مدونة صحة نفسية، مقالات علم نفس، دعم نفسي، رفاه وجودة الحياة، PsyAI"
+    />
+    <title>المدونة والتثقيف النفسي — PsyAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+      <link rel="stylesheet" href="assets/css/fonts.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header" id="pageHeader">
+      <div class="container">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <img src="psyai.png" alt="PsyAI" class="logo-img" />
+            <span class="logo-text">PsyaI</span>
+          </a>
+          <nav class="nav desktop-nav">
+            <a href="index.html" class="nav-link">الرئيسية</a>
+            <a href="specialists.html" class="nav-link">المختصين</a>
+            <a href="business.html" class="nav-link">PsyAI الأعمال</a>
+            <div class="nav-item">
+              <a href="service-individual.html" class="nav-link">
+                <span>خدماتنا</span>
+                <svg
+                  class="svg-icon dd-chevron"
+                  viewBox="0 0 24 24"
+                  width="14"
+                  height="14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </a>
+              <div class="nav-dropdown">
+                <a href="service-individual.html" class="dropdown-item"
+                  >دعم نفسي فردي</a
+                >
+                <a href="service-corporate.html" class="dropdown-item"
+                  >برامج الشركات</a
+                >
+                <a href="service-kids.html" class="dropdown-item"
+                  >برامج الأطفال</a
+                >
+                <div class="dropdown-divider"></div>
+                <a href="values.html" class="dropdown-item">قيمنا ومبادئنا</a>
+              </div>
+            </div>
+            <a href="assessment.html" class="nav-link">التقييم الذاتي</a>
+            <a href="blog.html" class="nav-link active">المدونة</a>
+          </nav>
+          <div class="header-actions desktop-nav">
+            <a href="#" class="lang-btn">EN</a>
+            <a href="login.html" class="btn btn-gold"
+              >احجز جلسة</a
+            >
+          </div>
+          <button class="hamburger mobile-nav-toggle" aria-label="قائمة التصفح">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html" class="nav-link">الرئيسية</a>
+        <a href="specialists.html" class="nav-link">المختصين</a>
+        <a href="business.html" class="nav-link">PsyAI الأعمال</a>
+        <a href="service-individual.html" class="nav-link">دعم نفسي فردي</a>
+        <a href="service-corporate.html" class="nav-link">برامج الشركات</a>
+        <a href="service-kids.html" class="nav-link">برامج الأطفال</a>
+        <a href="values.html" class="nav-link">قيمنا</a>
+        <a href="assessment.html" class="nav-link">التقييم الذاتي</a>
+        <a href="blog.html" class="nav-link active">المدونة</a>
+        <a href="login.html" class="btn btn-gold"
+          >احجز جلسة</a
+        >
+      </nav>
+    </header>
+
+    <!-- Blog Hero Section -->
+    <section class="values-hero" style="padding: 5rem 0 3.5rem">
+      <div class="container">
+        <div class="breadcrumb" data-anim="fade-down">
+          <a href="index.html">الرئيسية</a>
+          <svg
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          <span>المدونة والتثقيف النفسي</span>
+        </div>
+        <span class="hero-badge-pill"
+          >المعرفة النفسية الموثوقة · Psychoeducation</span
+        >
+        <h1 data-anim="fade-up">
+          دليلك العلمي لتعزيز صحتك النفسية<br />وجودة حياتك اليومية
+        </h1>
+        <p class="lead">
+          مقالات متخصصة في الرفاه وجودة الحياة، أدلة تفاعلية، واستراتيجيات يومية
+          يكتبها ويراجعها نخبة من ممارسي علم النفس والرفاه المعتمدين.
+        </p>
+      </div>
+    </section>
+
+    <!-- Blog Controls: Filter & Search -->
+    <section style="background: var(--cream); padding: 2rem 0 1rem">
+      <div class="container">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+          "
+        >
+          <!-- Category Filter Buttons -->
+          <div
+            style="display: flex; gap: 0.6rem; flex-wrap: wrap"
+            id="categoryFilterGroup"
+          >
+            <button
+              class="tool-btn active-filter"
+              data-cat="all"
+              onclick="filterBlog('all', this)"
+            >
+              الكل
+            </button>
+            <button
+              class="tool-btn"
+              data-cat="clinical"
+              onclick="filterBlog('clinical', this)"
+            >
+              الرفاه وجودة الحياة
+            </button>
+            <button
+              class="tool-btn"
+              data-cat="workplace"
+              onclick="filterBlog('workplace', this)"
+            >
+              بيئة العمل
+            </button>
+            <button
+              class="tool-btn"
+              data-cat="parenting"
+              onclick="filterBlog('parenting', this)"
+            >
+              تربية وأطفال
+            </button>
+            <button
+              class="tool-btn"
+              data-cat="therapy"
+              onclick="filterBlog('therapy', this)"
+            >
+              تمارين وإرشاد يومي
+            </button>
+          </div>
+
+          <!-- Search Input -->
+          <div style="position: relative; width: 100%; max-width: 320px">
+            <input
+              type="text"
+              id="blogSearchInput"
+              placeholder="ابحث في مقالات المدونة..."
+              class="search-input"
+              style="
+                width: 100%;
+                padding-right: 2.5rem;
+                background: #fff;
+                border-radius: 0.75rem;
+              "
+              oninput="searchBlog(this.value)"
+            />
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              style="
+                position: absolute;
+                right: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--gray-text);
+                pointer-events: none;
+              "
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Articles Grid Section -->
+    <section style="background: var(--cream); padding: 2rem 0 6rem">
+      <div class="container">
+        <div class="more-articles-grid" id="blogCardsGrid">
+          <!-- Populated dynamically from ArticlesStore -->
+        </div>
+
+        <div
+          id="noArticlesState"
+          style="display: none; text-align: center; padding: 4rem 1rem"
+        >
+          <div
+            style="
+              width: 64px;
+              height: 64px;
+              background: var(--teal-pale);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 1rem;
+              color: var(--teal);
+            "
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="28"
+              height="28"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+          <h4
+            style="
+              font-family: &quot;Tajawal&quot;, sans-serif;
+              color: var(--teal-deep);
+              margin-bottom: 0.5rem;
+            "
+          >
+            لم يتم العثور على مقالات مطابقة
+          </h4>
+          <p style="color: var(--gray-text); font-size: 0.9rem">
+            جرب البحث بكلمات أخرى أو اختر تصنيفاً مختلفاً.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Global CTA -->
+    <section class="cta-section" data-anim="fade-up">
+      <div class="container">
+        <h2>ابدأ رحلة التعافي والهدوء النفسي اليوم</h2>
+        <p>
+          جلسات استشارية مرئية ومسموعة مع نخبة من الأخصائيين المعتمدين في سرية
+          تامة وأمان رقمي كامل.
+        </p>
+        <div class="cta-btns">
+          <a href="login.html" class="btn btn-gold"
+            >احجز استشارتك الآن</a
+          >
+          <a href="assessment.html" class="btn-outline-white"
+            >ابدأ التقييم الذاتي مجاناً</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <div class="footer-logo"><span class="logo-text">PsyaI</span></div>
+            <p>
+              صحتك النفسية أولويتنا — رعاية متخصصة، سرية تامة، وهوية عربية
+              أصيلة.
+            </p>
+            <div class="social-links">
+              <a
+                href="https://www.instagram.com/psyai.wellbeing/"
+                target="_blank"
+                aria-label="Instagram"
+                ><svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg
+              ></a>
+              <a
+                href="https://www.linkedin.com/company/psyai2025/"
+                target="_blank"
+                aria-label="LinkedIn"
+                ><svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <path
+                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"
+                  />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" /></svg
+              ></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>خدماتنا</h4>
+            <ul>
+              <li><a href="service-individual.html">دعم نفسي فردي</a></li>
+              <li><a href="service-corporate.html">برامج الشركات</a></li>
+              <li><a href="service-kids.html">برامج الأطفال</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>الروابط</h4>
+            <ul>
+              <li><a href="specialists.html">المختصين</a></li>
+              <li><a href="values.html">قيمنا ومبادئنا</a></li>
+              <li><a href="assessment.html">التقييم الذاتي</a></li>
+              <li><a href="blog.html">المدونة</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>تواصل معنا</h4>
+            <a href="mailto:psyaiwellbeing@gmail.com" class="footer-email"
+              >psyaiwellbeing@gmail.com</a
+            >
+            <a href="tel:0775666346" class="footer-email" style="direction:ltr; display:inline-block; font-weight:700; color:var(--gold-light); margin-top:0.3rem;"
+              >0775666346</a
+            >
+            <a
+              href="login.html"
+              class="btn btn-gold"
+              style="margin-top: 0.8rem"
+              >احجز جلسة</a
+            >
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2025 PsyAI. جميع الحقوق محفوظة.</span>
+          <div class="footer-links">
+            <a href="#">سياسة الخصوصية</a><a href="#">الشروط والأحكام</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="articles-store.js?v=3"></script>
+    <script src="script.js"></script>
+    <script>
+      let currentFilter = "all";
+      let searchQuery = "";
+      let articlesData = [];
+
+      function getCategoryBadge(cat) {
+        if (!cat) return "تثقيف نفسي";
+        return cat;
+      }
+
+      function formatArticleDate(raw) {
+        if (!raw) return "مؤخراً";
+        const d = new Date(raw);
+        if (isNaN(d.getTime())) return raw;
+        const months = [
+          "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+          "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+        ];
+        return d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear();
+      }
+
+      function renderBlogList() {
+        const grid = document.getElementById("blogCardsGrid");
+        const noState = document.getElementById("noArticlesState");
+
+        const filtered = articlesData.filter((a) => {
+          const matchesCat =
+            currentFilter === "all" ||
+            a.categorySlug === currentFilter ||
+            (currentFilter === "clinical" && (a.categorySlug === "general" || (a.category && (a.category.includes("الرفاه") || a.category.includes("جودة الحياة") || a.category.includes("إكلينيكي"))))) ||
+            (currentFilter === "workplace" && a.category && (a.category.includes("الضغوط") || a.category.includes("المهني") || a.category.includes("العمل"))) ||
+            (currentFilter === "parenting" && a.category && (a.category.includes("الأطفال") || a.category.includes("الأسرة"))) ||
+            (currentFilter === "therapy" && a.category && (a.category.includes("تمارين") || a.category.includes("إرشاد") || a.category.includes("العلاج") || a.category.includes("السلوكي")));
+
+          const query = searchQuery.toLowerCase().trim();
+          const matchesSearch =
+            !query ||
+            (a.title && a.title.toLowerCase().includes(query)) ||
+            (a.lead && a.lead.toLowerCase().includes(query)) ||
+            (a.category && a.category.toLowerCase().includes(query)) ||
+            (a.author && a.author.toLowerCase().includes(query));
+          return matchesCat && matchesSearch;
+        });
+
+        if (filtered.length === 0) {
+          grid.innerHTML = "";
+          noState.style.display = "block";
+          return;
+        }
+
+        noState.style.display = "none";
+        grid.innerHTML = filtered
+          .map(
+            (art) => `
+                <a href="article.html?id=${encodeURIComponent(art.id)}" class="blog-card" style="animation: fadeIn .3s ease">
+                    <div class="blog-card-img-wrap">
+                        <img src="${art.image || "storybook_card_1.png"}" alt="${art.title}" class="blog-card-img" onerror="this.src='storybook_card_1.png'">
+                    </div>
+                    <div class="blog-card-body">
+                        <div class="blog-card-meta">
+                            <span class="blog-card-badge">${getCategoryBadge(art.category)}</span>
+                            <span class="blog-card-date">${formatArticleDate(art.date || art.createdAt)}</span>
+                        </div>
+                        <h3>${art.title || "بدون عنوان"}</h3>
+                        <p>${(art.lead || art.content || "").substring(0, 125)}...</p>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:1rem; border-top:1px solid var(--border);">
+                            <span style="font-size:.8rem; color:var(--gray-text); font-weight:600;">${art.author || art.authorName || "أخصائي PsyAI"}</span>
+                            <div class="blog-card-link-text">اقرأ المقال <span>←</span></div>
+                        </div>
+                    </div>
+                </a>
+            `,
+          )
+          .join("");
+      }
+
+      function filterBlog(cat, btn) {
+        currentFilter = cat;
+        document
+          .querySelectorAll("#categoryFilterGroup button")
+          .forEach((b) => {
+            b.style.background = "";
+            b.style.borderColor = "";
+            b.style.color = "";
+          });
+        if (btn) {
+          btn.style.background = "var(--teal-deep)";
+          btn.style.color = "#fff";
+          btn.style.borderColor = "var(--teal-deep)";
+        }
+        renderBlogList();
+      }
+
+      function searchBlog(query) {
+        searchQuery = query;
+        renderBlogList();
+      }
+
+      async function loadAllArticles() {
+        // 1. Initial render from local store
+        if (window.ArticlesStore && typeof ArticlesStore.getAll === 'function') {
+          articlesData = ArticlesStore.getAll();
+          renderBlogList();
+        }
+
+        // 2. Fetch fresh articles directly from Server API
+        try {
+          const res = await fetch('/api/articles?limit=100');
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.success && Array.isArray(data.articles) && data.articles.length > 0) {
+              const serverArticles = data.articles.map(a => ({
+                id: a.id,
+                title: a.title,
+                category: a.category || "الرفاه وجودة الحياة",
+                categorySlug: a.categorySlug || "clinical",
+                lead: a.lead || "",
+                content: a.content || "",
+                readTime: a.readTime || "٥ دقائق",
+                author: a.authorName || "أخصائي PsyAI",
+                date: a.createdAt,
+                image: a.image || "storybook_card_2.png"
+              }));
+
+              // Merge server articles with local defaults
+              const combined = [...serverArticles];
+              if (window.ArticlesStore) {
+                const localList = ArticlesStore.getAll();
+                for (const loc of localList) {
+                  if (!combined.some(c => c.id === loc.id)) {
+                    combined.push(loc);
+                  }
+                }
+                localStorage.setItem(ArticlesStore.STORAGE_KEY, JSON.stringify(combined));
+              }
+
+              articlesData = combined;
+              renderBlogList();
+            }
+          }
+        } catch (err) {
+          console.warn('Direct API load failed, relying on localStorage:', err);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Highlight 'all' filter by default
+        const allBtn = document.querySelector(
+          '#categoryFilterGroup button[data-cat="all"]',
+        );
+        if (allBtn) {
+          allBtn.style.background = "var(--teal-deep)";
+          allBtn.style.color = "#fff";
+          allBtn.style.borderColor = "var(--teal-deep)";
+        }
+
+        loadAllArticles();
+      });
+    </script>
+  </body>
+</html>

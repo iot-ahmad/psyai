@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="description" content="منصة PsyAI — غرفة الدخول الآمن للجلسة الاستشارية." />
+  <title>غرفة الاستشارة النفسية — PsyAI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --teal-deep:   #1a2e2f;
+      --teal-dark:   #243d3e;
+      --teal:        #2e5254;
+      --teal-light:  #7ab3b7;
+      --teal-pale:   #eaf3f4;
+
+      --gold:        #d4a843;
+      --gold-light:  #e0bc72;
+      --gold-dark:   #9e7a28;
+      --cream:       #fdfaf3;
+
+      --bg-page:     #0f1e1f;
+      --card-bg:     #1a2e2f;
+      --card-inner:  #243d3e;
+
+      --text-main:   #ffffff;
+      --text-muted:  #8daeb1;
+      --border:      rgba(122, 179, 183, 0.2);
+      --border-gold: rgba(212, 168, 67, 0.4);
+    }
+
+    *, *::before, *::after {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', 'Poppins', sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    .session-container {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .logo-box {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .logo-img {
+      height: 48px;
+      width: auto;
+      margin-bottom: 0.4rem;
+    }
+    .platform-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--teal-light);
+    }
+    .platform-title span { color: var(--gold-light); }
+
+    .session-card {
+      background: linear-gradient(145deg, rgba(36, 61, 62, 0.95) 0%, rgba(26, 46, 47, 0.98) 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .session-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--teal-light));
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac;
+      padding: 0.35rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 10px #22c55e;
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.25); }
+    }
+
+    .spec-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .spec-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gold);
+      margin-bottom: 0.8rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      background: var(--teal-dark);
+    }
+
+    .spec-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--cream);
+      margin-bottom: 0.2rem;
+    }
+
+    .spec-title {
+      font-size: 0.92rem;
+      color: var(--gold-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .patient-salute {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .session-details-box {
+      background: rgba(15, 30, 31, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
+      margin: 1.5rem 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .detail-item h5 {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .detail-item p {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--cream);
+    }
+
+    /* Checklist instructions */
+    .instructions-box {
+      background: rgba(46, 82, 84, 0.25);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem 1.4rem;
+      text-align: right;
+      margin-bottom: 1.8rem;
+      font-size: 0.88rem;
+      color: var(--teal-pale);
+      line-height: 1.6;
+    }
+    .instructions-box h4 {
+      font-size: 0.95rem;
+      color: var(--gold-light);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .instructions-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .instructions-box li {
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .instructions-box li svg {
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* Big Join Button */
+    .btn-join-session {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: #0f1e1f;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      width: 100%;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 8px 25px rgba(212, 168, 67, 0.35);
+      transition: all 0.25s ease;
+    }
+    .btn-join-session:hover {
+      filter: brightness(1.15);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(212, 168, 67, 0.45);
+    }
+
+    .btn-join-session.disabled {
+      background: rgba(255,255,255,0.08);
+      color: var(--text-muted);
+      box-shadow: none;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .footer-security {
+      margin-top: 1.4rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+  </style>
+    <link rel="stylesheet" href="assets/css/fonts.css" />
+  </head>
+<body>
+
+  <div class="session-container">
+    <div class="logo-box">
+      <img src="psyai.png" alt="PsyAI" class="logo-img" />
+      <div class="platform-title">PsyaI <span>Session Room</span></div>
+    </div>
+
+    <div class="session-card">
+      <div class="live-badge" id="sessionStatusBadge">
+        <div class="live-dot"></div>
+        <span id="sessionStatusText">غرفة الاستشارة جاهزة الآن</span>
+      </div>
+
+      <div class="spec-profile">
+        <img
+          src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200"
+          alt="الأخصائي"
+          class="spec-avatar"
+          id="specAvatar"
+        />
+        <h2 class="spec-name" id="specName">د. سارة المنصوري</h2>
+        <p class="spec-title" id="specTitle">استشارية الطب النفسي والعلاج السلوكي</p>
+        <p class="patient-salute" id="patientSalute">أهلاً بك، تم إعداد غرفة استشارتك الخاصة بأمان تام.</p>
+      </div>
+
+      <div class="session-details-box">
+        <div class="detail-item">
+          <h5>موعد الجلسة</h5>
+          <p id="sessionTimeDisplay">الآن</p>
+        </div>
+        <div class="detail-item">
+          <h5>خصوصية الاستشارة</h5>
+          <p style="color:var(--gold-light);">مشفرة وسرية 100%</p>
+        </div>
+        <div class="detail-item">
+          <h5>طريقة التواصل</h5>
+          <p>اتصال مرئي مباشر</p>
+        </div>
+      </div>
+
+      <div class="instructions-box">
+        <h4>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          إرشادات لضمان أفضل تجربة في الجلسة:
+        </h4>
+        <ul>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            تأكد من التواجد في مكان هادئ ومريح يضمن خصوصيتك التامة.
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            يُفضل استخدام سماعات الأذن لرفع جودة ونقاء الصوت.
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            تأكد من تفعيل الكاميرا والميكروفون عند فتح غرفة الاجتماع.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Join Session Button -->
+      <a href="#" target="_blank" class="btn-join-session" id="btnJoinMeeting">
+        <span>الانضمام إلى الجلسة الآن</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+      </a>
+
+      <div class="footer-security">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>اتصال آمن ومعتمد وفق معايير الخصوصية الطبية لمنصة PsyAI</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = localStorage.getItem('psyai_api_url') || 'http://localhost:5000';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const bookingId = params.get('id');
+
+      if (!bookingId) {
+        // Fallback for demo
+        setupDefaultDemo();
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/api/specialist/session/${bookingId}`);
+        const data = await res.json();
+
+        if (data.success && data.session) {
+          const s = data.session;
+          if (s.specialist) {
+            document.getElementById('specName').textContent = s.specialist.name;
+            document.getElementById('specTitle').textContent = s.specialist.title;
+            if (s.specialist.avatar) {
+              document.getElementById('specAvatar').src = s.specialist.avatar;
+            }
+          }
+          if (s.patientName) {
+            document.getElementById('patientSalute').textContent = `أهلاً بك يا ${s.patientName}، تم إعداد غرفة جلستك بأمان تام.`;
+          }
+          if (s.sessionTime) {
+            document.getElementById('sessionTimeDisplay').textContent = s.sessionTime;
+          }
+
+          const btn = document.getElementById('btnJoinMeeting');
+          if (s.meetingLink) {
+            btn.href = s.meetingLink;
+            btn.classList.remove('disabled');
+            btn.innerHTML = `
+              <span>الانضمام إلى الجلسة الآن</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            `;
+          } else {
+            btn.classList.add('disabled');
+            btn.removeAttribute('href');
+            btn.innerHTML = `<span>في انتظار قيام الأخصائي ببدء الغرفة...</span>`;
+            document.getElementById('sessionStatusText').textContent = 'في انتظار بدء الجلسة من قبل الأخصائي';
+          }
+        } else {
+          setupDefaultDemo();
+        }
+      } catch (err) {
+        setupDefaultDemo();
+      }
+    });
+
+    function setupDefaultDemo() {
+      const btn = document.getElementById('btnJoinMeeting');
+      btn.href = 'https://meet.google.com/';
+      btn.classList.remove('disabled');
+    }
+  </script>
+</body>
+</html>

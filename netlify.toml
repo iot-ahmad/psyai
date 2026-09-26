@@ -1,0 +1,75 @@
+[build]
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/login"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/assessment"
+  to = "/assessment.html"
+  status = 200
+
+[[redirects]]
+  from = "/specialists"
+  to = "/specialists.html"
+  status = 200
+
+[[redirects]]
+  from = "/specialist"
+  to = "/specialist.html"
+  status = 200
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog.html"
+  status = 200
+
+[[redirects]]
+  from = "/article"
+  to = "/article.html"
+  status = 200
+
+[[redirects]]
+  from = "/business"
+  to = "/business.html"
+  status = 200
+
+[[redirects]]
+  from = "/profile"
+  to = "/profile.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/values"
+  to = "/values.html"
+  status = 200
+
+[[redirects]]
+  from = "/session"
+  to = "/session.html"
+  status = 200
+
+[[redirects]]
+  from = "/service-individual"
+  to = "/service-individual.html"
+  status = 200
+
+[[redirects]]
+  from = "/service-corporate"
+  to = "/service-corporate.html"
+  status = 200
+
+[[redirects]]
+  from = "/service-kids"
+  to = "/service-kids.html"
+  status = 200

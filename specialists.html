@@ -1,0 +1,1485 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta
+      name="description"
+      content="أخصائيونا المعتمدون PsyAI منصة الرفاه والدعم النفسي."
+    />
+    <title>المختصون PsyAI منصة الرفاه والدعم النفسي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        background-color: var(--cream);
+        color: var(--teal-deep);
+        font-family: "Cairo", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Top Category Pills Carousel */
+      .category-carousel-wrapper {
+        background: #ffffff;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 80px;
+        z-index: 90;
+        padding: 0.85rem 0;
+        box-shadow: 0 4px 16px rgba(26, 46, 47, 0.04);
+      }
+
+      .carousel-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+      }
+
+      .carousel-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--teal-pale);
+        color: var(--teal-deep);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        transition: all 0.25s ease;
+      }
+
+      .carousel-btn:hover {
+        background: var(--teal-deep);
+        color: var(--gold-light);
+        border-color: var(--teal-deep);
+      }
+
+      .category-pills {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        padding: 4px 0;
+        flex-grow: 1;
+      }
+
+      .category-pills::-webkit-scrollbar {
+        display: none;
+      }
+
+      .pill-item {
+        white-space: nowrap;
+        padding: 8px 20px;
+        border-radius: 50px;
+        background: var(--teal-pale);
+        color: var(--teal-deep);
+        font-family: "Cairo", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        border: 1.5px solid transparent;
+        user-select: none;
+      }
+
+      .pill-item:hover {
+        background: rgba(122, 179, 183, 0.25);
+        color: var(--teal-dark);
+      }
+
+      .pill-item.active {
+        background: var(--teal-deep);
+        color: var(--gold-light);
+        border-color: var(--gold);
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(26, 46, 47, 0.15);
+      }
+
+      /* Hero Banner */
+      .specialists-hero-banner {
+        background: linear-gradient(
+          135deg,
+          var(--teal-deep) 0%,
+          var(--teal-dark) 60%,
+          #254b4d 100%
+        );
+        color: #ffffff;
+        padding: 3rem 1rem 2rem;
+        text-align: center;
+        position: relative;
+      }
+
+      .specialists-hero-banner h1 {
+        font-family: "Tajawal", sans-serif;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 900;
+        margin-bottom: 0.6rem;
+        color: #ffffff;
+        animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s both;
+      }
+
+      .specialists-hero-banner p {
+        font-family: "Cairo", sans-serif;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.85);
+        max-width: 600px;
+        margin: 0 auto;
+        animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.3s both;
+      }
+
+      /* Main Section Layout: Sidebar + Grid */
+      .specialists-page-container {
+        padding: 2rem 0 4rem;
+      }
+
+      .layout-grid {
+        display: grid;
+        grid-template-columns: 290px 1fr;
+        gap: 2rem;
+        align-items: start;
+      }
+
+      /* Sidebar Filters */
+      .filter-sidebar {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 1.25rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 20px rgba(26, 46, 47, 0.05);
+        position: sticky;
+        top: 155px;
+      }
+
+      .filter-title {
+        font-family: "Tajawal", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 800;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--teal-deep);
+        border-bottom: 2px solid var(--teal-pale);
+        padding-bottom: 0.75rem;
+      }
+
+      .filter-group {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .filter-group:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .filter-label {
+        font-family: "Tajawal", sans-serif;
+        font-size: 0.92rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        display: block;
+        color: var(--teal-deep);
+      }
+
+      .search-input-wrap {
+        position: relative;
+      }
+
+      .search-input-wrap input {
+        width: 100%;
+        padding: 12px 14px 12px 40px;
+        border-radius: 12px;
+        border: 1.5px solid var(--border);
+        font-size: 0.9rem;
+        outline: none;
+        transition: all 0.25s ease;
+        font-family: "Cairo", sans-serif;
+        background: #ffffff;
+        color: var(--teal-deep);
+      }
+
+      .search-input-wrap input:focus {
+        border-color: var(--teal-light);
+        box-shadow: 0 0 0 3px rgba(122, 179, 183, 0.25);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--teal-light);
+      }
+
+      .filter-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .filter-option-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.88rem;
+        color: var(--gray-text);
+        cursor: pointer;
+        user-select: none;
+        font-family: "Cairo", sans-serif;
+      }
+
+      .filter-option-label input[type="radio"],
+      .filter-option-label input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--teal-dark);
+        cursor: pointer;
+      }
+
+      .btn-reset-filters {
+        width: 100%;
+        padding: 10px;
+        background: var(--teal-pale);
+        color: var(--teal-deep);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        font-family: "Tajawal", sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 0.88rem;
+        transition: all 0.25s ease;
+      }
+
+      .btn-reset-filters:hover {
+        background: var(--teal-deep);
+        color: var(--gold-light);
+      }
+
+      /* Specialist Cards Grid */
+      .specialists-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .psyai-spec-card {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        padding: 2.2rem 1.25rem 1.8rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        box-shadow: 0 4px 16px rgba(26, 46, 47, 0.04);
+        cursor: pointer;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .psyai-spec-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 36px rgba(26, 46, 47, 0.1);
+        border-color: var(--teal-light);
+      }
+
+      .avatar-wrap {
+        position: relative;
+        margin-bottom: 1.4rem;
+      }
+
+      .avatar-img-circle {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--teal-pale);
+        box-shadow: 0 8px 24px rgba(46, 82, 84, 0.12);
+        background: linear-gradient(135deg, #eaf3f4 0%, #f8f6f0 100%);
+        transition: transform 0.35s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+      }
+
+      .avatar-img-circle img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 50%;
+      }
+
+      .specialist-name {
+        font-family: "Tajawal", sans-serif;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--teal-deep);
+        margin-bottom: 0.35rem;
+      }
+
+      .specialist-role {
+        font-family: "Cairo", sans-serif;
+        font-size: 0.92rem;
+        color: #64748b;
+        font-weight: 500;
+        margin-bottom: 1.25rem;
+      }
+
+      .rating-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 4px 16px;
+        border-radius: 50px;
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: var(--teal-deep);
+        margin-bottom: 1rem;
+        font-family: "Cairo", sans-serif;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      }
+
+      .rating-badge .star-icon {
+        color: var(--gold);
+      }
+
+      .slots-preview-container {
+        width: 100%;
+        margin-top: auto;
+        margin-bottom: 1rem;
+      }
+
+      .slots-buttons-row {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+      }
+
+      .slot-btn {
+        background: var(--teal-pale);
+        color: var(--teal-deep);
+        border: 1px solid var(--border);
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+        font-family: "Cairo", sans-serif;
+      }
+
+      .slot-btn:hover {
+        background: var(--teal-deep);
+        color: var(--gold-light);
+        border-color: var(--teal-deep);
+      }
+
+      .btn-book-now {
+        width: 100%;
+        padding: 11px;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #ffffff;
+        border: none;
+        border-radius: 50px;
+        font-family: "Tajawal", sans-serif;
+        font-weight: 800;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 16px rgba(212, 168, 67, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn-book-now:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(212, 168, 67, 0.4);
+      }
+
+      /* Responsive Breakpoints */
+      @media (max-width: 992px) {
+        .layout-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .filter-sidebar {
+          position: relative;
+          top: 0;
+          margin-bottom: 1rem;
+        }
+
+        .category-carousel-wrapper {
+          position: relative;
+          top: 0;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .specialists-cards-grid {
+          grid-template-columns: 1fr;
+          gap: 1.25rem;
+        }
+
+        .psyai-spec-card {
+          padding: 1.8rem 1rem 1.4rem;
+        }
+
+        .avatar-img-circle {
+          width: 110px;
+          height: 110px;
+        }
+
+        .specialist-name {
+          font-size: 1.15rem;
+        }
+      }
+
+      /* Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(26, 46, 47, 0.75);
+        backdrop-filter: blur(4px);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+
+      .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-box {
+        background: #ffffff;
+        border-radius: 1.8rem;
+        width: 100%;
+        max-width: 520px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 2rem 1.5rem;
+        box-shadow: 0 24px 60px rgba(26, 46, 47, 0.25);
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.25s ease;
+      }
+
+      .modal-overlay.active .modal-box {
+        transform: translateY(0);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 1.25rem;
+        left: 1.25rem;
+        background: var(--teal-pale);
+        border: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--teal-deep);
+        transition: background 0.2s;
+        font-size: 1.2rem;
+      }
+
+      .modal-close:hover {
+        background: var(--teal-deep);
+        color: var(--gold-light);
+      }
+
+      .profile-modal-header {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1.2rem;
+      }
+
+      .profile-modal-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--teal-pale);
+      }
+
+      .profile-modal-info h2 {
+        font-family: "Tajawal", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--teal-deep);
+        margin-bottom: 0.2rem;
+      }
+
+      .profile-modal-info p {
+        font-size: 0.9rem;
+        color: #64748b;
+      }
+
+      .profile-section-title {
+        font-family: "Tajawal", sans-serif;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--teal-deep);
+        margin: 1.2rem 0 0.5rem;
+      }
+
+      .profile-section-text {
+        font-size: 0.9rem;
+        color: var(--gray-text);
+        line-height: 1.7;
+      }
+
+      /* Empty state */
+      .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        background: #ffffff;
+        border-radius: 1.5rem;
+        border: 1px dashed var(--border);
+      }
+    </style>
+      <link rel="stylesheet" href="assets/css/fonts.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <img src="psyai.png" alt="PsyAI" class="logo-img" />
+            <span class="logo-text">PsyaI</span>
+          </a>
+
+          <nav class="nav desktop-nav">
+            <a href="index.html" class="nav-link">الرئيسية</a>
+            <a href="specialists.html" class="nav-link active">المختصين</a>
+            <a href="business.html" class="nav-link">PsyAI الأعمال</a>
+
+            <a href="blog.html" class="nav-link">المدونة</a>
+            <div class="nav-item">
+              <a href="service-individual.html" class="nav-link">
+                <span>خدماتنا</span>
+                <svg
+                  class="svg-icon dd-chevron"
+                  viewBox="0 0 24 24"
+                  width="14"
+                  height="14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </a>
+              <div class="nav-dropdown">
+                <a href="service-individual.html" class="dropdown-item bold"
+                  >دعم نفسي فردي</a
+                >
+                <a href="service-corporate.html" class="dropdown-item"
+                  >برامج الشركات<span class="dd-arrow">←</span></a
+                >
+                <a href="service-kids.html" class="dropdown-item"
+                  >برامج الأطفال</a
+                >
+                <div class="dropdown-divider"></div>
+                <a href="values.html" class="dropdown-item highlighted"
+                  >قيمنا</a
+                >
+              </div>
+            </div>
+          </nav>
+
+          <div class="header-actions desktop-nav">
+            <a href="#" class="lang-btn">EN</a>
+            <a href="login.html" class="btn btn-gold"
+              >تسجيل الدخول / حجز جلسة</a
+            >
+          </div>
+
+          <button class="hamburger mobile-nav-toggle" aria-label="قائمة التصفح">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <nav class="mobile-nav" id="mobileNav">
+        <a href="index.html" class="nav-link">الرئيسية</a>
+        <a href="specialists.html" class="nav-link active">المختصين</a>
+        <a href="business.html" class="nav-link">PsyAI الأعمال</a>
+
+        <a href="blog.html" class="nav-link">المدونة</a>
+        <a href="login.html" class="btn btn-gold">احجز جلستك</a>
+      </nav>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="specialists-hero-banner">
+      <div class="container">
+        <h1 data-anim="fade-up">أخصائيونا المعتمدون</h1>
+        <p>
+          نخبة من أخصائيي ومستشاري الدعم النفسي لمساعدتك في رحلة تعزيز الرفاه
+          النفسي
+        </p>
+      </div>
+    </section>
+
+    <!-- Top Category Filter Pills Carousel -->
+    <div class="category-carousel-wrapper">
+      <div class="container carousel-container">
+        <button class="carousel-btn" id="slideRight" aria-label="يمين">
+          <svg
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <div class="category-pills" id="categoryPills">
+          <div class="pill-item active" data-category="all">الكل</div>
+          <div class="pill-item" data-category="أخصائي دعم نفسي">
+            أخصائي دعم نفسي
+          </div>
+          <div class="pill-item" data-category="إدارة الضغوط">
+            إدارة الضغوط والتحديات
+          </div>
+          <div class="pill-item" data-category="إرشاد نفسي">
+            الإرشاد النفسي والسلوكي
+          </div>
+          <div class="pill-item" data-category="قلق وتوتر">
+            القلق والتوازن العاطفي
+          </div>
+        </div>
+
+        <button class="carousel-btn" id="slideLeft" aria-label="يسار">
+          <svg
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Page Main Section -->
+    <main class="specialists-page-container">
+      <div class="container">
+        <div class="layout-grid">
+          <!-- Right Sidebar (Filters) -->
+          <aside class="filter-sidebar">
+            <div class="filter-title">
+              <span>تصفية المختصين</span>
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+              </svg>
+            </div>
+
+            <!-- Search Input -->
+            <div class="filter-group">
+              <label class="filter-label">ابحث عن مختص دعم نفسي</label>
+              <div class="search-input-wrap">
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="اسم المختص..."
+                />
+                <span class="search-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </span>
+              </div>
+            </div>
+
+            <!-- Gender Filter -->
+            <div class="filter-group">
+              <label class="filter-label">الجنس</label>
+              <div class="filter-options">
+                <label class="filter-option-label">
+                  <input type="radio" name="genderFilter" value="all" checked />
+                  <span>الكل</span>
+                </label>
+                <label class="filter-option-label">
+                  <input type="radio" name="genderFilter" value="male" />
+                  <span>ذكر</span>
+                </label>
+                <label class="filter-option-label">
+                  <input type="radio" name="genderFilter" value="female" />
+                  <span>أنثى</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Specialty Filter -->
+            <div class="filter-group">
+              <label class="filter-label">مجال الدعم</label>
+              <div class="filter-options">
+                <label class="filter-option-label">
+                  <input
+                    type="checkbox"
+                    class="specialty-check"
+                    value="أخصائي دعم نفسي"
+                    checked
+                  />
+                  <span>أخصائي دعم نفسي</span>
+                </label>
+                <label class="filter-option-label">
+                  <input
+                    type="checkbox"
+                    class="specialty-check"
+                    value="إرشاد سلوكي"
+                    checked
+                  />
+                  <span>إرشاد سلوكي ونفسي</span>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn-reset-filters" id="resetFiltersBtn">
+              إعادة ضبط الفلاتر
+            </button>
+          </aside>
+
+          <!-- Left Content Area (Grid) -->
+          <section>
+            <div class="specialists-cards-grid" id="specialistsGrid">
+              <!-- Dynamic Cards for the 4 Target Support Specialists -->
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Full Specialist Detail & Booking Profile Modal -->
+    <div class="modal-overlay" id="detailModal">
+      <div class="modal-box" id="detailModalBox">
+        <button class="modal-close" id="closeDetailModalBtn">&times;</button>
+
+        <div class="profile-modal-header">
+          <img
+            id="detailAvatar"
+            src="psyai.png"
+            alt=""
+            class="profile-modal-avatar"
+          />
+          <div class="profile-modal-info">
+            <h2 id="detailName">-</h2>
+            <p id="detailTitle">-</p>
+            <div class="rating-badge" id="detailRatingBadge">★ -</div>
+          </div>
+        </div>
+
+        <div class="profile-section-title">
+          نبذة عن المختص ومسار الدعم النفسي
+        </div>
+        <div class="profile-section-text" id="detailBio">-</div>
+
+        <div class="profile-section-title">معلومات الجلسة والاستشارات</div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.88rem;
+            background: var(--teal-pale);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.2rem;
+          "
+        >
+          <div>
+            <strong>سنوات الخبرة:</strong> <span id="detailExp">-</span>
+          </div>
+          <div><strong>طبيعة الجلسات:</strong> جلسات استشارية ودعم نفسي</div>
+          <div><strong>المدة:</strong> 45 دقيقة</div>
+          <div><strong>اللغات:</strong> العربية، الإنجليزية</div>
+        </div>
+
+        <div class="profile-section-title">المواعيد المتاحة للحجز المباشر</div>
+        <div
+          class="slots-buttons-row"
+          id="detailSlotsRow"
+          style="margin-bottom: 1.5rem; justify-content: flex-start"
+        >
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div
+          id="modalAlert"
+          style="
+            display: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 1rem;
+          "
+        ></div>
+
+        <button class="btn-book-now" id="confirmBookingBtn">
+          <span>تأكيد حجز الجلسة الآن</span>
+          <span style="font-size: 1.1rem">←</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <div class="footer-logo"><span class="logo-text">PsyaI</span></div>
+            <p>منصة دعم نفسي رقمية للأفراد والشركات والأطفال.</p>
+          </div>
+          <div class="footer-col">
+            <h4>خدماتنا</h4>
+            <ul>
+              <li><a href="service-individual.html">دعم فردي</a></li>
+              <li><a href="specialists.html">الأخصائيون</a></li>
+              <li><a href="assessment.html">التقييم الذاتي</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>تواصل معنا</h4>
+            <a href="mailto:psyaiwellbeing@gmail.com" class="footer-email"
+              >psyaiwellbeing@gmail.com</a
+            >
+            <a href="tel:0775666346" class="footer-email" style="direction:ltr; display:inline-block; font-weight:700; color:var(--gold-light); margin-top:0.3rem;"
+              >0775666346</a
+            >
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2025 PsyAI. جميع الحقوق محفوظة.</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      const API = "http://localhost:5000/api";
+
+      // STRICTLY the 4 Support Specialists
+      const targetFourSpecialists = [
+        {
+          id: "spec-arwa",
+          name: "د. أروى القفاري",
+          title: "أخصائي دعم نفسي",
+          gender: "female",
+          rating: "4.88",
+          specialization: "أخصائي دعم نفسي",
+          category: "إرشاد نفسي",
+          experience_years: 8,
+          bio: "متخصصة في إرشاد الصحة النفسية وتعديل السلوك وإدارة ضغوط الحياة وتطوير الذات والرفاه النفسي.",
+          avatar: "psyai.png",
+          slots: [
+            { id: "sa1", time: "اليوم 05:00 م", status: "available" },
+            { id: "sa2", time: "غداً 06:30 م", status: "available" },
+          ],
+        },
+        {
+          id: "spec-nahi",
+          name: "د. ناهي الرويلي",
+          title: "أخصائي دعم نفسي",
+          gender: "male",
+          rating: "4.98",
+          specialization: "أخصائي دعم نفسي",
+          category: "إدارة الضغوط",
+          experience_years: 12,
+          bio: "استشاري دعم نفسي متقدّم لمساعدة الأفراد في التعامل مع التوتر والقلق اليومي وبناء الاستقرار العاطفي.",
+          avatar: "psyai.png",
+          slots: [
+            { id: "sn1", time: "اليوم 05:00 م", status: "available" },
+            { id: "sn2", time: "غداً 07:00 م", status: "available" },
+          ],
+        },
+        {
+          id: "spec-abdulmajeed",
+          name: "د. عبدالمجيد الصي",
+          title: "أخصائي دعم نفسي",
+          gender: "male",
+          rating: "4.82",
+          specialization: "أخصائي دعم نفسي",
+          category: "قلق وتوتر",
+          experience_years: 11,
+          bio: "مستشار دعم نفسي متخصص في إدارة ضغوط العمل والتحديات النفسية وبناء المرونة العاطفية.",
+          avatar: "psyai.png",
+          slots: [
+            { id: "sm1", time: "اليوم 06:30 م", status: "available" },
+            { id: "sm2", time: "الخميس 05:00 م", status: "available" },
+          ],
+        },
+        {
+          id: "spec-saad",
+          name: "د. سعد العنزي",
+          title: "أخصائي دعم نفسي",
+          gender: "male",
+          rating: "4.93",
+          specialization: "أخصائي دعم نفسي",
+          category: "إدارة الضغوط",
+          experience_years: 12,
+          bio: "مستشار دعم نفسي وإرشاد سلوكي يركز على مساندة الأفراد وتطوير جودة الحياة والصحة النفسية.",
+          avatar: "psyai.png",
+          slots: [
+            { id: "ss1", time: "اليوم 05:00 م", status: "available" },
+            { id: "ss2", time: "غداً 08:00 م", status: "available" },
+          ],
+        },
+      ];
+
+      let loadedSpecialists = [];
+      let selectedCategory = "all";
+      let activeSelectedSpecialist = null;
+      let selectedSlotTime = null;
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        setupCarouselControls();
+        setupFilterListeners();
+        setupModalEvents();
+        await fetchSpecialistsData();
+        // ── Auto-apply filters from login step 2 (URL params) ──
+        applyUrlFilters();
+      });
+
+      function applyUrlFilters() {
+        const p = new URLSearchParams(window.location.search);
+        let condition  = p.get('condition');   // e.g. "anxiety"
+        let specGender = p.get('specGender');  // "male" | "female" | "all"
+
+        // Fallback to logged-in user preferences in localStorage if URL params absent
+        if (!condition && !specGender) {
+          try {
+            const rawUser = localStorage.getItem('psyai_user');
+            if (rawUser) {
+              const u = JSON.parse(rawUser);
+              if (u.condition) condition = u.condition;
+              if (u.specGenderPref) specGender = u.specGenderPref;
+            }
+          } catch (e) {}
+        }
+
+        if (!condition && !specGender) return;
+
+        // Map condition value to matching category pill / keyword
+        const conditionMap = {
+          anxiety:         'قلق وتوتر',
+          depression:      'أخصائي دعم نفسي',
+          stress:          'إدارة الضغوط',
+          burnout:         'إدارة الضغوط',
+          relationships:   'إرشاد نفسي',
+          anger:           'إدارة الضغوط',
+          selfesteem:      'أخصائي دعم نفسي',
+          sleep:           'أخصائي دعم نفسي',
+          overthinking:    'قلق وتوتر',
+          worklife:        'إدارة الضغوط',
+          procrastination: 'إدارة الضغوط',
+          communication:   'إرشاد نفسي',
+          parenting:       'إرشاد نفسي',
+          resilience:      'إرشاد نفسي',
+          fatigue:         'أخصائي دعم نفسي',
+          venting:         'إرشاد نفسي',
+          ocd:             'إرشاد نفسي',
+          trauma:          'إرشاد نفسي',
+          other:           'all',
+        };
+
+        // Show a welcome banner for user filter
+        if (condition || specGender) {
+          const condLabel = {
+            anxiety:'القلق والتوتر', depression:'الاكتئاب وقلق', stress:'ضغط العمل',
+            burnout:'الاحتراق الوظيفي', relationships:'مشاكل العلاقات', anger:'إدارة الغضب',
+            selfesteem:'الثقة بالنفس', sleep:'اضطرابات النوم', overthinking:'التفكير المفرط',
+            worklife:'الموازنة بين العمل والحياة', procrastination:'التسويف', communication:'مهارات التواصل',
+            parenting:'تربية الأبناء', resilience:'المرونة النفسية', fatigue:'الإجهاد العام',
+            venting:'تفريغ المشاعر', ocd:'الوسواس', trauma:'الصدمات', other:'أخرى'
+          }[condition] || '';
+          const genderLabel = {male:'ذكر', female:'أنثى', all:''}[specGender] || '';
+
+          const hero = document.querySelector('.specialists-hero-banner');
+          if (hero && !document.getElementById('prefFilterBanner')) {
+            const tag = document.createElement('div');
+            tag.id = 'prefFilterBanner';
+            tag.style.cssText = `
+              display:inline-flex; align-items:center; gap:8px;
+              
+              color:#e0bc72; padding:6px 18px; border-radius:50px;
+              font-size:0.88rem; font-weight:700; margin-top:0.9rem;
+            `;
+            const parts = [];
+            if (condLabel) parts.push(condLabel);
+            if (genderLabel) parts.push('أخصائي ' + genderLabel);
+            tag.textContent = 'فلتر مخصص لك: ' + parts.join(' · ');
+            hero.querySelector('.container').appendChild(tag);
+          }
+        }
+
+        // Apply gender filter
+        if (specGender && specGender !== 'any') {
+          const gVal = specGender === 'all' ? 'all' : specGender;
+          const radio = document.querySelector(`input[name="genderFilter"][value="${gVal}"]`);
+          if (radio) { radio.checked = true; }
+        }
+
+        // Apply category pill filter
+        if (condition && conditionMap[condition]) {
+          const cat = conditionMap[condition];
+          if (cat !== 'all') {
+            document.querySelectorAll('.pill-item').forEach(p => p.classList.remove('active'));
+            const targetPill = document.querySelector(`.pill-item[data-category="${cat}"]`);
+            if (targetPill) {
+              targetPill.classList.add('active');
+              selectedCategory = cat;
+              targetPill.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+            }
+          }
+        }
+
+        // Re-render with new filters applied
+        renderCards();
+      }
+
+      function setupCarouselControls() {
+        const container = document.getElementById("categoryPills");
+        document.getElementById("slideRight").addEventListener("click", () => {
+          container.scrollBy({ left: -200, behavior: "smooth" });
+        });
+        document.getElementById("slideLeft").addEventListener("click", () => {
+          container.scrollBy({ left: 200, behavior: "smooth" });
+        });
+
+        document.querySelectorAll(".pill-item").forEach((pill) => {
+          pill.addEventListener("click", (e) => {
+            document
+              .querySelectorAll(".pill-item")
+              .forEach((p) => p.classList.remove("active"));
+            e.target.classList.add("active");
+            selectedCategory = e.target.getAttribute("data-category");
+            renderCards();
+          });
+        });
+      }
+
+      const API_BASE = localStorage.getItem("psyai_api_url") || "http://localhost:5000";
+
+      async function fetchSpecialistsData() {
+        try {
+          const res = await fetch(`${API_BASE}/api/specialists`);
+          const json = await res.json();
+          if (json.success && json.specialists && json.specialists.length > 0) {
+            loadedSpecialists = json.specialists.map((s) => ({
+              id: s.id,
+              name: s.name.startsWith("د.") ? s.name : `د. ${s.name}`,
+              title: s.title || s.specialty || "أخصائي دعم نفسي",
+              gender: s.gender || "male",
+              rating: String(s.rating || 4.9),
+              specialization: s.specialty || "استشارات نفسية",
+              category: s.specialty || "عام",
+              experience_years: s.experience_years || s.expYears || 10,
+              bio: s.bio || "نخبة من أخصائيي الدعم النفسي المرخصين لمساعدتك في تعزيز الاستقرار النفسي.",
+              avatar: s.avatar || "psyai.png",
+              price: s.price || 250,
+              slots: s.slots || [
+                { id: `slot-${s.id}-1`, time: "اليوم 05:00 م", status: "available" },
+                { id: `slot-${s.id}-2`, time: "غداً 07:00 م", status: "available" }
+              ]
+            }));
+          } else {
+            loadedSpecialists = targetFourSpecialists;
+          }
+        } catch (err) {
+          console.warn("Backend unavailable, using default specialists:", err);
+          loadedSpecialists = targetFourSpecialists;
+        }
+        renderCards();
+      }
+
+      function renderCards() {
+        const grid = document.getElementById("specialistsGrid");
+        const searchVal = document
+          .getElementById("searchInput")
+          .value.trim()
+          .toLowerCase();
+        const genderVal = document.querySelector(
+          'input[name="genderFilter"]:checked',
+        ).value;
+
+        const filtered = loadedSpecialists.filter((item) => {
+          const specText = (
+            item.specialization +
+            " " +
+            item.title +
+            " " +
+            item.category +
+            " " +
+            item.bio
+          ).toLowerCase();
+
+          if (selectedCategory !== "all") {
+            const catLower = selectedCategory.toLowerCase();
+            const matchCategory =
+              specText.includes(catLower) ||
+              (catLower.includes("ضغوط") && specText.includes("ضغوط")) ||
+              (catLower.includes("إرشاد") && specText.includes("إرشاد")) ||
+              (catLower.includes("قلق") && specText.includes("قلق"));
+            if (!matchCategory) return false;
+          }
+
+          if (
+            searchVal &&
+            !item.name.toLowerCase().includes(searchVal) &&
+            !specText.includes(searchVal)
+          ) {
+            return false;
+          }
+
+          if (genderVal !== "all" && item.gender !== genderVal) {
+            return false;
+          }
+
+          return true;
+        });
+
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+                    <div class="empty-state">
+                        <h3>لم نجد نتائج مطابقة لمحددات البحث</h3>
+                        <p>يرجى تجربة تصفية مختلفة أو إعادة ضبط الفلاتر</p>
+                    </div>
+                `;
+          return;
+        }
+
+        grid.innerHTML = filtered
+          .map(
+            (spec) => `
+                <div class="psyai-spec-card" onclick="openSpecialistDetail('${spec.id}')">
+                    <div class="avatar-wrap">
+                        <div class="avatar-img-circle">
+                            <img src="${spec.avatar}" alt="${spec.name}" />
+                        </div>
+                    </div>
+
+                    <h3 class="specialist-name">${spec.name}</h3>
+                    <p class="specialist-role">${spec.title}</p>
+
+                    <div class="rating-badge">
+                        <span>${spec.rating}</span>
+                        <span class="star-icon">★</span>
+                    </div>
+
+                    <div class="slots-preview-container" onclick="event.stopPropagation();">
+                        <div class="slots-buttons-row">
+                            ${(spec.slots || [])
+                              .map(
+                                (slot) => `
+                                <button class="slot-btn" onclick="openSpecialistDetailWithSlot('${spec.id}', '${slot.time}')">
+                                    ${slot.time}
+                                </button>
+                            `,
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+
+                    <button class="btn-book-now" onclick="event.stopPropagation(); handleBookSpecialistClick('${spec.id}')">
+                        <span>احجز الجلسة</span>
+                        <span style="font-size:1.1rem;">←</span>
+                    </button>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      function setupFilterListeners() {
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", renderCards);
+        document
+          .querySelectorAll('input[name="genderFilter"]')
+          .forEach((r) => r.addEventListener("change", renderCards));
+        document
+          .querySelectorAll(".specialty-check")
+          .forEach((c) => (c.checked = true));
+        document
+          .querySelectorAll(".specialty-check")
+          .forEach((c) => c.addEventListener("change", renderCards));
+
+        document
+          .getElementById("resetFiltersBtn")
+          .addEventListener("click", () => {
+            document.getElementById("searchInput").value = "";
+            document.querySelector(
+              'input[name="genderFilter"][value="all"]',
+            ).checked = true;
+            document
+              .querySelectorAll(".specialty-check")
+              .forEach((c) => (c.checked = true));
+            document
+              .querySelectorAll(".pill-item")
+              .forEach((p) => p.classList.remove("active"));
+            document
+              .querySelector('.pill-item[data-category="all"]')
+              .classList.add("active");
+            selectedCategory = "all";
+            renderCards();
+          });
+      }
+
+      window.openSpecialistDetail = function (specId) {
+        openSpecialistDetailWithSlot(specId, null);
+      };
+
+      window.openSpecialistDetailWithSlot = function (specId, slotTime) {
+        const spec =
+          loadedSpecialists.find((s) => s.id === specId) ||
+          targetFourSpecialists.find((s) => s.id === specId);
+        if (!spec) return;
+
+        activeSelectedSpecialist = spec;
+        selectedSlotTime =
+          slotTime ||
+          (spec.slots && spec.slots[0] ? spec.slots[0].time : "اليوم 05:00 م");
+
+        document.getElementById("detailAvatar").src = spec.avatar;
+        document.getElementById("detailName").textContent = spec.name;
+        document.getElementById("detailTitle").textContent = spec.title;
+        document.getElementById("detailRatingBadge").innerHTML =
+          `${spec.rating} <span style="color:var(--gold);">★</span>`;
+        document.getElementById("detailBio").textContent = spec.bio;
+        document.getElementById("detailExp").textContent =
+          `${spec.experience_years || 10} سنوات`;
+
+        const slotsRow = document.getElementById("detailSlotsRow");
+        slotsRow.innerHTML = (spec.slots || [])
+          .map(
+            (s) => `
+                <button class="slot-btn ${s.time === selectedSlotTime ? "active" : ""}" style="${s.time === selectedSlotTime ? "background:var(--teal-deep); color:var(--gold-light);" : ""}" onclick="selectDetailSlot('${s.time}')">
+                    ${s.time}
+                </button>
+            `,
+          )
+          .join("");
+
+        const modalAlert = document.getElementById("modalAlert");
+        modalAlert.style.display = "none";
+
+        document.getElementById("detailModal").classList.add("active");
+        document.body.style.overflow = "hidden";
+      };
+
+      window.selectDetailSlot = function (time) {
+        selectedSlotTime = time;
+        if (activeSelectedSpecialist) {
+          openSpecialistDetailWithSlot(activeSelectedSpecialist.id, time);
+        }
+      };
+
+      window.handleBookSpecialistClick = function (specId) {
+        const token =
+          localStorage.getItem("psyai_token") || localStorage.getItem("token");
+        if (!token) {
+          window.location.href = "login.html?from=booking";
+          return;
+        }
+        openSpecialistDetail(specId);
+      };
+
+      function setupModalEvents() {
+        const modal = document.getElementById("detailModal");
+        const closeModal = () => {
+          modal.classList.remove("active");
+          document.body.style.overflow = "";
+        };
+
+        document
+          .getElementById("closeDetailModalBtn")
+          .addEventListener("click", closeModal);
+
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            closeModal();
+          }
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && modal.classList.contains("active")) {
+            closeModal();
+          }
+        });
+
+        document
+          .getElementById("confirmBookingBtn")
+          .addEventListener("click", async () => {
+            const token =
+              localStorage.getItem("psyai_token") ||
+              localStorage.getItem("token");
+            const modalAlert = document.getElementById("modalAlert");
+            const confirmBtn = document.getElementById("confirmBookingBtn");
+
+            if (!token) {
+              modalAlert.style.display = "block";
+              modalAlert.style.background = "#fee2e2";
+              modalAlert.style.color = "#991b1b";
+              modalAlert.textContent =
+                "يرجى تسجيل الدخول أو إنشاء حساب أولاً لإتمام حجز الجلسة.";
+              setTimeout(() => {
+                window.location.href = "login.html?from=booking";
+              }, 1200);
+              return;
+            }
+
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = "جاري تسجيل الحجز على السيرفر...";
+
+            try {
+              const res = await fetch(`${API_BASE}/api/bookings`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                  specialistId: activeSelectedSpecialist.id,
+                  sessionTime: selectedSlotTime,
+                  condition: activeSelectedSpecialist.specialization
+                })
+              });
+
+              const data = await res.json();
+              if (!res.ok || !data.success) {
+                throw new Error(data.message || "تعذّر إتمام الحجز على الخادم");
+              }
+
+              const bookingId = data.booking.id;
+
+              modalAlert.style.display = "block";
+              modalAlert.style.background = "#dcfce7";
+              modalAlert.style.color = "#166534";
+              modalAlert.innerHTML = `
+                <div>
+                  <strong>تم تسجيل حجز الجلسة بنجاح في النظام!</strong><br>
+                  المختص: <strong>${activeSelectedSpecialist.name}</strong> (${selectedSlotTime})<br>
+                  قيمة الجلسة: <strong>${activeSelectedSpecialist.price || 250} ر.س</strong>
+                </div>
+                <div style="margin-top:10px; display:flex; gap:8px;">
+                  <button id="payVisaNowBtn" style="background:#1a3a3c; color:#d4a843; border:none; padding:8px 14px; border-radius:6px; font-weight:700; cursor:pointer; font-family:inherit;">
+                    سداد فوري ببطاقة Visa
+                  </button>
+                </div>
+              `;
+
+              const payBtn = document.getElementById("payVisaNowBtn");
+              if (payBtn) {
+                payBtn.onclick = async () => {
+                  payBtn.disabled = true;
+                  payBtn.textContent = "جاري معالجة بطاقة Visa...";
+                  try {
+                    const payRes = await fetch(`${API_BASE}/api/payments/pay-visa`, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                      },
+                      body: JSON.stringify({
+                        bookingId,
+                        cardNumber: "4111222233334444",
+                        cardHolder: "PsyAI User",
+                        expiry: "12/28",
+                        cvv: "123"
+                      })
+                    });
+                    const payData = await payRes.json();
+                    if (!payRes.ok || !payData.success) {
+                      throw new Error(payData.message || "فشلت عملية الدفع");
+                    }
+                    modalAlert.innerHTML = `
+                      <div style="padding:4px 0;">
+                        <strong>تم سداد قيمة الجلسة بنجاح وتأكيد الموعد رسميّاً!</strong><br>
+                        رقم العملية البنكية: <code style="direction:ltr; display:inline-block;">${payData.payment.transactionRef}</code><br>
+                        تم إرسال تفاصيل الموعد والفاتورة إلى حسابك.
+                      </div>
+                    `;
+                    setTimeout(() => {
+                      document.getElementById("detailModal").classList.remove("active");
+                      document.body.style.overflow = "";
+                    }, 3500);
+                  } catch (pErr) {
+                    alert("خطأ في الدفع: " + pErr.message);
+                    payBtn.disabled = false;
+                    payBtn.textContent = "إعادة محاولة الدفع";
+                  }
+                };
+              }
+
+              confirmBtn.style.display = "none";
+
+            } catch (err) {
+              modalAlert.style.display = "block";
+              modalAlert.style.background = "#fee2e2";
+              modalAlert.style.color = "#991b1b";
+              modalAlert.textContent = "خطأ: " + err.message;
+              confirmBtn.disabled = false;
+              confirmBtn.textContent = "تأكيد حجز الجلسة";
+            }
+          });
+      }
+    </script>
+  </body>
+</html>
