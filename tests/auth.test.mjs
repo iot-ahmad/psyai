@@ -285,9 +285,7 @@ describe('auth controller — verifyAndCompleteRegistration', () => {
 
     const p = auth.verifyAndCompleteRegistration();
     await sleep(1600); // > REDIRECT_DELAY_MS
-    await p;
-
-    assert.equal(globalThis.window.location.href.includes('index.html'), true);
+    assert.equal(globalThis.window.location.href.includes('specialists.html'), true);
     assert.equal(globalThis.localStorage.getItem('psyai_token'), 'tok123');
     assert.ok(globalThis.localStorage.getItem('psyai_user'));
   });

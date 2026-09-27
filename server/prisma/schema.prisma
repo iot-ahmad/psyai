@@ -27,6 +27,8 @@ model User {
   specialist     Specialist?
   bookings       Booking[]
   payments       Payment[]
+  b2bRequests    B2bRequest[]
+  reviewedB2bRequests B2bRequest[] @relation("B2bReviewer")
 }
 
 model Specialist {
@@ -72,16 +74,16 @@ model Payment {
   id             String       @id @default(uuid())
   bookingId      String       @unique
   booking        Booking      @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-  userId         String
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String?
+  user           User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
   amount         Float
   currency       String       @default("SAR")
-  status         String       @default("paid") // "pending" | "paid" | "failed" | "refunded"
-  paymentMethod  String       @default("VISA_CARD") // "VISA_CARD" | "MASTERCARD" | "MADA"
-  transactionRef String       @unique
-  cardLast4      String?
-  cardBrand      String?      @default("Visa")
+  status         String       @default("PENDING") // "PENDING" | "SUCCEEDED" | "FAILED"
+  visaSessionId  String?      @unique
+  transactionId  String?
+  idempotencyKey String       @unique
   createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model OtpToken {
@@ -152,3 +154,21 @@ model Article {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 }
+
+model B2bRequest {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName    String
+  companyPhone   String
+  companyEmail   String
+  employeesCount String       // Free text: e.g. "50", "حوالي 30", "20-50"
+  status         String       @default("pending") // "pending" | "approved" | "rejected"
+  reviewedBy     String?
+  reviewer       User?        @relation("B2bReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  reviewNote     String?
+  reviewedAt     DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+

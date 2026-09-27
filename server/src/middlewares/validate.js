@@ -99,6 +99,38 @@ const deleteAccountSchema = z.object({
   password: z.string().min(1, 'يرجى إدخال كلمة المرور لتأكيد حذف الحساب')
 });
 
+const createPaymentSessionSchema = z.object({
+  bookingId: z.string().uuid('معرّف الحجز غير صالح').optional(),
+  orderId: z.string().optional(),
+  amount: z.number().positive('المبلغ يجب أن يكون أكبر من صفر').optional(),
+  currency: z.string().min(3).max(4).default('SAR').optional()
+}).refine((data) => data.bookingId || data.orderId, {
+  message: 'يرجى تقديم معرّف الحجز bookingId أو معرّف الطلب orderId'
+});
+
+const paymentWebhookSchema = z.object({
+  visaSessionId: z.string().min(1, 'معرّف جلسة فيزا مطلوب').optional(),
+  sessionId: z.string().optional(),
+  status: z.string().min(1, 'حالة العملية مطلوبة'),
+  transactionId: z.string().optional(),
+  amount: z.number().optional(),
+  currency: z.string().optional()
+});
+
+const createB2bRequestSchema = z.object({
+  companyName: z.string().min(2, 'اسم الشركة يجب أن يتكون من حرفين على الأقل').max(200).trim(),
+  companyPhone: z.string().min(7, 'رقم هاتف الشركة غير صالح').max(30).trim(),
+  companyEmail: z.string().email('صيغة البريد الإلكتروني للشركة غير صحيحة').toLowerCase().trim(),
+  employeesCount: z.string().min(1, 'يرجى تحديد عدد الموظفين التقريبي').max(50).trim()
+});
+
+const reviewB2bRequestSchema = z.object({
+  status: z.enum(['approved', 'rejected'], {
+    errorMap: () => ({ message: 'الحالة يجب أن تكون إما approved أو rejected' })
+  }),
+  reviewNote: z.string().max(1000).optional()
+});
+
 module.exports = {
   validate,
   registerSchema,
@@ -109,6 +141,10 @@ module.exports = {
   sendOtpSchema,
   bookingSchema,
   visaPaymentSchema,
+  createPaymentSessionSchema,
+  paymentWebhookSchema,
+  createB2bRequestSchema,
+  reviewB2bRequestSchema,
   updateProfileSchema,
   updatePhoneSchema,
   changePasswordSchema,

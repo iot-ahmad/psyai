@@ -6,7 +6,9 @@ const {
   verifyOtpSchema,
   sendOtpSchema,
   bookingSchema,
-  visaPaymentSchema
+  visaPaymentSchema,
+  createPaymentSessionSchema,
+  paymentWebhookSchema
 } = require('../src/middlewares/validate');
 
 /**
@@ -287,3 +289,53 @@ describe('visaPaymentSchema', () => {
     });
   });
 });
+
+describe('createPaymentSessionSchema', () => {
+  const valid = {
+    bookingId: '123e4567-e89b-12d3-a456-426614174000',
+    amount: 250,
+    currency: 'SAR'
+  };
+
+  it('accepts a valid payload with bookingId and amount', () => {
+    expect(() => createPaymentSessionSchema.parse(valid)).not.toThrow();
+  });
+
+  it('accepts a valid payload with orderId', () => {
+    expect(() => createPaymentSessionSchema.parse({ orderId: 'ord_123', amount: 100 })).not.toThrow();
+  });
+
+  it('rejects when neither bookingId nor orderId is supplied', () => {
+    expect(() => createPaymentSessionSchema.parse({ amount: 100 })).toThrow();
+  });
+
+  it('rejects a non-UUID bookingId', () => {
+    expect(() => createPaymentSessionSchema.parse({ bookingId: 'invalid-id' })).toThrow();
+  });
+
+  it('rejects a non-positive amount', () => {
+    expect(() => createPaymentSessionSchema.parse({ ...valid, amount: -10 })).toThrow();
+    expect(() => createPaymentSessionSchema.parse({ ...valid, amount: 0 })).toThrow();
+  });
+});
+
+describe('paymentWebhookSchema', () => {
+  it('accepts a valid webhook payload with visaSessionId and status', () => {
+    expect(() =>
+      paymentWebhookSchema.parse({
+        visaSessionId: 'visa_sess_123',
+        status: 'succeeded',
+        transactionId: 'txn_123'
+      })
+    ).not.toThrow();
+  });
+
+  it('rejects a payload missing status', () => {
+    expect(() =>
+      paymentWebhookSchema.parse({
+        visaSessionId: 'visa_sess_123'
+      })
+    ).toThrow();
+  });
+});
+

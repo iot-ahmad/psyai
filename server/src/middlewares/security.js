@@ -63,6 +63,46 @@ const passwordResetLimiter = rateLimit({
 });
 
 /**
+ * Rate limiter for Payment Session creation (Max 10 requests per 10 minutes per IP/User)
+ */
+const paymentSessionLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'تم تجاوز الحد المسموح لإنشاء جلسات الدفع. يرجى الانتظار بضع دقائق.'
+  }
+});
+
+/**
+ * Webhook IP filter middleware (if VISA_WEBHOOK_ALLOWED_IPS is configured in env)
+ */
+function webhookIpFilter(req, res, next) {
+  const allowedIpsEnv = process.env.VISA_WEBHOOK_ALLOWED_IPS;
+  if (!allowedIpsEnv) {
+    return next();
+  }
+
+  const allowedIps = allowedIpsEnv.split(',').map((ip) => ip.trim());
+  const clientIp = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip || '')
+    .toString()
+    .split(',')[0]
+    .trim();
+
+  if (!allowedIps.includes(clientIp) && !allowedIps.includes('*')) {
+    return res.status(403).json({
+      success: false,
+      message: 'Forbidden: Request origin IP is not in Visa webhook allowlist'
+    });
+  }
+
+  next;
+  return next();
+}
+
+/**
  * General API rate limiter
  */
 const apiLimiter = rateLimit({
@@ -78,5 +118,8 @@ module.exports = {
   otpRateLimiter,
   loginRateLimiter,
   passwordResetLimiter,
+  paymentSessionLimiter,
+  webhookIpFilter,
   apiLimiter
 };
+

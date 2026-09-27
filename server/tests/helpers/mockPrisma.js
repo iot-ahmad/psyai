@@ -30,7 +30,9 @@ function createPrismaMock() {
     },
     payment: {
       findUnique: jest.fn(),
-      create: jest.fn()
+      findFirst: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn()
     },
     otpToken: {
       findUnique: jest.fn(),
@@ -46,7 +48,19 @@ function createPrismaMock() {
       findUnique: jest.fn()
     },
     company: {
-      create: jest.fn()
+      create: jest.fn(),
+      upsert: jest.fn(),
+      findMany: jest.fn(),
+      findUnique: jest.fn(),
+      count: jest.fn()
+    },
+    b2bRequest: {
+      findUnique: jest.fn(),
+      findFirst: jest.fn(),
+      findMany: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+      count: jest.fn()
     },
     auditLog: {
       create: jest.fn()

@@ -23,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -897,7 +897,7 @@
       <div class="container">
         <div class="header-content">
           <a href="index.html" class="logo">
-            <img src="psyai.png" alt="PsyAI" class="logo-img" />
+            <img src="assets/images/psyai.png" alt="PsyAI" class="logo-img" />
             <span class="logo-text">PsyaI</span>
           </a>
           <nav class="nav desktop-nav">
@@ -1017,35 +1017,138 @@
           </div>
 
           <div class="alt-feature-img-box">
-            <div class="alt-feature-img-wrap">
-              <img
-                src="storybook_card_6.png"
-                alt="المقاييس النفسية"
-                class="alt-feature-img"
-              />
-            </div>
-            <div class="alt-floating-badge">
-              <div class="alt-badge-icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  width="22"
-                  height="22"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                </svg>
+            <!-- Interactive Mood Tracker Phone Mockup -->
+            <div class="mood-tracker-phone">
+              <!-- Status Bar -->
+              <div class="mt-status-bar">
+                <div class="mt-status-left">
+                  <span>09:41</span>
+                  <svg class="mt-loc-icon" viewBox="0 0 24 24" width="10" height="10" fill="currentColor">
+                    <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/>
+                  </svg>
+                </div>
+                <div class="mt-status-right">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.28 19.64 10.59 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                  <div class="mt-battery-icon"><div class="mt-battery-fill"></div></div>
+                </div>
               </div>
-              <div class="alt-badge-info">
-                <span class="alt-badge-title">مؤشرات دقيقة</span>
-                <span class="alt-badge-sub">تحليل فوري للحالة النفسية</span>
+
+              <!-- Sheet Card -->
+              <div class="mt-sheet">
+                <div class="mt-drag-handle"></div>
+
+                <!-- Header -->
+                <div class="mt-header">
+                  <h4 class="mt-title">نشاطات الشعور</h4>
+                  <button class="mt-back-btn" aria-label="Back">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Toggle Pill -->
+                <div class="mt-period-toggle">
+                  <button class="mt-toggle-btn active" type="button">اسبوعي</button>
+                  <button class="mt-toggle-btn" type="button">شهري</button>
+                </div>
+
+                <!-- Section Title -->
+                <div class="mt-section-head">
+                  <span class="mt-section-title">تاريخ شعورك ف ابريل</span>
+                </div>
+
+                <!-- Calendar Days Row -->
+                <div class="mt-days-row">
+                  <div class="mt-day-card">
+                    <span class="mt-day-num">15</span>
+                    <span class="mt-day-name">Sat</span>
+                  </div>
+                  <div class="mt-day-card active">
+                    <span class="mt-day-num">16</span>
+                    <span class="mt-day-name">Sun</span>
+                  </div>
+                  <div class="mt-day-card">
+                    <span class="mt-day-num">17</span>
+                    <span class="mt-day-name">Mon</span>
+                  </div>
+                  <div class="mt-day-card">
+                    <span class="mt-day-num">18</span>
+                    <span class="mt-day-name">Tus</span>
+                  </div>
+                  <div class="mt-day-card">
+                    <span class="mt-day-num">19</span>
+                    <span class="mt-day-name">Wed</span>
+                  </div>
+                  <div class="mt-day-card">
+                    <span class="mt-day-num">20</span>
+                    <span class="mt-day-name">Thu</span>
+                  </div>
+                  <div class="mt-day-card">
+                    <span class="mt-day-num">21</span>
+                    <span class="mt-day-name">Fri</span>
+                  </div>
+                </div>
+
+                <!-- Timeline Stream -->
+                <div class="mt-timeline">
+                  <!-- Item 1 -->
+                  <div class="mt-timeline-item">
+                    <div class="mt-timeline-dot"></div>
+                    <div class="mt-timeline-content">
+                      <div class="mt-item-header">
+                        <span class="mt-item-time">08:15 ص</span>
+                        <span class="mt-item-mood">سعيد <span class="mt-emoji">😃</span></span>
+                        <a href="javascript:void(0)" class="mt-edit-link">
+                          <span>تعديل</span>
+                          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                          </svg>
+                        </a>
+                      </div>
+                      <p class="mt-item-desc">هذا اليوم كنت سعيدًا جدًا لأنني أحصل على استشارة ناجحة جدًا من</p>
+                    </div>
+                  </div>
+
+                  <!-- Item 2 -->
+                  <div class="mt-timeline-item">
+                    <div class="mt-timeline-dot"></div>
+                    <div class="mt-timeline-content">
+                      <div class="mt-item-header">
+                        <span class="mt-item-time">12:15 ص</span>
+                        <span class="mt-item-mood">مميز <span class="mt-emoji">😋</span></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Item 3 -->
+                  <div class="mt-timeline-item">
+                    <div class="mt-timeline-dot"></div>
+                    <div class="mt-timeline-content">
+                      <div class="mt-item-header">
+                        <span class="mt-item-time">05:45 ص</span>
+                        <span class="mt-emoji">😥</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Floating Mood Dock -->
+                <div class="mt-floating-dock">
+                  <button class="mt-dock-emoji active" type="button" title="سعيد">😃</button>
+                  <button class="mt-dock-emoji" type="button" title="حزين">😔</button>
+                  <button class="mt-dock-emoji" type="button" title="غاضب">😠</button>
+                  <button class="mt-dock-emoji" type="button" title="راضٍ">😊</button>
+                  <button class="mt-dock-emoji" type="button" title="قلق">😥</button>
+                </div>
               </div>
             </div>
+
           </div>
-        </div>
+        </div>  
+        
 
         <!-- Scales info chips -->
         <div class="asm-scales-preview">

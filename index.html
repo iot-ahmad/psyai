@@ -23,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -35,7 +35,7 @@
       <div class="container">
         <div class="header-content">
           <a href="index.html" class="logo">
-            <img src="psyai.png" alt="PsyAI" class="logo-img" />
+            <img src="assets/images/psyai.png" alt="PsyAI" class="logo-img" />
             <span class="logo-text">PsyaI</span>
           </a>
 
@@ -112,38 +112,7 @@
       </nav>
     </header>
 
-    <!-- Instant Banner -->
-    <div class="instant-banner">
-      <div class="container">
-        <div class="banner-content">
-          <div class="banner-text">
-            <div class="banner-icon">
-              <svg
-                class="svg-icon"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="12" cy="12" r="9" />
-                <polyline points="12 7 12 12 15 15" />
-                <path d="M16.5 7.5L19 5" />
-              </svg>
-            </div>
-            <div>
-              <div class="banner-title">احجز جلسة فورية</div>
-              <div class="banner-desc">
-                محتاج دعم نفسي بأقرب وقت؟ احجزها خلال دقائق
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
 
     <!-- Hero Section -->
     <section class="hero">
@@ -151,7 +120,6 @@
       <div class="container">
         <div class="hero-content">
           <div class="hero-badge">
-            <span class="badge-dot"></span>
             منصة الرفاه النفسي
           </div>
 
@@ -198,10 +166,6 @@
       </div>
     </section>
 
-    <!-- Ticker -->
-    <div class="ticker">
-      <div class="ticker-track" id="tickerTrack"></div>
-    </div>
 
     <!-- Services Section -->
     <section id="services" class="services">
@@ -364,22 +328,6 @@
           <!-- Feature 1: برامج الدعم والرفاه النفسي -->
           <div class="alt-feature-row">
             <div class="alt-feature-text">
-              <div class="alt-icon-badge">
-                <svg
-                  class="svg-icon"
-                  viewBox="0 0 24 24"
-                  width="26"
-                  height="26"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  <polyline points="9 12 11 14 15 10" />
-                </svg>
-              </div>
               <h3 class="alt-feature-title">برامج الدعم والرفاه النفسي</h3>
               <div class="alt-feature-subtitle">
                 خطط دعم وتأهيل نفسي متكاملة مبنية على أسس علمية
@@ -412,8 +360,8 @@
             <div class="alt-feature-img-box">
               <div class="alt-feature-img-wrap">
                 <img
-                  src="storybook_card_5.png"
-                  alt="برامج الرفاه والتمارين"
+                  src="assets/images/wellness_support_session.jpg"
+                  alt="برامج الدعم والرفاه النفسي"
                   class="alt-feature-img"
                 />
               </div>
@@ -445,24 +393,6 @@
           <!-- Feature 2: المقاييس النفسية -->
           <div class="alt-feature-row">
             <div class="alt-feature-text">
-              <div class="alt-icon-badge">
-                <svg
-                  class="svg-icon"
-                  viewBox="0 0 24 24"
-                  width="26"
-                  height="26"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <line x1="18" y1="20" x2="18" y2="10" />
-                  <line x1="12" y1="20" x2="12" y2="4" />
-                  <line x1="6" y1="20" x2="6" y2="14" />
-                  <path d="M3 20h18" />
-                </svg>
-              </div>
               <h3 class="alt-feature-title">المقاييس النفسية</h3>
               <div class="alt-feature-subtitle">مقاييس القلق والاكتئاب</div>
               <p class="alt-feature-desc">
@@ -492,32 +422,13 @@
             </div>
 
             <div class="alt-feature-img-box">
-              <div class="alt-feature-img-wrap">
+              <div class="alt-feature-img-wrap" style="display: flex; align-items: center; justify-content: center; background: var(--cream); padding: 0.25rem; overflow: hidden;" >
                 <img
-                  src="storybook_card_6.png"
-                  alt="المقاييس النفسية"
+                  src="assets/images/storybook_card_6.png"
+                  alt="المقاييس النفسية ومتابعة الشعور"
                   class="alt-feature-img"
+                  style="width: 100%; height: 100%; object-fit: contain; object-position: center; transform: scale(1.12); transform-origin: center;"
                 />
-              </div>
-              <div class="alt-floating-badge">
-                <div class="alt-badge-icon">
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="22"
-                    height="22"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                  </svg>
-                </div>
-                <div class="alt-badge-info">
-                  <span class="alt-badge-title">مؤشرات دقيقة</span>
-                  <span class="alt-badge-sub">تحليل فوري للحالة النفسية</span>
-                </div>
               </div>
             </div>
           </div>
@@ -525,22 +436,6 @@
           <!-- Feature 3: جلسات نفسية فردية -->
           <div class="alt-feature-row">
             <div class="alt-feature-text">
-              <div class="alt-icon-badge">
-                <svg
-                  class="svg-icon"
-                  viewBox="0 0 24 24"
-                  width="26"
-                  height="26"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </div>
               <h3 class="alt-feature-title">جلسات نفسية فردية</h3>
               <div class="alt-feature-subtitle">
                 استشارات مباشرة مع أخصائيين مرخصين
@@ -573,7 +468,7 @@
             <div class="alt-feature-img-box">
               <div class="alt-feature-img-wrap">
                 <img
-                  src="storybook_card_1.png"
+                  src="assets/images/individual_therapy_session.jpg"
                   alt="جلسات نفسية فردية"
                   class="alt-feature-img"
                 />
@@ -604,24 +499,6 @@
           <!-- Feature 4: برامج الرفاه المؤسسي -->
           <div class="alt-feature-row">
             <div class="alt-feature-text">
-              <div class="alt-icon-badge">
-                <svg
-                  class="svg-icon"
-                  viewBox="0 0 24 24"
-                  width="26"
-                  height="26"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
-                  <path d="M9 22v-4h6v4" />
-                  <line x1="8" y1="6" x2="10" y2="6" />
-                  <line x1="14" y1="6" x2="16" y2="6" />
-                </svg>
-              </div>
               <h3 class="alt-feature-title">برامج الرفاه المؤسسي</h3>
               <div class="alt-feature-subtitle">
                 تمكين بيئة العمل ومنع الاحتراق الوظيفي
@@ -655,7 +532,7 @@
             <div class="alt-feature-img-box">
               <div class="alt-feature-img-wrap">
                 <img
-                  src="storybook_card_2.png"
+                  src="assets/images/corporate_partnership.png"
                   alt="برامج الرفاه المؤسسي"
                   class="alt-feature-img"
                 />
@@ -688,24 +565,6 @@
           <!-- Feature 5: استشارات أسرية وبرامج الأطفال -->
           <div class="alt-feature-row">
             <div class="alt-feature-text">
-              <div class="alt-icon-badge">
-                <svg
-                  class="svg-icon"
-                  viewBox="0 0 24 24"
-                  width="26"
-                  height="26"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                </svg>
-              </div>
               <h3 class="alt-feature-title">استشارات أسرية وبرامج الأطفال</h3>
               <div class="alt-feature-subtitle">
                 بناء علاقات أسرية متوازنة وذكاء عاطفي للأطفال
@@ -739,7 +598,7 @@
             <div class="alt-feature-img-box">
               <div class="alt-feature-img-wrap">
                 <img
-                  src="storybook_card_3.png"
+                  src="assets/images/family_child_therapy.jpg"
                   alt="استشارات أسرية وبرامج الأطفال"
                   class="alt-feature-img"
                 />
@@ -1029,7 +888,7 @@
         <div class="specialists-grid" id="specialistsGrid">
           <div class="specialist-card" data-anim="fade-up" data-delay="100">
             <img
-              src="psyai.png"
+              src="assets/images/psyai.png"
               alt="د. أروى القفاري"
               class="specialist-avatar"
             />
@@ -1053,7 +912,7 @@
 
           <div class="specialist-card" data-anim="fade-up" data-delay="200">
             <img
-              src="psyai.png"
+              src="assets/images/psyai.png"
               alt="د. ناهي الرويلي"
               class="specialist-avatar"
             />
@@ -1077,7 +936,7 @@
 
           <div class="specialist-card" data-anim="fade-up" data-delay="300">
             <img
-              src="psyai.png"
+              src="assets/images/psyai.png"
               alt="د. عبدالمجيد الصي"
               class="specialist-avatar"
             />
@@ -1101,7 +960,7 @@
 
           <div class="specialist-card" data-anim="fade-up" data-delay="400">
             <img
-              src="psyai.png"
+              src="assets/images/psyai.png"
               alt="د. سعد العنزي"
               class="specialist-avatar"
             />
@@ -1125,7 +984,7 @@
 
           <div class="specialist-card" data-anim="fade-up" data-delay="500">
             <img
-              src="psyai.png"
+              src="assets/images/psyai.png"
               alt="د. شادي عاشور"
               class="specialist-avatar"
             />
@@ -1216,7 +1075,7 @@
 
         <div class="specialists-grid">
           <div class="specialist-card" data-anim="fade-up" data-delay="600">
-            <img src="psyai.png" alt="أحمد محمد" class="specialist-avatar" />
+            <img src="assets/images/psyai.png" alt="أحمد محمد" class="specialist-avatar" />
             <h3>أحمد محمد</h3>
             <p class="specialist-title">المؤسس والرئيس التنفيذي</p>
             <div class="rating-badge">
@@ -1225,7 +1084,7 @@
           </div>
 
           <div class="specialist-card" data-anim="fade-up" data-delay="100">
-            <img src="psyai.png" alt="د. فاطمة علي" class="specialist-avatar" />
+            <img src="assets/images/psyai.png" alt="د. فاطمة علي" class="specialist-avatar" />
             <h3>د. فاطمة علي</h3>
             <p class="specialist-title">رئيسة العمليات وتطوير البرامج</p>
             <div class="rating-badge">
@@ -1234,7 +1093,7 @@
           </div>
 
           <div class="specialist-card" data-anim="fade-up" data-delay="200">
-            <img src="psyai.png" alt="محمود حسن" class="specialist-avatar" />
+            <img src="assets/images/psyai.png" alt="محمود حسن" class="specialist-avatar" />
             <h3>محمود حسن</h3>
             <p class="specialist-title">رئيس التكنولوجيا والابتكار</p>
             <div class="rating-badge">
@@ -1243,7 +1102,7 @@
           </div>
 
           <div class="specialist-card" data-anim="fade-up" data-delay="300">
-            <img src="psyai.png" alt="سارة محمود" class="specialist-avatar" />
+            <img src="assets/images/psyai.png" alt="سارة محمود" class="specialist-avatar" />
             <h3>سارة محمود</h3>
             <p class="specialist-title">مديرة التسويق والشراكات</p>
             <div class="rating-badge">
@@ -1252,7 +1111,7 @@
           </div>
 
           <div class="specialist-card" data-anim="fade-up" data-delay="400">
-            <img src="psyai.png" alt="علي محمد" class="specialist-avatar" />
+            <img src="assets/images/psyai.png" alt="علي محمد" class="specialist-avatar" />
             <h3>علي محمد</h3>
             <p class="specialist-title">مدير العلاقات مع العملاء</p>
             <div class="rating-badge">

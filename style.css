@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 400;
   direction: rtl;
   text-align: right;
@@ -32,6 +32,9 @@ body {
    ============================================= */
 
 :root {
+  --font-main: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
+  --font-heading: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
+  --font-body: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   /* Deep Dark — backgrounds, headings, borders */
   --teal-deep: #1a2e2f;
   --teal-dark: #243d3e;
@@ -102,7 +105,7 @@ h6,
 .award-title,
 .service-link,
 .specialist-card h3 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 h1,
@@ -147,7 +150,7 @@ textarea,
 .specialist-title,
 .award-item p,
 .footer-col p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 .btn,
@@ -402,7 +405,7 @@ p {
   align-items: center;
   gap: 0.65rem;
   padding: 0.72rem 1.2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   font-weight: 400;
   color: var(--primary-blue);
@@ -519,95 +522,6 @@ p {
 }
 
 /* =============================================
-   Instant Banner
-   ============================================= */
-
-.instant-banner {
-  background: linear-gradient(
-    135deg,
-    var(--teal-dark) 0%,
-    var(--teal-deep) 100%
-  );
-  padding: 1.1rem 0;
-  color: white;
-  position: sticky;
-  top: 80px;
-  z-index: 999;
-  overflow: hidden;
-}
-
-/* small visual gap between header and banner */
-.instant-banner {
-  margin-top: 0.5rem;
-}
-
-/* hide banner smoothly when not needed */
-.instant-banner {
-  transition:
-    max-height 0.32s ease,
-    padding 0.32s ease,
-    opacity 0.2s ease,
-    transform 0.32s ease;
-  max-height: 200px; /* large enough to contain banner */
-}
-
-.instant-banner.hidden {
-  max-height: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
-}
-
-.instant-banner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at 85% 50%,
-    rgba(212, 165, 116, 0.2),
-    transparent 60%
-  );
-  pointer-events: none;
-}
-
-.banner-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 1;
-}
-
-.banner-text {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.banner-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold-light);
-  flex-shrink: 0;
-}
-
-.banner-title {
-  font-size: 1.1rem;
-}
-
-.banner-desc {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.85);
-}
 
 /* =============================================
    Hero Section
@@ -655,14 +569,6 @@ p {
   font-size: 0.9rem;
   margin-bottom: 1.5rem;
   animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.badge-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--gold-light);
-  display: inline-block;
 }
 
 .hero-title {
@@ -740,53 +646,8 @@ p {
   font-size: 0.88rem;
 }
 
-/* Ticker */
 .ticker {
-  background: var(--teal-dark);
-  padding: 0.85rem 0;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(82, 138, 143, 0.3);
-}
-
-.ticker-track {
-  display: flex;
-  width: max-content;
-  animation: ticker-rtl 35s linear infinite;
-  white-space: nowrap;
-  will-change: transform;
-}
-
-.ticker-track:hover {
-  animation-play-state: paused;
-}
-
-.ticker-track span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: white;
-  font-size: 0.95rem;
-  padding: 0 1.5rem;
-  white-space: nowrap;
-}
-
-.ticker-track span::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--gold-light);
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-@keyframes ticker-rtl {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(50%);
-  }
+  display: none !important;
 }
 
 @keyframes fadeInUp {
@@ -1098,19 +959,20 @@ p {
 .alt-features-container {
   display: flex;
   flex-direction: column;
-  gap: 7rem;
+  gap: 13rem;
   position: relative;
   z-index: 1;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 1rem 0 4rem;
+  padding: 3rem 0 7rem;
 }
 
 .alt-feature-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 9rem;
   align-items: center;
+  padding: 1.5rem 0;
 }
 
 /* Reverse order for even rows to create alternating layout */
@@ -1126,8 +988,9 @@ p {
 .alt-feature-img-box {
   position: relative;
   width: 100%;
-  height: 450px;
-  background: var(--cream);
+  max-width: 470px;
+  height: 365px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1141,21 +1004,22 @@ p {
   inset: 0;
   border-radius: 2.2rem;
   overflow: hidden;
+  background: var(--cream);
   z-index: 0;
 }
 
 .alt-feature-img-wrap {
   position: absolute;
-  border: 1px solid rgba(122, 179, 183, 0.25);
-  border-radius: 5rem;
+  background:var(--cream);
   inset: 0;
+  border-radius: 2.2rem;
   overflow: hidden;
   z-index: 1;
 }
 
 .alt-feature-img {
-  width: 80%;
-  height: 450px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
   display: block;
@@ -1204,7 +1068,7 @@ p {
 }
 
 .alt-badge-title {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 800;
   font-size: 0.92rem;
   color: var(--teal-deep);
@@ -1243,7 +1107,7 @@ p {
 }
 
 .alt-feature-title {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 2.1rem;
   font-weight: 900;
   color: var(--teal-deep);
@@ -1252,7 +1116,7 @@ p {
 }
 
 .alt-feature-subtitle {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.12rem;
   font-weight: 700;
   color: var(--teal);
@@ -1260,7 +1124,7 @@ p {
 }
 
 .alt-feature-desc {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.02rem;
   color: var(--gray-text);
   line-height: 1.85;
@@ -1275,10 +1139,7 @@ p {
 }
 
 .alt-feature-tags span {
-  background: #f1f7f8;
-  border: 1px solid rgba(122, 179, 183, 0.3);
   padding: 0.35rem 0.85rem;
-  border-radius: 0.6rem;
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--teal-dark);
@@ -1292,7 +1153,7 @@ p {
   background: var(--teal-deep);
   color: #ffffff;
   border-radius: 0.85rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.95rem;
   text-decoration: none;
@@ -1311,27 +1172,29 @@ p {
 /* Mobile Responsive */
 @media (max-width: 900px) {
   .alt-features-container {
-    gap: 3.5rem;
-    padding: 1rem 1.25rem 3.5rem;
+    gap: 7rem;
+    padding: 2.5rem 1.25rem 5rem;
   }
 
   .alt-feature-row {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
+    padding: 1rem 0;
   }
 
   .alt-feature-img-box,
   .alt-feature-row:nth-child(even) .alt-feature-img-box {
     order: 1 !important;
-    height: 280px;
+    height: 260px;
+    max-width: 400px;
+    margin: 0 auto 1.25rem;
     border-radius: 1.6rem;
-    margin-bottom: 1.25rem;
   }
 
   .alt-feature-img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
   }
 
@@ -1427,13 +1290,14 @@ p {
 
 @media (max-width: 480px) {
   .alt-features-container {
-    padding: 0.75rem 1rem 3rem;
-    gap: 3rem;
+    padding: 1.5rem 1rem 4rem;
+    gap: 5.5rem;
   }
 
   .alt-feature-img-box,
   .alt-feature-row:nth-child(even) .alt-feature-img-box {
-    height: 240px;
+    height: 220px;
+    max-width: 340px;
   }
 
   .alt-feature-title {
@@ -2175,7 +2039,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.5);
   margin-bottom: 1.5rem;
@@ -2195,7 +2059,7 @@ body {
   display: inline-block;
   color: var(--gold-light);
   padding: 0.35rem 1.1rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   font-weight: 500;
   margin-bottom: 1.2rem;
@@ -2203,7 +2067,7 @@ body {
   animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .kids-hero h1 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 900;
   line-height: 1.22;
@@ -2212,7 +2076,7 @@ body {
   animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s both;
 }
 .kids-hero p.lead {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
   max-width: 600px;
@@ -2231,7 +2095,7 @@ body {
 .kids-hero-tag {
   color: rgba(255, 255, 255, 0.9);
   padding: 0.4rem 1.2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.88rem;
 }
@@ -2255,14 +2119,14 @@ body {
   border-left: none;
 }
 .kids-stat-num {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 2.2rem;
   font-weight: 900;
   color: var(--gold-light);
   line-height: 1;
 }
 .kids-stat-label {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.65);
   margin-top: 0.3rem;
@@ -2284,12 +2148,12 @@ body {
 .age-badge {
   color: var(--teal-deep);
   padding: 0.4rem 1.4rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 0.95rem;
 }
 .age-banner-text {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   color: var(--teal-deep);
   font-size: 0.95rem;
@@ -2346,7 +2210,7 @@ body {
   color: var(--teal-dark);
 }
 .pillar-text h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -2356,7 +2220,7 @@ body {
   font-size: 0.9rem;
   color: var(--gray-text);
   line-height: 1.7;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 /* Parent Box Full Width */
@@ -2377,14 +2241,14 @@ body {
   min-width: 280px;
 }
 .parent-message-text h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 800;
   color: var(--gold-light);
   font-size: 1.2rem;
   margin-bottom: 0.6rem;
 }
 .parent-message-text p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: rgba(255, 255, 255, 0.78);
   line-height: 1.8;
@@ -2421,13 +2285,13 @@ body {
   color: var(--teal-dark);
 
   padding: 0.3rem 1rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   margin-bottom: 1.1rem;
 }
 .age-track-card h3 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.2rem;
   font-weight: 900;
   color: var(--teal-deep);
@@ -2437,7 +2301,7 @@ body {
   font-size: 0.88rem;
   color: var(--gray-text);
   line-height: 1.7;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   margin-bottom: 1.25rem;
 }
 .age-track-features {
@@ -2449,7 +2313,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.84rem;
   color: var(--teal-dark);
 }
@@ -2493,13 +2357,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 1.2rem;
   margin: 0 auto 1.1rem;
 }
 .step-card h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -2509,7 +2373,7 @@ body {
   font-size: 0.86rem;
   color: var(--gray-text);
   line-height: 1.65;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 /* ── Features Grid ── */
@@ -2545,7 +2409,7 @@ body {
   margin-bottom: 1.1rem;
 }
 .feature-card h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -2555,7 +2419,7 @@ body {
   font-size: 0.86rem;
   color: var(--gray-text);
   line-height: 1.65;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 /* ── Testimonials ── */
@@ -2587,7 +2451,7 @@ body {
   font-size: 1rem;
 }
 .testimonial-text {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: var(--gray-text);
   line-height: 1.8;
@@ -2608,19 +2472,19 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--teal-dark);
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 1rem;
   flex-shrink: 0;
 }
 .author-name {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.9rem;
   color: var(--teal-deep);
 }
 .author-role {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.78rem;
   color: var(--gray-text);
 }
@@ -2656,7 +2520,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -2676,7 +2540,7 @@ body {
 }
 .faq-answer {
   padding: 0 1.75rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: var(--gray-text);
   line-height: 1.85;
@@ -2701,14 +2565,14 @@ body {
   overflow: hidden;
 }
 .cta-section h2 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(1.7rem, 3.5vw, 2.5rem);
   font-weight: 900;
   color: #fff;
   margin-bottom: 0.9rem;
 }
 .cta-section p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.75);
   max-width: 580px;
@@ -2727,7 +2591,7 @@ body {
   color: rgba(255, 255, 255, 0.9);
   border-radius: 0.75rem;
   padding: 0.7rem 2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.95rem;
   text-decoration: none;
@@ -2785,7 +2649,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.5);
   margin-bottom: 1.5rem;
@@ -2805,7 +2669,7 @@ body {
   display: inline-block;
   color: var(--gold-light);
   padding: 0.35rem 1.1rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   font-weight: 500;
   margin-bottom: 1.2rem;
@@ -2813,7 +2677,7 @@ body {
   animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .svc-hero h1 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 900;
   line-height: 1.22;
@@ -2822,7 +2686,7 @@ body {
   animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s both;
 }
 .svc-hero p.lead {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
   max-width: 580px;
@@ -2841,7 +2705,7 @@ body {
 .svc-hero-tag {
   color: rgba(255, 255, 255, 0.9);
   padding: 0.4rem 1.2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.88rem;
 }
@@ -2863,14 +2727,14 @@ body {
   border-left: none;
 }
 .svc-stat-num {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 2.2rem;
   font-weight: 900;
   color: var(--gold-light);
   line-height: 1;
 }
 .svc-stat-label {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.65);
   margin-top: 0.3rem;
@@ -2922,7 +2786,7 @@ body {
   color: var(--teal-dark);
 }
 .feature-item-text h5 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -2932,7 +2796,7 @@ body {
   font-size: 0.86rem;
   color: var(--gray-text);
   line-height: 1.6;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 /* ── Pricing & Packages (Stacked full-width) ── */
@@ -2969,7 +2833,7 @@ body {
   display: inline-block;
   color: var(--teal-dark);
   padding: 0.3rem 1rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
   margin-bottom: 1.2rem;
@@ -2981,21 +2845,21 @@ body {
   color: var(--gold-dark);
 }
 .pricing-box h3 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.3rem;
   font-weight: 900;
   color: var(--teal-deep);
   margin-bottom: 0.4rem;
 }
 .pricing-box p.desc {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.88rem;
   color: var(--gray-text);
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 .pricing-box-price {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 2.2rem;
   font-weight: 900;
   color: var(--teal-dark);
@@ -3006,7 +2870,7 @@ body {
   color: var(--gold-dark);
 }
 .pricing-box-price span {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.85rem;
   font-weight: 400;
   color: var(--gray-text);
@@ -3023,7 +2887,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.86rem;
   color: var(--teal-dark);
 }
@@ -3069,7 +2933,7 @@ body {
   margin-bottom: 1rem;
 }
 .specialty-card h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -3079,7 +2943,7 @@ body {
   font-size: 0.82rem;
   color: var(--gray-text);
   line-height: 1.6;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 /* ── Process Section ── */
@@ -3113,13 +2977,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 1.2rem;
   margin: 0 auto 1.1rem;
 }
 .step-card h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -3129,7 +2993,7 @@ body {
   font-size: 0.86rem;
   color: var(--gray-text);
   line-height: 1.65;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 /* ── Comparison Section ── */
@@ -3151,7 +3015,7 @@ body {
 }
 .comparison-table thead th {
   padding: 1.1rem 1.5rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   font-weight: 700;
   background: var(--teal-deep);
@@ -3175,13 +3039,13 @@ body {
 }
 .comparison-table tbody td {
   padding: 1rem 1.5rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.88rem;
   color: var(--gray-text);
   vertical-align: middle;
 }
 .comparison-table tbody td:first-child {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   color: var(--teal-deep);
 }
@@ -3235,7 +3099,7 @@ body {
   color: var(--teal-dark);
 }
 .who-text h5 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.93rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -3245,7 +3109,7 @@ body {
   font-size: 0.8rem;
   color: var(--gray-text);
   line-height: 1.5;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 /* ── Testimonials ── */
@@ -3275,7 +3139,7 @@ body {
   margin-bottom: 1rem;
 }
 .testimonial-text {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: var(--gray-text);
   line-height: 1.8;
@@ -3296,19 +3160,19 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--teal-dark);
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 0.92rem;
   flex-shrink: 0;
 }
 .author-name {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.9rem;
   color: var(--teal-deep);
 }
 .author-role {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.78rem;
   color: var(--gray-text);
 }
@@ -3344,7 +3208,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -3364,7 +3228,7 @@ body {
 }
 .faq-body {
   padding: 0 1.75rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: var(--gray-text);
   line-height: 1.85;
@@ -3387,14 +3251,14 @@ body {
   color: white;
 }
 .cta-section h2 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(1.7rem, 3.5vw, 2.5rem);
   font-weight: 900;
   color: #fff;
   margin-bottom: 0.9rem;
 }
 .cta-section p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.75);
   max-width: 580px;
@@ -3413,7 +3277,7 @@ body {
   color: rgba(255, 255, 255, 0.9);
   border-radius: 0.75rem;
   padding: 0.7rem 2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.95rem;
   text-decoration: none;
@@ -3475,7 +3339,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.5);
   margin-bottom: 1.5rem;
@@ -3495,7 +3359,7 @@ body {
   display: inline-block;
   color: var(--gold-light);
   padding: 0.35rem 1.1rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   font-weight: 500;
   margin-bottom: 1.2rem;
@@ -3503,7 +3367,7 @@ body {
   animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .corp-hero h1 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 900;
   line-height: 1.22;
@@ -3512,7 +3376,7 @@ body {
   animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s both;
 }
 .corp-hero p.lead {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
   max-width: 620px;
@@ -3531,7 +3395,7 @@ body {
 .corp-hero-tag {
   color: rgba(255, 255, 255, 0.9);
   padding: 0.4rem 1.2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.92rem;
 }
@@ -3553,14 +3417,14 @@ body {
   border-left: none;
 }
 .corp-stat-num {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 2.2rem;
   font-weight: 900;
   color: var(--gold-light);
   line-height: 1;
 }
 .corp-stat-label {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.65);
   margin-top: 0.3rem;
@@ -3609,7 +3473,7 @@ body {
   margin-top: 0.45rem;
 }
 .problem-item-card p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--teal-deep);
@@ -3649,7 +3513,7 @@ body {
   border-color: var(--teal-light);
 }
 .roi-stat-num {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 2.4rem;
   font-weight: 900;
   color: var(--teal-dark);
@@ -3657,7 +3521,7 @@ body {
   margin-bottom: 0.4rem;
 }
 .roi-stat-label {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.88rem;
   color: var(--gray-text);
 }
@@ -3697,7 +3561,7 @@ body {
 
   color: var(--teal-dark);
   padding: 0.3rem 1rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   margin-bottom: 1.2rem;
@@ -3709,14 +3573,14 @@ body {
   color: var(--gold-dark);
 }
 .package-card h3 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.3rem;
   font-weight: 900;
   color: var(--teal-deep);
   margin-bottom: 0.6rem;
 }
 .package-card p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.88rem;
   color: var(--gray-text);
   line-height: 1.7;
@@ -3732,7 +3596,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.86rem;
   color: var(--teal-dark);
 }
@@ -3776,13 +3640,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 1.2rem;
   margin: 0 auto 1.1rem;
 }
 .step-card h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -3792,7 +3656,7 @@ body {
   font-size: 0.86rem;
   color: var(--gray-text);
   line-height: 1.65;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
 }
 
 /* ── Direct Corporate Contact Section ── */
@@ -3800,6 +3664,174 @@ body {
   padding: 5.5rem 0;
   background: var(--cream);
 }
+
+/* ── Corporate Visual Gallery & Pillar Cards ── */
+.corp-gallery-section {
+  padding: 5.5rem 0;
+  background: #ffffff;
+}
+
+.corp-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 2.5rem;
+}
+
+.corp-gallery-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.corp-gallery-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 35px -10px rgba(27, 43, 44, 0.12);
+  border-color: var(--teal-light);
+}
+
+.corp-card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.corp-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.4s ease;
+}
+
+.corp-gallery-card:hover .corp-card-img {
+  transform: scale(1.05);
+}
+
+.corp-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.corp-card-tag {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--teal-dark);
+  background: rgba(122, 179, 183, 0.18);
+  padding: 0.25rem 0.65rem;
+  border-radius: 99px;
+  margin-bottom: 0.75rem;
+}
+
+.corp-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--teal-deep);
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+}
+
+.corp-card-desc {
+  font-size: 0.88rem;
+  color: var(--gray-text);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Corporate Advisor Hero Banner */
+.corp-advisor-box {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2.5rem;
+  align-items: flex-end;
+  background: linear-gradient(135deg, #1b2b2c 0%, #253d3e 100%);
+  color: #ffffff;
+  border-radius: 2.2rem;
+  padding: 2.5rem 3rem 0;
+  margin-top: 3.5rem;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(27, 43, 44, 0.35);
+}
+
+.corp-advisor-img-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.corp-advisor-img {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
+  object-position: bottom;
+  display: block;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.35));
+}
+
+.corp-advisor-content {
+  padding-bottom: 2.5rem;
+  padding-top: 1rem;
+}
+
+.corp-advisor-badge {
+  display: inline-block;
+  background: rgba(212, 163, 89, 0.25);
+  color: #f5c879;
+  border: 1px solid rgba(212, 163, 89, 0.4);
+  padding: 0.35rem 0.85rem;
+  border-radius: 99px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.corp-advisor-title {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.corp-advisor-desc {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 960px) {
+  .corp-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  .corp-advisor-box {
+    grid-template-columns: 1fr;
+    padding: 2rem 1.5rem 0;
+    text-align: center;
+  }
+  .corp-advisor-img {
+    max-height: 250px;
+  }
+}
+
 .inquiry-wrapper {
   max-width: 860px;
   margin: 0 auto;
@@ -3813,14 +3845,14 @@ body {
   margin-bottom: 2.5rem;
 }
 .inquiry-header h2 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.9rem;
   font-weight: 900;
   color: var(--teal-deep);
   margin-bottom: 0.75rem;
 }
 .inquiry-header p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   color: var(--gray-text);
   max-width: 620px;
@@ -3866,14 +3898,14 @@ body {
   margin-bottom: 1.25rem;
 }
 .direct-contact-card h3 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.3rem;
   font-weight: 800;
   color: var(--teal-deep);
   margin-bottom: 0.5rem;
 }
 .direct-contact-card p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: var(--gray-text);
   line-height: 1.6;
@@ -3881,7 +3913,7 @@ body {
   flex-grow: 1;
 }
 .direct-contact-val {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -3922,7 +3954,7 @@ body {
   margin-bottom: 1rem;
 }
 .testimonial-text {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: var(--gray-text);
   line-height: 1.8;
@@ -3943,19 +3975,19 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--teal-dark);
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 0.92rem;
   flex-shrink: 0;
 }
 .author-name {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.9rem;
   color: var(--teal-deep);
 }
 .author-role {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.78rem;
   color: var(--gray-text);
 }
@@ -3991,7 +4023,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -4011,7 +4043,7 @@ body {
 }
 .faq-body {
   padding: 0 1.75rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: var(--gray-text);
   line-height: 1.85;
@@ -4034,14 +4066,14 @@ body {
   color: white;
 }
 .cta-section h2 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(1.7rem, 3.5vw, 2.5rem);
   font-weight: 900;
   color: #fff;
   margin-bottom: 0.9rem;
 }
 .cta-section p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.75);
   max-width: 580px;
@@ -4060,7 +4092,7 @@ body {
   color: rgba(255, 255, 255, 0.9);
   border-radius: 0.75rem;
   padding: 0.7rem 2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.95rem;
   text-decoration: none;
@@ -4118,7 +4150,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.5);
   margin-bottom: 1.5rem;
@@ -4138,7 +4170,7 @@ body {
   display: inline-block;
   color: var(--gold-light);
   padding: 0.35rem 1.1rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   font-weight: 500;
   margin-bottom: 1.2rem;
@@ -4146,7 +4178,7 @@ body {
   animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .values-hero h1 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 900;
   line-height: 1.22;
@@ -4155,7 +4187,7 @@ body {
   animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s both;
 }
 .values-hero p.lead {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
   max-width: 620px;
@@ -4177,7 +4209,7 @@ body {
   color: rgba(255, 255, 255, 0.9);
   border-radius: 50px;
   padding: 0.4rem 1.2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.88rem;
 }
@@ -4199,14 +4231,14 @@ body {
   border-left: none;
 }
 .values-stat-num {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 2.2rem;
   font-weight: 900;
   color: var(--gold-light);
   line-height: 1;
 }
 .values-stat-label {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.65);
   margin-top: 0.3rem;
@@ -4268,14 +4300,14 @@ body {
   margin-bottom: 1.25rem;
 }
 .value-card-item h3 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.2rem;
   font-weight: 900;
   color: var(--teal-deep);
   margin-bottom: 0.5rem;
 }
 .value-card-item p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.9rem;
   color: var(--gray-text);
   line-height: 1.7;
@@ -4337,20 +4369,20 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 0.9rem;
   margin-top: 0.1rem;
 }
 .charter-item-text h5 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
   margin-bottom: 0.25rem;
 }
 .charter-item-text p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.86rem;
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.6;
@@ -4395,14 +4427,14 @@ body {
   margin: 0 auto 1.25rem;
 }
 .impact-card h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--teal-deep);
   margin-bottom: 0.5rem;
 }
 .impact-card p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.88rem;
   color: var(--gray-text);
   line-height: 1.7;
@@ -4439,7 +4471,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -4459,7 +4491,7 @@ body {
 }
 .faq-body {
   padding: 0 1.75rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: var(--gray-text);
   line-height: 1.85;
@@ -4482,14 +4514,14 @@ body {
   color: white;
 }
 .cta-section h2 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(1.7rem, 3.5vw, 2.5rem);
   font-weight: 900;
   color: #fff;
   margin-bottom: 0.9rem;
 }
 .cta-section p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.75);
   max-width: 580px;
@@ -4508,7 +4540,7 @@ body {
   color: rgba(255, 255, 255, 0.9);
   border-radius: 0.75rem;
   padding: 0.7rem 2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.95rem;
   text-decoration: none;
@@ -4569,7 +4601,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.84rem;
   color: var(--gray-text);
   margin-bottom: 1.25rem;
@@ -4601,7 +4633,7 @@ body {
   border: 1px solid rgba(26, 46, 47, 0.15);
   border-radius: 50px;
   padding: 0.35rem 1rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -4610,7 +4642,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   color: var(--gray-text);
 }
@@ -4619,7 +4651,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.8rem;
   color: #1f7a52;
   background: #eaf6ef;
@@ -4630,7 +4662,7 @@ body {
 }
 
 .article-main-title {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(1.85rem, 4vw, 2.75rem);
   font-weight: 900;
   line-height: 1.3;
@@ -4639,7 +4671,7 @@ body {
 }
 
 .article-main-lead {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.15rem;
   line-height: 1.85;
   color: var(--gray-text);
@@ -4672,7 +4704,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 1.1rem;
   border: 2px solid #fff;
@@ -4680,7 +4712,7 @@ body {
 }
 
 .article-author-meta h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -4688,7 +4720,7 @@ body {
 }
 
 .article-author-meta p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.8rem;
   color: var(--gray-text);
 }
@@ -4704,7 +4736,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 0.6rem;
   padding: 0.45rem 0.8rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--teal-deep);
@@ -4776,7 +4808,7 @@ body {
 
 .article-img-caption {
   padding: 0.75rem 1.25rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.82rem;
   color: var(--gray-text);
   background: var(--cream);
@@ -4795,7 +4827,7 @@ body {
 }
 
 .takeaways-title {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--teal-deep);
@@ -4815,7 +4847,7 @@ body {
 }
 
 .takeaways-list li {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   color: var(--teal-dark);
   line-height: 1.7;
@@ -4834,7 +4866,7 @@ body {
 
 /* Content Headings & Prose */
 .article-prose h2 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.65rem;
   font-weight: 900;
   color: var(--teal-deep);
@@ -4845,7 +4877,7 @@ body {
 }
 
 .article-prose h3 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.25rem;
   font-weight: 800;
   color: var(--teal-dark);
@@ -4854,7 +4886,7 @@ body {
 }
 
 .article-prose p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.05rem;
   line-height: 2.05;
   color: #334446;
@@ -4868,7 +4900,7 @@ body {
 }
 
 .article-prose li {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1rem;
   line-height: 1.95;
   color: #334446;
@@ -4885,7 +4917,7 @@ body {
 }
 
 .clinical-pullquote p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
   line-height: 1.75;
@@ -4895,7 +4927,7 @@ body {
 }
 
 .clinical-pullquote span {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.85rem;
   color: var(--gray-text);
   display: block;
@@ -4912,7 +4944,7 @@ body {
 .article-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.92rem;
   text-align: right;
 }
@@ -4921,7 +4953,7 @@ body {
   background: var(--teal-deep);
   color: #fff;
   padding: 1rem 1.2rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.95rem;
 }
@@ -4956,7 +4988,7 @@ body {
 }
 
 .article-inline-cta-text h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--teal-deep);
@@ -4964,7 +4996,7 @@ body {
 }
 
 .article-inline-cta-text p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.95rem;
   color: #4a5568;
   margin: 0;
@@ -4994,7 +5026,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 900;
   font-size: 1.6rem;
   flex-shrink: 0;
@@ -5006,7 +5038,7 @@ body {
 }
 
 .author-bio-details h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.05rem;
   font-weight: 800;
   color: var(--teal-deep);
@@ -5014,7 +5046,7 @@ body {
 }
 
 .author-bio-details p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.88rem;
   color: var(--gray-text);
   line-height: 1.65;
@@ -5045,7 +5077,7 @@ body {
   color: var(--teal-deep);
   border-radius: 50px;
   padding: 0.3rem 0.9rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.8rem;
   text-decoration: none;
   font-weight: 600;
@@ -5073,7 +5105,7 @@ body {
 }
 
 .sidebar-widget-title {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.05rem;
   font-weight: 800;
   color: var(--teal-deep);
@@ -5096,7 +5128,7 @@ body {
 }
 
 .toc-link {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.88rem;
   color: var(--gray-text);
   text-decoration: none;
@@ -5127,7 +5159,7 @@ body {
 }
 
 .sidebar-cta-widget h4 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--gold-light);
@@ -5135,7 +5167,7 @@ body {
 }
 
 .sidebar-cta-widget p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.86rem;
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.7;
@@ -5156,7 +5188,7 @@ body {
 }
 
 .more-articles-header h2 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 2rem;
   font-weight: 900;
   color: var(--teal-deep);
@@ -5164,7 +5196,7 @@ body {
 }
 
 .more-articles-header p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.95rem;
   color: var(--gray-text);
 }
@@ -5232,19 +5264,19 @@ body {
   color: var(--teal-deep);
   border-radius: 50px;
   padding: 0.2rem 0.75rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
 }
 
 .blog-card-date {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.78rem;
   color: var(--gray-text);
 }
 
 .blog-card h3 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--teal-deep);
@@ -5253,7 +5285,7 @@ body {
 }
 
 .blog-card p {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.88rem;
   color: var(--gray-text);
   line-height: 1.7;
@@ -5262,7 +5294,7 @@ body {
 }
 
 .blog-card-link-text {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-weight: 700;
   font-size: 0.88rem;
   color: var(--teal-dark);
@@ -5299,7 +5331,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--teal);
@@ -5317,7 +5349,7 @@ body {
 }
 
 .simple-article-meta {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.9rem;
   color: #64748b;
   display: flex;
@@ -5337,7 +5369,7 @@ body {
 }
 
 .simple-article-title {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: clamp(1.85rem, 3.5vw, 2.4rem);
   font-weight: 800;
   color: #1a202c;
@@ -5346,7 +5378,7 @@ body {
 }
 
 .simple-article-lead {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.15rem;
   line-height: 1.9;
   color: #4a5568;
@@ -5362,7 +5394,7 @@ body {
 
 /* Typography for the Prose / Text Content */
 .simple-article-content {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.125rem;
   line-height: 2.1;
   color: #2d3748;
@@ -5374,7 +5406,7 @@ body {
 }
 
 .simple-article-content h2 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.6rem;
   font-weight: 800;
   color: #1a202c;
@@ -5384,7 +5416,7 @@ body {
 }
 
 .simple-article-content h3 {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Tajawal', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: #2d3748;
@@ -5475,7 +5507,7 @@ body {
 }
 
 .simple-back-btn {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--teal);
@@ -5495,7 +5527,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Cairo', sans-serif;
+  font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   color: #475569;
@@ -5594,3 +5626,569 @@ body {
     transition: none !important;
   }
 }
+
+/* ==========================================================================
+   MOOD TRACKER PHONE MOCKUP (نشاطات الشعور - بديل صورة المقياس النفسي)
+   ========================================================================== */
+.mood-tracker-phone {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  height: 440px;
+  background: #0f172a;
+  border-radius: 2.2rem;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 6px rgba(255, 255, 255, 0.9), 0 0 0 8px rgba(226, 232, 240, 0.8);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-family: inherit;
+  direction: rtl;
+  user-select: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.mood-tracker-phone:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.3), 0 0 0 6px rgba(255, 255, 255, 0.95), 0 0 0 8px rgba(203, 213, 225, 0.9);
+}
+
+/* Status Bar */
+.mt-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1.2rem 0.35rem;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  z-index: 2;
+}
+
+.mt-status-left {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  direction: ltr;
+}
+
+.mt-status-right {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mt-battery-icon {
+  width: 18px;
+  height: 9px;
+  border: 1.5px solid #ffffff;
+  border-radius: 3px;
+  padding: 1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.mt-battery-icon::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 1.5px;
+  width: 2px;
+  height: 3px;
+  background: #ffffff;
+  border-radius: 0 1px 1px 0;
+}
+
+.mt-battery-fill {
+  width: 75%;
+  height: 100%;
+  background: #ffffff;
+  border-radius: 1px;
+}
+
+/* Sheet Card */
+.mt-sheet {
+  position: relative;
+  flex: 1;
+  background: #ffffff;
+  border-radius: 1.6rem 1.6rem 0 0;
+  padding: 0.7rem 1.1rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mt-drag-handle {
+  width: 32px;
+  height: 3.5px;
+  background: #cbd5e1;
+  border-radius: 99px;
+  margin: 0 auto 0.5rem;
+}
+
+/* Header */
+.mt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+}
+
+.mt-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.mt-back-btn {
+  background: none;
+  border: none;
+  color: #334155;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.mt-back-btn:hover {
+  transform: translateX(-2px);
+}
+
+/* Period Toggle Pill */
+.mt-period-toggle {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 99px;
+  padding: 0.2rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.mt-toggle-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0.7rem;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.mt-toggle-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Section Title */
+.mt-section-head {
+  margin-bottom: 0.5rem;
+}
+
+.mt-section-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* Days Horizontal Row */
+.mt-days-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.3rem;
+  margin-bottom: 0.85rem;
+}
+
+.mt-day-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.15rem;
+  background: #f8fafc;
+  border-radius: 0.65rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.mt-day-card:hover {
+  background: #f1f5f9;
+  transform: translateY(-2px);
+}
+
+.mt-day-num {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.1;
+  margin-bottom: 0.15rem;
+}
+
+.mt-day-name {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: capitalize;
+}
+
+.mt-day-card.active {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+  transform: translateY(-2px);
+}
+
+.mt-day-card.active .mt-day-num,
+.mt-day-card.active .mt-day-name {
+  color: #ffffff;
+}
+
+/* Timeline Stream */
+.mt-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-right: 1.1rem;
+  flex: 1;
+}
+
+.mt-timeline::before {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: 5px;
+  bottom: 10px;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.mt-timeline-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.mt-timeline-dot {
+  position: absolute;
+  right: -1.1rem;
+  top: 4px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 2px #3b82f6;
+  z-index: 1;
+}
+
+.mt-timeline-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.mt-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.mt-item-time {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.mt-item-mood {
+  font-weight: 700;
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.mt-emoji {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.mt-edit-link {
+  margin-right: auto;
+  color: #6366f1;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  transition: opacity 0.2s ease;
+}
+
+.mt-edit-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.mt-item-desc {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  line-height: 1.35;
+  margin: 0;
+  max-width: 90%;
+}
+
+/* Floating Mood Dock (Bottom Left) */
+.mt-floating-dock {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  background: #ffffff;
+  border-radius: 1.1rem;
+  padding: 0.35rem 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(226, 232, 240, 0.8);
+  z-index: 10;
+  animation: floatSubtle 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatSubtle {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+.mt-dock-emoji {
+  border: none;
+  background: transparent;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.15rem;
+  border-radius: 0.55rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mt-dock-emoji:hover {
+  transform: scale(1.2);
+}
+
+.mt-dock-emoji.active {
+  border: 2px solid #fb7185;
+  background: #fff1f2;
+  transform: scale(1.1);
+}
+
+/* ── B2B Corporate 4-Field Inquiry Form (Matching Screenshot) ── */
+.b2b-form-card {
+  position: relative;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 2.5rem;
+  padding: 3.5rem 3rem;
+  margin-bottom: 3.5rem;
+  overflow: hidden;
+  box-shadow: 0 20px 40px -15px rgba(27, 43, 44, 0.07);
+}
+
+/* Soft Cloud / Curve decorations matching mockup */
+.b2b-form-cloud {
+  position: absolute;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+.b2b-form-cloud.cloud-top-right {
+  top: 1.5rem;
+  right: 18%;
+  width: 70px;
+  height: auto;
+}
+.b2b-form-cloud.cloud-top-left {
+  top: 4.5rem;
+  left: 8%;
+  width: 85px;
+  height: auto;
+}
+
+.b2b-form-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2.8rem;
+  z-index: 1;
+}
+
+.b2b-form-sub {
+  display: block;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.b2b-form-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #1e293b;
+  margin: 0;
+}
+
+.b2b-form-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  z-index: 1;
+}
+
+.b2b-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.b2b-input {
+  width: 100%;
+  height: 58px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 0 1.75rem;
+  font-family: inherit;
+  font-size: 0.98rem;
+  color: #1e293b;
+  text-align: right;
+  direction: rtl;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s ease;
+}
+
+.b2b-input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.b2b-input:focus {
+  border-color: #5b45ff;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(91, 69, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.b2b-input.error {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.b2b-form-footer {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 2rem;
+  z-index: 1;
+}
+
+.b2b-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--gold);
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.95rem 2.5rem;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(91, 69, 255, 0.4);
+  transition: all 0.25s ease;
+}
+
+.b2b-submit-btn:hover {
+  background: var(--gold-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -5px rgba(91, 69, 255, 0.5);
+}
+
+.b2b-submit-btn:active {
+  transform: translateY(0);
+}
+
+.b2b-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.b2b-btn-icon {
+  width: 20px;
+  height: 20px;
+  transform: scaleX(-1); /* mirror for RTL */
+}
+
+.b2b-form-msg {
+  display: none;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.95rem;
+  z-index: 1;
+}
+
+.b2b-form-msg.success {
+  display: block;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.b2b-form-msg.error {
+  display: block;
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+@media (max-width: 768px) {
+  .b2b-form-card {
+    padding: 2.5rem 1.5rem;
+    border-radius: 1.75rem;
+  }
+  .b2b-form-title {
+    font-size: 1.85rem;
+  }
+  .b2b-form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .b2b-form-footer {
+    justify-content: center;
+  }
+  .b2b-submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+

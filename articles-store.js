@@ -15,7 +15,7 @@ const DEFAULT_ARTICLES = [
     author: "د. سارة المنصوري",
     authorRole: "أخصائية علم النفس والرفاه",
     date: "١ سبتمبر ٢٠٢٦",
-    image: "storybook_card_1.png",
+    image: "assets/images/storybook_card_1.png",
     takeaways: [
       "القلق الطبيعي مؤقت ويرتبط بموقف محدد، بينما اضطراب القلق مستمر ويعمم على تفاصيل الحياة اليومية.",
       "معيار الشدة والاستمرارية: استمرار القلق لأكثر من ٦ أشهر يعيق الأداء اليومي هو مؤشر مهم يستدعي المتابعة.",
@@ -230,7 +230,7 @@ const ArticlesStore = {
             author: item.authorName || "أخصائي PsyAI",
             authorRole: item.authorTitle || "أخصائي نفسي معتمد",
             date: dateStr,
-            image: item.image || "storybook_card_2.png",
+            image: item.image || "assets/images/storybook_card_2.png",
             takeaways: Array.isArray(item.takeaways) ? item.takeaways : [],
             content: item.content
           };

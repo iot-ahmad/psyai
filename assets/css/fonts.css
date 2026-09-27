@@ -1,181 +1,54 @@
 /* ==========================================================================
-   Montserrat Arabic / Montaser Arabic Web Fonts Definition
-   Supports 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic'
+   PsyAI Typography & Web Fonts
+   Primary Stack: "IBM Plex Arabic", "Open Sans", sans-serif
+   Supporting Families: SF Arabic, HT Rakik, AirbnbCereal, FAC, AdobeClean
    ========================================================================== */
 
-/* Montserrat-Arabic */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+:root {
+  --font-primary: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
+  --font-heading: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Bold', sans-serif;
+  --font-body: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;
+}
+
+/* Local fallback font aliases */
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('../fonts/Montserrat-Arabic-Light.woff2') format('woff2');
-  font-weight: 300;
+  font-family: 'HT Rakik';
+  src: local('HT Rakik'), local('HT-Rakik');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('../fonts/Montserrat-Arabic-Regular.woff2') format('woff2'),
-       url('../fonts/Montserrat-Arabic-Regular.woff') format('woff');
-  font-weight: 400;
+  font-family: 'SF Arabic';
+  src: local('SF Arabic'), local('SF Pro Arabic'), local('.SF Arabic');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('../fonts/Montserrat-Arabic-Medium.woff2') format('woff2');
-  font-weight: 500;
+  font-family: 'AirbnbCereal';
+  src: local('AirbnbCereal'), local('Airbnb Cereal App');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('../fonts/Montserrat-Arabic-SemiBold.woff2') format('woff2');
-  font-weight: 600;
+  font-family: 'AdobeClean-Regular';
+  src: local('AdobeClean-Regular'), local('Adobe Clean');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('../fonts/Montserrat-Arabic-Bold.woff2') format('woff2'),
-       url('../fonts/Montserrat-Arabic-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('../fonts/Montserrat-Arabic-ExtraBold.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('../fonts/Montserrat-Arabic-Black.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Montaser Arabic Alias */
-@font-face {
-  font-family: 'Montaser Arabic';
-  src: url('../fonts/Montserrat-Arabic-Light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montaser Arabic';
-  src: url('../fonts/Montserrat-Arabic-Regular.woff2') format('woff2'),
-       url('../fonts/Montserrat-Arabic-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montaser Arabic';
-  src: url('../fonts/Montserrat-Arabic-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montaser Arabic';
-  src: url('../fonts/Montserrat-Arabic-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montaser Arabic';
-  src: url('../fonts/Montserrat-Arabic-Bold.woff2') format('woff2'),
-       url('../fonts/Montserrat-Arabic-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montaser Arabic';
-  src: url('../fonts/Montserrat-Arabic-ExtraBold.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montaser Arabic';
-  src: url('../fonts/Montserrat-Arabic-Black.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Montserrat Arabic (Space-separated name) */
-@font-face {
-  font-family: 'Montserrat Arabic';
-  src: url('../fonts/Montserrat-Arabic-Light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat Arabic';
-  src: url('../fonts/Montserrat-Arabic-Regular.woff2') format('woff2'),
-       url('../fonts/Montserrat-Arabic-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat Arabic';
-  src: url('../fonts/Montserrat-Arabic-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat Arabic';
-  src: url('../fonts/Montserrat-Arabic-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat Arabic';
-  src: url('../fonts/Montserrat-Arabic-Bold.woff2') format('woff2'),
-       url('../fonts/Montserrat-Arabic-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat Arabic';
-  src: url('../fonts/Montserrat-Arabic-ExtraBold.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat Arabic';
-  src: url('../fonts/Montserrat-Arabic-Black.woff2') format('woff2');
-  font-weight: 900;
+  font-family: 'AdobeClean-Bold';
+  src: local('AdobeClean-Bold'), local('Adobe Clean Bold');
+  font-weight: bold;
   font-style: normal;
   font-display: swap;
 }

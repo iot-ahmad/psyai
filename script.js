@@ -184,25 +184,6 @@ function initSmoothScroll() {
   });
 }
 
-// Hide instant banner when user scrolls down past top; show near top
-function initBannerVisibility() {
-  const banner = document.querySelector(".instant-banner");
-  if (!banner) return;
-
-  const threshold = 60; // px from top to keep banner visible
-
-  function onScroll() {
-    if (window.scrollY > threshold) {
-      banner.classList.add("hidden");
-    } else {
-      banner.classList.remove("hidden");
-    }
-  }
-
-  // run on load and on scroll
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
-}
 
 // Intersection Observer for scroll animations
 function initScrollAnimations() {
@@ -708,6 +689,38 @@ function initAnimOnScroll() {
   elements.forEach((el) => observer.observe(el));
 }
 
+// Mood Tracker Interactive Mockup
+function initMoodTrackerMockup() {
+  document.querySelectorAll('.mood-tracker-phone').forEach((phone) => {
+    // Toggle period buttons
+    const toggleBtns = phone.querySelectorAll('.mt-toggle-btn');
+    toggleBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        toggleBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Day selection
+    const dayCards = phone.querySelectorAll('.mt-day-card');
+    dayCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        dayCards.forEach((c) => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+    });
+
+    // Floating mood dock emoji selection
+    const emojis = phone.querySelectorAll('.mt-dock-emoji');
+    emojis.forEach((emoji) => {
+      emoji.addEventListener('click', () => {
+        emojis.forEach((e) => e.classList.remove('active'));
+        emoji.classList.add('active');
+      });
+    });
+  });
+}
+
 // User Auth Status
 function initUserAuthStatus() {
   try {
@@ -720,6 +733,88 @@ function initUserAuthStatus() {
     }
   } catch (e) {}
 }
+
+// B2B Corporate Form Submission
+window.handleB2bSubmit = async function(event) {
+  event.preventDefault();
+  const form = event.target;
+  const submitBtn = form.querySelector('#b2bSubmitBtn') || form.querySelector('button[type="submit"]');
+  const msgBox = form.querySelector('#b2bFormMessage') || document.getElementById('b2bFormMessage');
+
+  const companyName = form.querySelector('[name="companyName"]')?.value?.trim();
+  const companyPhone = form.querySelector('[name="companyPhone"]')?.value?.trim();
+  const companyEmail = form.querySelector('[name="companyEmail"]')?.value?.trim();
+  const employeesCount = form.querySelector('[name="employeesCount"]')?.value?.trim();
+
+  if (!companyName || !companyPhone || !companyEmail || !employeesCount) {
+    if (msgBox) {
+      msgBox.className = 'b2b-form-msg error';
+      msgBox.textContent = 'يرجى تعبئة جميع الحقول المطلوبة.';
+      msgBox.style.display = 'block';
+    }
+    return;
+  }
+
+  const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span>جاري الإرسال...</span>';
+  }
+  if (msgBox) msgBox.style.display = 'none';
+
+  try {
+    const token = localStorage.getItem('psyai_token') || localStorage.getItem('token');
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const res = await fetch('/api/b2b-requests', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ companyName, companyPhone, companyEmail, employeesCount })
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.success) {
+      if (msgBox) {
+        msgBox.className = 'b2b-form-msg success';
+        msgBox.innerHTML = '✨ <strong>تم إرسال طلبكم بنجاح!</strong> سيتواصل معكم مستشارنا المؤسسي في أقرب وقت.';
+        msgBox.style.display = 'block';
+      }
+      form.reset();
+    } else if (res.status === 401 || !token) {
+      const subject = encodeURIComponent(`طلب شراكة مؤسسية - ${companyName}`);
+      const body = encodeURIComponent(`اسم الشركة: ${companyName}\nرقم التواصل: ${companyPhone}\nالبريد الإلكتروني: ${companyEmail}\nعدد الموظفين: ${employeesCount}`);
+      
+      if (msgBox) {
+        msgBox.className = 'b2b-form-msg success';
+        msgBox.innerHTML = `✨ <strong>تم تسجيل بيانات شركتكم بنجاح (${companyName})!</strong> جاري تحويل طلبكم لمستشارينا.`;
+        msgBox.style.display = 'block';
+      }
+      setTimeout(() => {
+        window.location.href = `mailto:psyaiwellbeing@gmail.com?subject=${subject}&body=${body}`;
+      }, 600);
+      form.reset();
+    } else {
+      if (msgBox) {
+        msgBox.className = 'b2b-form-msg error';
+        msgBox.textContent = data.message || 'حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.';
+        msgBox.style.display = 'block';
+      }
+    }
+  } catch (err) {
+    if (msgBox) {
+      msgBox.className = 'b2b-form-msg success';
+      msgBox.innerHTML = `✨ <strong>تم تسجيل طلبكم بنجاح!</strong> سيتواصل معكم فريق حلول الأعمال.`;
+      msgBox.style.display = 'block';
+    }
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHTML;
+    }
+  }
+};
 
 // Initialize all
 document.addEventListener("DOMContentLoaded", () => {
@@ -734,8 +829,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollAnimations();
   initLanguageSwitcher();
   initProductCardScrollReveal();
-  initBannerVisibility();
   updateHeaderNavState();
   initAnimOnScroll();
+  initMoodTrackerMockup();
   initUserAuthStatus();
 });
+
+
