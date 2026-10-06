@@ -41,9 +41,10 @@ describe('bookingsController.createBooking', () => {
       userId: 'user-1',
       specialistId: 'spec-1',
       sessionTime: body.sessionTime,
-      condition: 'anxiety', // body condition wins over the user's default
       status: 'pending'
     });
+    const EncryptionService = require('../src/services/encryptionService');
+    expect(EncryptionService.decryptField(createdData.condition)).toBe('anxiety');
   });
 
   it('falls back to the user condition when none is given in the body', async () => {
@@ -62,7 +63,8 @@ describe('bookingsController.createBooking', () => {
     });
     await bookingsController.createBooking(req, res, next);
 
-    expect(mockPrisma.booking.create.mock.calls[0][0].data.condition).toBe('depression');
+    const EncryptionService = require('../src/services/encryptionService');
+    expect(EncryptionService.decryptField(mockPrisma.booking.create.mock.calls[0][0].data.condition)).toBe('depression');
   });
 
   it('defaults condition to null and notes to null when nothing is provided', async () => {

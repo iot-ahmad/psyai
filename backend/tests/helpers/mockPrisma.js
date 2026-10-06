@@ -65,6 +65,24 @@ function createPrismaMock() {
     auditLog: {
       create: jest.fn()
     },
+    specialistSchedule: {
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn()
+    },
+    articleQuestion: {
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn()
+    },
+    sessionReminder: {
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn()
+    },
     passwordResetToken: {
       findUnique: jest.fn(),
       create: jest.fn(),

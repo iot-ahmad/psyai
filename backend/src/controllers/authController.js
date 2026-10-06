@@ -3,6 +3,7 @@ const prisma = require('../config/db');
 const WhatsAppService = require('../services/whatsappService');
 const SecurityService = require('../services/securityService');
 const AuditService = require('../services/auditService');
+const EncryptionService = require('../services/encryptionService');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
@@ -68,11 +69,17 @@ async function sendOtp(req, res, next) {
       metadata: { phone: String(phone).replace(/^(\+?\d{4})\d+(\d{2})$/, '$1****$2') }
     });
 
-    res.status(200).json({
+    const responsePayload = {
       success: true,
-      message: `تم إرسال رمز التحقق إلى تطبيق WhatsApp للرقم ${phone}`,
-      ...result
-    });
+      phone: result.phone || phone,
+      expiresInMinutes: result.expiresInMinutes,
+      message: `تم إرسال رمز التحقق إلى تطبيق WhatsApp للرقم ${phone}`
+    };
+    if (process.env.NODE_ENV === 'test' && result.devCode) {
+      responsePayload.devCode = result.devCode;
+    }
+
+    res.status(200).json(responsePayload);
   } catch (err) {
     next(err);
   }
@@ -96,10 +103,16 @@ async function verifyOtp(req, res, next) {
       return res.status(400).json(result);
     }
 
-    // Find and verify user if registered
+    // Find and verify user if registered (lookup by blind index or plaintext phone)
     const cleanPhone = sanitizePhone(phone);
-    let user = await prisma.user.findUnique({
-      where: { phone: cleanPhone }
+    const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
+    let user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { phoneBlindIndex },
+          { phone: cleanPhone }
+        ]
+      }
     });
 
     if (user) {
@@ -109,6 +122,7 @@ async function verifyOtp(req, res, next) {
       });
 
       const token = createToken(user, ['full_access']);
+      const decryptedUser = EncryptionService.decryptUserFields(user);
 
       await AuditService.log({
         req,
@@ -123,13 +137,13 @@ async function verifyOtp(req, res, next) {
         message: result.message,
         token,
         user: {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          phone: user.phone,
-          role: user.role,
-          isVerified: user.isVerified
+          id: decryptedUser.id,
+          firstName: decryptedUser.firstName,
+          lastName: decryptedUser.lastName,
+          email: decryptedUser.email,
+          phone: decryptedUser.phone,
+          role: decryptedUser.role,
+          isVerified: decryptedUser.isVerified
         }
       });
     }
@@ -151,7 +165,7 @@ async function verifyOtp(req, res, next) {
 
 /**
  * POST /api/auth/register
- * Complete user registration with Argon2id hashing & session issuance
+ * Complete user registration with Argon2id hashing, field encryption & session issuance
  */
 async function register(req, res, next) {
   try {
@@ -169,6 +183,7 @@ async function register(req, res, next) {
 
     const cleanEmail = email.toLowerCase().trim();
     const cleanPhone = sanitizePhone(phone);
+    const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
 
     // Check if user already exists
     const existingEmail = await prisma.user.findUnique({ where: { email: cleanEmail } });
@@ -179,7 +194,23 @@ async function register(req, res, next) {
       });
     }
 
-    const existingPhone = await prisma.user.findUnique({ where: { phone: cleanPhone } });
+    let existingPhone = null;
+    try {
+      existingPhone = await prisma.user.findFirst({
+        where: {
+          OR: [
+            { phoneBlindIndex },
+            { phone: cleanPhone }
+          ]
+        }
+      });
+    } catch (_) {}
+    if (!existingPhone) {
+      try {
+        existingPhone = await prisma.user.findUnique({ where: { phone: cleanPhone } });
+      } catch (_) {}
+    }
+
     if (existingPhone) {
       return res.status(400).json({
         success: false,
@@ -200,16 +231,23 @@ async function register(req, res, next) {
     // Argon2id / secure password hashing (Section 3)
     const passwordHash = await SecurityService.hashPassword(password);
 
-    // Create user
+    // Encrypt sensitive fields with AES-256-GCM
+    const encryptedFirstName = EncryptionService.encryptField(firstName);
+    const encryptedLastName = EncryptionService.encryptField(lastName);
+    const encryptedPhone = EncryptionService.encryptField(cleanPhone);
+    const encryptedCondition = EncryptionService.encryptField(condition || null);
+
+    // Create user in DB
     const user = await prisma.user.create({
       data: {
-        firstName,
-        lastName,
+        firstName: encryptedFirstName,
+        lastName: encryptedLastName,
         email: email.trim(),
-        phone: cleanPhone,
+        phone: encryptedPhone,
+        phoneBlindIndex,
         gender,
         passwordHash,
-        condition: condition || null,
+        condition: encryptedCondition,
         specGenderPref: specGenderPref || 'any',
         role: 'user',
         isVerified,
@@ -233,6 +271,7 @@ async function register(req, res, next) {
     });
 
     const token = createToken(user);
+    const decryptedUser = EncryptionService.decryptUserFields(user);
 
     await AuditService.log({
       req,
@@ -247,7 +286,7 @@ async function register(req, res, next) {
       success: true,
       message: 'تم إنشاء الحساب بنجاح! أهلاً بك في منصة PsyAI',
       token,
-      user
+      user: decryptedUser
     });
   } catch (err) {
     next(err);
@@ -256,17 +295,19 @@ async function register(req, res, next) {
 
 /**
  * POST /api/auth/login
- * User login via Email or Phone + Password
+ * User login via Email or Phone + Password (using Blind Index for encrypted phone search)
  */
 async function login(req, res, next) {
   try {
     const { identifier, password } = req.body;
     const cleanIdent = identifier.trim();
+    const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanIdent);
 
     const user = await prisma.user.findFirst({
       where: {
         OR: [
           { email: cleanIdent.toLowerCase() },
+          { phoneBlindIndex },
           { phone: cleanIdent }
         ]
       }
@@ -316,6 +357,7 @@ async function login(req, res, next) {
 
     // Issue token based on verification state
     const token = createToken(user);
+    const decryptedUser = EncryptionService.decryptUserFields(user);
 
     await AuditService.log({
       req,
@@ -327,17 +369,17 @@ async function login(req, res, next) {
 
     res.status(200).json({
       success: true,
-      message: `أهلاً بك مجدداً يا ${user.firstName}!`,
+      message: `أهلاً بك مجدداً يا ${decryptedUser.firstName}!`,
       token,
       user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        fullName: `${user.firstName} ${user.lastName}`,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        isVerified: user.isVerified
+        id: decryptedUser.id,
+        firstName: decryptedUser.firstName,
+        lastName: decryptedUser.lastName,
+        fullName: decryptedUser.fullName || `${decryptedUser.firstName} ${decryptedUser.lastName}`.trim(),
+        email: decryptedUser.email,
+        phone: decryptedUser.phone,
+        role: decryptedUser.role,
+        isVerified: decryptedUser.isVerified
       }
     });
   } catch (err) {
@@ -474,9 +516,13 @@ async function resetPassword(req, res, next) {
  * GET /api/auth/me
  * Get current authenticated user profile
  */
+/**
+ * GET /api/auth/me
+ * Get current authenticated user profile (decrypted for owner)
+ */
 async function getMe(req, res, next) {
   try {
-    const user = await prisma.user.findUnique({
+    const rawUser = await prisma.user.findUnique({
       where: { id: req.user.id },
       select: {
         id: true,
@@ -503,11 +549,17 @@ async function getMe(req, res, next) {
       }
     });
 
+    if (!rawUser) {
+      return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
+    }
+
+    const user = EncryptionService.decryptUserFields(rawUser);
+
     res.status(200).json({
       success: true,
       user: {
         ...user,
-        fullName: `${user.firstName} ${user.lastName}`
+        fullName: user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim()
       }
     });
   } catch (err) {
@@ -530,7 +582,7 @@ function formatJordanPhone(raw) {
 
 /**
  * POST /api/auth/google
- * Google Auth with mandatory phone verification state machine (Section 2)
+ * Google Auth with mandatory phone verification state machine (Section 2) & field encryption
  */
 async function googleAuth(req, res, next) {
   try {
@@ -542,6 +594,7 @@ async function googleAuth(req, res, next) {
 
     const cleanEmail = email.toLowerCase().trim();
     const formattedPhone = formatJordanPhone(phone);
+    const phoneBlindIndex = formattedPhone ? EncryptionService.generateBlindIndex(formattedPhone) : null;
 
     // Check if user already exists by email
     let user = await prisma.user.findUnique({
@@ -549,21 +602,22 @@ async function googleAuth(req, res, next) {
     });
 
     if (user) {
-      if (user.phone && user.phone.length > 5) {
+      const decryptedExisting = EncryptionService.decryptUserFields(user);
+      if (decryptedExisting.phone && decryptedExisting.phone.length > 5) {
         const token = createToken(user, ['full_access']);
         return res.status(200).json({
           success: true,
           token,
           user: {
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            phone: user.phone,
-            role: user.role,
-            isVerified: user.isVerified
+            id: decryptedExisting.id,
+            firstName: decryptedExisting.firstName,
+            lastName: decryptedExisting.lastName,
+            email: decryptedExisting.email,
+            phone: decryptedExisting.phone,
+            role: decryptedExisting.role,
+            isVerified: decryptedExisting.isVerified
           },
-          message: `أهلاً بك مجدداً يا ${user.firstName}!`
+          message: `أهلاً بك مجدداً يا ${decryptedExisting.firstName}!`
         });
       }
 
@@ -572,32 +626,38 @@ async function googleAuth(req, res, next) {
           success: true,
           needPhone: true,
           email: cleanEmail,
-          firstName: user.firstName,
-          lastName: user.lastName,
+          firstName: decryptedExisting.firstName,
+          lastName: decryptedExisting.lastName,
           message: 'يرجى إدخال رقم هاتفك الأردني لإكمال تسجيل الدخول'
         });
       }
 
-      // Update user phone
+      // Update user phone with encryption and blind index
       user = await prisma.user.update({
         where: { id: user.id },
-        data: { phone: formattedPhone, isVerified: true }
+        data: {
+          phone: EncryptionService.encryptField(formattedPhone),
+          phoneBlindIndex,
+          isVerified: true
+        }
       });
 
       const token = createToken(user, ['full_access']);
+      const decryptedUpdated = EncryptionService.decryptUserFields(user);
+
       return res.status(200).json({
         success: true,
         token,
         user: {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          phone: user.phone,
-          role: user.role,
-          isVerified: user.isVerified
+          id: decryptedUpdated.id,
+          firstName: decryptedUpdated.firstName,
+          lastName: decryptedUpdated.lastName,
+          email: decryptedUpdated.email,
+          phone: decryptedUpdated.phone,
+          role: decryptedUpdated.role,
+          isVerified: decryptedUpdated.isVerified
         },
-        message: `تم تحديث رقم الهاتف وتسجيل الدخول بنجاح! مرحباً ${user.firstName}`
+        message: `تم تحديث رقم الهاتف وتسجيل الدخول بنجاح! مرحباً ${decryptedUpdated.firstName}`
       });
     }
 
@@ -614,7 +674,12 @@ async function googleAuth(req, res, next) {
     }
 
     const phoneExists = await prisma.user.findFirst({
-      where: { phone: formattedPhone }
+      where: {
+        OR: [
+          { phoneBlindIndex },
+          { phone: formattedPhone }
+        ]
+      }
     });
     if (phoneExists) {
       return res.status(400).json({
@@ -629,15 +694,21 @@ async function googleAuth(req, res, next) {
     const fName = (firstName && firstName.trim()) ? firstName.trim() : 'مستخدم';
     const lName = (lastName && lastName.trim()) ? lastName.trim() : 'Google';
 
+    const encryptedFirstName = EncryptionService.encryptField(fName);
+    const encryptedLastName = EncryptionService.encryptField(lName);
+    const encryptedPhone = EncryptionService.encryptField(formattedPhone);
+    const encryptedCondition = EncryptionService.encryptField(condition || null);
+
     const newUser = await prisma.user.create({
       data: {
-        firstName: fName,
-        lastName: lName,
+        firstName: encryptedFirstName,
+        lastName: encryptedLastName,
         email: cleanEmail,
-        phone: formattedPhone,
+        phone: encryptedPhone,
+        phoneBlindIndex,
         gender: 'any',
         passwordHash,
-        condition: condition || null,
+        condition: encryptedCondition,
         specGenderPref: specGenderPref || 'any',
         role: 'user',
         isVerified: true,
@@ -647,6 +718,7 @@ async function googleAuth(req, res, next) {
     });
 
     const token = createToken(newUser, ['full_access']);
+    const decryptedNew = EncryptionService.decryptUserFields(newUser);
 
     await AuditService.log({
       req,
@@ -660,13 +732,13 @@ async function googleAuth(req, res, next) {
       success: true,
       token,
       user: {
-        id: newUser.id,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        email: newUser.email,
-        phone: newUser.phone,
-        role: newUser.role,
-        isVerified: newUser.isVerified
+        id: decryptedNew.id,
+        firstName: decryptedNew.firstName,
+        lastName: decryptedNew.lastName,
+        email: decryptedNew.email,
+        phone: decryptedNew.phone,
+        role: decryptedNew.role,
+        isVerified: decryptedNew.isVerified
       },
       message: 'تم إنشاء حسابك عبر Google وتأكيد رقم هاتفك بنجاح!'
     });
@@ -677,7 +749,7 @@ async function googleAuth(req, res, next) {
 
 /**
  * PUT /api/user/profile
- * Update user personal details (name, email, condition, specGenderPref)
+ * Update user personal details (name, email, condition, specGenderPref) with field encryption
  */
 async function updateProfile(req, res, next) {
   try {
@@ -685,9 +757,9 @@ async function updateProfile(req, res, next) {
     const { firstName, lastName, email, condition, specGenderPref } = req.body;
 
     const dataToUpdate = {};
-    if (firstName) dataToUpdate.firstName = firstName.trim();
-    if (lastName) dataToUpdate.lastName = lastName.trim();
-    if (condition !== undefined) dataToUpdate.condition = condition;
+    if (firstName) dataToUpdate.firstName = EncryptionService.encryptField(firstName.trim());
+    if (lastName) dataToUpdate.lastName = EncryptionService.encryptField(lastName.trim());
+    if (condition !== undefined) dataToUpdate.condition = EncryptionService.encryptField(condition);
     if (specGenderPref) dataToUpdate.specGenderPref = specGenderPref;
 
     if (email) {
@@ -719,10 +791,12 @@ async function updateProfile(req, res, next) {
       }
     });
 
+    const decryptedUser = EncryptionService.decryptUserFields(updatedUser);
+
     await AuditService.log({
       req,
       actorId: userId,
-      actorRole: updatedUser.role,
+      actorRole: decryptedUser.role,
       action: 'USER_PROFILE_UPDATE',
       result: 'SUCCESS'
     });
@@ -731,8 +805,8 @@ async function updateProfile(req, res, next) {
       success: true,
       message: 'تم تحديث بيانات الملف الشخصي بنجاح.',
       user: {
-        ...updatedUser,
-        fullName: `${updatedUser.firstName} ${updatedUser.lastName}`
+        ...decryptedUser,
+        fullName: decryptedUser.fullName || `${decryptedUser.firstName} ${decryptedUser.lastName}`.trim()
       }
     });
   } catch (err) {
@@ -753,7 +827,15 @@ async function sendPhoneUpdateOtp(req, res, next) {
     }
 
     const cleanPhone = sanitizePhone(phone);
-    const existing = await prisma.user.findUnique({ where: { phone: cleanPhone } });
+    const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
+    const existing = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { phoneBlindIndex },
+          { phone: cleanPhone }
+        ]
+      }
+    });
     if (existing && existing.id !== userId) {
       return res.status(400).json({
         success: false,
@@ -773,7 +855,17 @@ async function sendPhoneUpdateOtp(req, res, next) {
       result: 'SUCCESS'
     });
 
-    res.status(200).json(result);
+    const responsePayload = {
+      success: true,
+      phone: result.phone || cleanPhone,
+      expiresInMinutes: result.expiresInMinutes,
+      message: `تم إرسال رمز التحقق إلى تطبيق WhatsApp للرقم ${cleanPhone}`
+    };
+    if (process.env.NODE_ENV === 'test' && result.devCode) {
+      responsePayload.devCode = result.devCode;
+    }
+
+    res.status(200).json(responsePayload);
   } catch (err) {
     next(err);
   }
@@ -781,7 +873,7 @@ async function sendPhoneUpdateOtp(req, res, next) {
 
 /**
  * POST /api/user/update-phone
- * Verify OTP and update user's phone number
+ * Verify OTP and update user's phone number with encryption and blind index
  */
 async function verifyAndUpdatePhone(req, res, next) {
   try {
@@ -789,6 +881,7 @@ async function verifyAndUpdatePhone(req, res, next) {
     const { newPhone, otpCode } = req.body;
 
     const cleanPhone = sanitizePhone(newPhone);
+    const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
     const verifyRes = await WhatsAppService.verifyOtp(cleanPhone, otpCode);
     if (!verifyRes.success) {
       return res.status(400).json(verifyRes);
@@ -797,7 +890,8 @@ async function verifyAndUpdatePhone(req, res, next) {
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
-        phone: cleanPhone,
+        phone: EncryptionService.encryptField(cleanPhone),
+        phoneBlindIndex,
         isVerified: true
       },
       select: {
@@ -811,10 +905,12 @@ async function verifyAndUpdatePhone(req, res, next) {
       }
     });
 
+    const decryptedUser = EncryptionService.decryptUserFields(updatedUser);
+
     await AuditService.log({
       req,
       actorId: userId,
-      actorRole: updatedUser.role,
+      actorRole: decryptedUser.role,
       action: 'USER_PHONE_UPDATE_SUCCESS',
       result: 'SUCCESS'
     });
@@ -822,7 +918,7 @@ async function verifyAndUpdatePhone(req, res, next) {
     res.status(200).json({
       success: true,
       message: 'تم التحقق من رقم الهاتف الجديد وتحديثه بنجاح!',
-      user: updatedUser
+      user: decryptedUser
     });
   } catch (err) {
     next(err);

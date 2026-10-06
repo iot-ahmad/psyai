@@ -16,6 +16,7 @@ jest.mock('../src/config/db', () => mockPrisma);
 jest.mock('../src/services/whatsappService', () => mockWhatsapp);
 
 const authController = require('../src/controllers/authController');
+const EncryptionService = require('../src/services/encryptionService');
 
 describe('authController.sendOtp', () => {
   let res, next;
@@ -442,8 +443,10 @@ describe('authController.googleAuth', () => {
 
     expect(mockPrisma.user.update).toHaveBeenCalledWith({
       where: { id: 'user-1' },
-      data: { phone: '+962791234567', isVerified: true }
+      data: expect.objectContaining({ isVerified: true, phoneBlindIndex: expect.any(String) })
     });
+    const updatedData = mockPrisma.user.update.mock.calls[0][0].data;
+    expect(EncryptionService.decryptField(updatedData.phone)).toBe('+962791234567');
   });
 
   it('creates a brand-new Google user with a valid Jordanian phone', async () => {
@@ -465,7 +468,7 @@ describe('authController.googleAuth', () => {
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.body.success).toBe(true);
     const createdData = mockPrisma.user.create.mock.calls[0][0].data;
-    expect(createdData.phone).toBe('+962791234567');
+    expect(EncryptionService.decryptField(createdData.phone)).toBe('+962791234567');
     expect(createdData.isVerified).toBe(true);
     expect(createdData.passwordHash).toBeDefined();
   });
@@ -496,8 +499,8 @@ describe('authController.googleAuth', () => {
     );
 
     const createdData = mockPrisma.user.create.mock.calls[0][0].data;
-    expect(createdData.firstName).toBe('مستخدم');
-    expect(createdData.lastName).toBe('Google');
+    expect(EncryptionService.decryptField(createdData.firstName)).toBe('مستخدم');
+    expect(EncryptionService.decryptField(createdData.lastName)).toBe('Google');
   });
 });
 

@@ -13,7 +13,7 @@ const {
   webhookIpFilter,
   apiLimiter
 } = require('./middlewares/security');
-const { protect } = require('./middlewares/auth');
+const { protect, restrictTo } = require('./middlewares/auth');
 const {
   validate,
   registerSchema,
@@ -144,8 +144,8 @@ paymentsRouter.post(
   paymentsController.handleWebhook
 );
 
-// 3. Payment Status Check for Frontend Polling (Strictly queries DB)
-paymentsRouter.get('/:paymentId/status', paymentsController.getPaymentStatus);
+// 3. Payment Status Check for Frontend Polling (Strictly queries DB - Protected)
+paymentsRouter.get('/:paymentId/status', protect, paymentsController.getPaymentStatus);
 
 // 4. Payment by Booking details
 paymentsRouter.get('/booking/:bookingId', protect, paymentsController.getPaymentByBooking);
@@ -153,9 +153,11 @@ paymentsRouter.get('/booking/:bookingId', protect, paymentsController.getPayment
 app.use('/api/payments', paymentsRouter);
 
 /* ==========================================================================
-   5. ADMIN PANEL ROUTES (/api/admin) - 100% Compatible with admin.html
+   5. ADMIN PANEL ROUTES (/api/admin) - Strictly Protected & Restricted to Admins
    ========================================================================== */
 const adminRouter = express.Router();
+adminRouter.use(protect, restrictTo('admin'));
+
 adminRouter.get('/dashboard', adminController.getDashboard);
 adminRouter.get('/users', adminController.getUsers);
 adminRouter.post('/users', adminController.createUser);
@@ -176,8 +178,8 @@ adminRouter.get('/companies', adminController.getCompanies);
 adminRouter.post('/companies', adminController.createCompany);
 
 // B2B Corporate Partnership Applications (Admin review)
-adminRouter.get('/b2b-requests', protect, b2bController.getAdminRequests);
-adminRouter.patch('/b2b-requests/:id', protect, validate(reviewB2bRequestSchema), b2bController.reviewRequest);
+adminRouter.get('/b2b-requests', b2bController.getAdminRequests);
+adminRouter.patch('/b2b-requests/:id', validate(reviewB2bRequestSchema), b2bController.reviewRequest);
 app.use('/api/admin', adminRouter);
 
 /* ==========================================================================
@@ -196,7 +198,7 @@ specialistRouter.get('/profile', protect, specialistPortalController.getProfile)
 specialistRouter.get('/bookings', protect, specialistPortalController.getMyBookings);
 specialistRouter.patch('/bookings/:id/confirm', protect, specialistPortalController.confirmBooking);
 specialistRouter.post('/bookings/:id/send-link', protect, specialistPortalController.sendMeetingLink);
-specialistRouter.get('/session/:id', specialistPortalController.getSessionDetails);
+specialistRouter.get('/session/:id', protect, specialistPortalController.getSessionDetails);
 specialistRouter.get('/articles', protect, specialistPortalController.getMyArticles);
 specialistRouter.get('/my-articles', protect, specialistPortalController.getMyArticles);
 specialistRouter.post('/articles', protect, specialistPortalController.publishArticle);

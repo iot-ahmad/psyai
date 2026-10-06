@@ -1,8 +1,9 @@
 const prisma = require('../config/db');
+const EncryptionService = require('../services/encryptionService');
 
 /**
  * POST /api/bookings
- * Create a new consultation booking
+ * Create a new consultation booking with field-level encryption for condition & notes
  */
 async function createBooking(req, res, next) {
   try {
@@ -18,13 +19,19 @@ async function createBooking(req, res, next) {
       return res.status(404).json({ success: false, message: 'الأخصائي غير موجود' });
     }
 
+    const rawCondition = condition || req.user.condition || null;
+    const rawNotes = notes || null;
+
+    const encryptedCondition = EncryptionService.encryptField(rawCondition);
+    const encryptedNotes = EncryptionService.encryptField(rawNotes);
+
     const booking = await prisma.booking.create({
       data: {
         userId,
         specialistId,
         sessionTime,
-        condition: condition || req.user.condition || null,
-        notes: notes || null,
+        condition: encryptedCondition,
+        notes: encryptedNotes,
         status: 'pending' // pending until paid or confirmed
       },
       include: {
@@ -53,13 +60,13 @@ async function createBooking(req, res, next) {
 
 /**
  * GET /api/bookings/my
- * Get current user's bookings
+ * Get current user's bookings (decrypted for owner)
  */
 async function getMyBookings(req, res, next) {
   try {
     const userId = req.user.id;
 
-    const bookings = await prisma.booking.findMany({
+    const rawBookings = await prisma.booking.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
       include: {
@@ -70,11 +77,14 @@ async function getMyBookings(req, res, next) {
       }
     });
 
-    const formatted = bookings.map((b) => ({
-      ...b,
-      sessionLink: b.sessionUrl || `/session.html?id=${b.id}`,
-      paymentStatus: b.payment ? b.payment.status : (b.status === 'confirmed' ? 'paid' : 'unpaid')
-    }));
+    const formatted = rawBookings.map((b) => {
+      const decrypted = EncryptionService.decryptBookingFields(b);
+      return {
+        ...decrypted,
+        sessionLink: decrypted.sessionUrl || `/session.html?id=${decrypted.id}`,
+        paymentStatus: decrypted.payment ? decrypted.payment.status : (decrypted.status === 'confirmed' ? 'paid' : 'unpaid')
+      };
+    });
 
     res.status(200).json({
       success: true,

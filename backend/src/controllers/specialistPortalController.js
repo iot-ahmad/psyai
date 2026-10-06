@@ -1,6 +1,7 @@
 const prisma = require('../config/db');
 const WhatsappService = require('../services/whatsappService');
 const AuditService = require('../services/auditService');
+const EncryptionService = require('../services/encryptionService');
 
 /**
  * Helper: Find specialist record associated with the authenticated user
@@ -76,7 +77,7 @@ async function getMyBookings(req, res, next) {
       return res.status(200).json({ success: true, bookings: [] });
     }
 
-    const bookings = await prisma.booking.findMany({
+    const rawBookings = await prisma.booking.findMany({
       where: { specialistId: spec.id },
       orderBy: { createdAt: 'desc' },
       include: {
@@ -99,6 +100,8 @@ async function getMyBookings(req, res, next) {
         }
       }
     });
+
+    const bookings = rawBookings.map((b) => EncryptionService.decryptBookingFields(b));
 
     await AuditService.log({
       req,
@@ -201,9 +204,10 @@ async function sendMeetingLink(req, res, next) {
     const platformSessionUrl = `${protocol}://${host}/session.html?id=${booking.id}`;
 
     // Send WhatsApp notification
-    const patientName = `${booking.user.firstName} ${booking.user.lastName}`.trim();
+    const decUser = EncryptionService.decryptUserFields(booking.user);
+    const patientName = `${decUser.firstName || ''} ${decUser.lastName || ''}`.trim();
     const specName = booking.specialist.name;
-    const phone = booking.user.phone;
+    const phone = decUser.phone;
 
     await WhatsappService.sendSessionStartNotification(phone, patientName, specName, platformSessionUrl);
 
@@ -220,7 +224,7 @@ async function sendMeetingLink(req, res, next) {
 
 /**
  * GET /api/specialist/session/:id
- * Public / Patient endpoint to retrieve session details and access the meeting
+ * Public / Patient endpoint to retrieve session details and access the meeting (decrypted for authorized patient/specialist)
  */
 async function getSessionDetails(req, res, next) {
   try {
@@ -232,6 +236,7 @@ async function getSessionDetails(req, res, next) {
         specialist: {
           select: {
             id: true,
+            userId: true,
             name: true,
             title: true,
             specialty: true,
@@ -252,6 +257,26 @@ async function getSessionDetails(req, res, next) {
       return res.status(404).json({ success: false, message: 'الجلسة غير موجودة' });
     }
 
+    // Authorization check: User must be the patient, the assigned specialist, or an admin
+    const isPatient = booking.userId === req.user.id;
+    let isAssignedSpecialist = false;
+    if (req.user.role === 'specialist') {
+      const spec = await getSpecialistForUser(req.user);
+      if (spec && booking.specialistId === spec.id) {
+        isAssignedSpecialist = true;
+      }
+    }
+    const isAdmin = req.user.role === 'admin';
+
+    if (!isPatient && !isAssignedSpecialist && !isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: 'غير مصرح لك بالوصول لتفاصيل هذه الجلسة'
+      });
+    }
+
+    const decUser = EncryptionService.decryptUserFields(booking.user);
+
     res.status(200).json({
       success: true,
       session: {
@@ -260,7 +285,7 @@ async function getSessionDetails(req, res, next) {
         status: booking.status,
         meetingLink: booking.meetingLink,
         specialist: booking.specialist,
-        patientName: `${booking.user.firstName} ${booking.user.lastName}`.trim()
+        patientName: `${decUser.firstName || ''} ${decUser.lastName || ''}`.trim()
       }
     });
   } catch (err) {

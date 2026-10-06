@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const prisma = require('../config/db');
+const EncryptionService = require('../services/encryptionService');
 
 /**
  * GET /api/admin/dashboard
@@ -33,23 +34,26 @@ async function getDashboard(req, res, next) {
       }
     });
 
-    const recentBookings = bookings.map((b) => ({
-      id: b.id,
-      user: {
-        first_name: b.user.firstName,
-        last_name: b.user.lastName,
-        email: b.user.email
-      },
-      specialist: {
+    const recentBookings = bookings.map((b) => {
+      const decUser = EncryptionService.decryptUserFields(b.user);
+      return {
+        id: b.id,
         user: {
-          first_name: b.specialist.name.replace(/^د\.\s*/, ''),
-          last_name: ''
-        }
-      },
-      start_time: b.sessionTime,
-      created_at: b.createdAt,
-      status: b.status
-    }));
+          first_name: decUser.firstName,
+          last_name: decUser.lastName,
+          email: decUser.email
+        },
+        specialist: {
+          user: {
+            first_name: b.specialist.name.replace(/^د\.\s*/, ''),
+            last_name: ''
+          }
+        },
+        start_time: b.sessionTime,
+        created_at: b.createdAt,
+        status: b.status
+      };
+    });
 
     res.status(200).json({
       success: true,
@@ -78,16 +82,19 @@ async function getUsers(req, res, next) {
       orderBy: { createdAt: 'desc' }
     });
 
-    const users = rawUsers.map((u) => ({
-      id: u.id,
-      first_name: u.firstName,
-      last_name: u.lastName,
-      email: u.email,
-      phone: u.phone,
-      role: { name: u.role },
-      status: u.status,
-      created_at: u.createdAt
-    }));
+    const users = rawUsers.map((u) => {
+      const dec = EncryptionService.decryptUserFields(u);
+      return {
+        id: dec.id,
+        first_name: dec.firstName,
+        last_name: dec.lastName,
+        email: dec.email,
+        phone: dec.phone,
+        role: { name: dec.role },
+        status: dec.status,
+        created_at: dec.createdAt
+      };
+    });
 
     res.status(200).json({ success: true, users });
   } catch (err) {

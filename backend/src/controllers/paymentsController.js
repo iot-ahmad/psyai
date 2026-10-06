@@ -83,6 +83,14 @@ async function getPaymentStatus(req, res, next) {
       });
     }
 
+    // Ownership check: Requester must be the user associated with the payment or an admin
+    if (payment.userId && payment.userId !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'غير مصرح لك بالاطلاع على حالة هذا الدفع'
+      });
+    }
+
     res.status(200).json({
       success: true,
       payment
@@ -105,6 +113,14 @@ async function getPaymentByBooking(req, res, next) {
       return res.status(404).json({
         success: false,
         message: 'لا توجد تفاصيل دفع لهذا الحجز'
+      });
+    }
+
+    // Ownership check: Requester must be the owner of the booking or an admin
+    if (payment.booking && payment.booking.userId !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'غير مصرح لك بعرض بيانات الدفع لهذا الحجز'
       });
     }
 

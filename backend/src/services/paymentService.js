@@ -314,7 +314,12 @@ class PaymentService {
    */
   static async getPaymentStatus(paymentId) {
     const payment = await prisma.payment.findUnique({
-      where: { id: paymentId }
+      where: { id: paymentId },
+      include: {
+        booking: {
+          select: { userId: true }
+        }
+      }
     });
 
     if (!payment) {
@@ -323,6 +328,7 @@ class PaymentService {
 
     return {
       id: payment.id,
+      userId: payment.userId || payment.booking?.userId,
       bookingId: payment.bookingId,
       status: payment.status,
       amount: payment.amount,

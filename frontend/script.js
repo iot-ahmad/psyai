@@ -710,14 +710,6 @@ function initMoodTrackerMockup() {
       });
     });
 
-    // Floating mood dock emoji selection
-    const emojis = phone.querySelectorAll('.mt-dock-emoji');
-    emojis.forEach((emoji) => {
-      emoji.addEventListener('click', () => {
-        emojis.forEach((e) => e.classList.remove('active'));
-        emoji.classList.add('active');
-      });
-    });
   });
 }
 
