@@ -1,5 +1,28 @@
+# ── Tool/IDE ──────────────────────────────────────────────────────────────────
 /.kombai
-/admin.html
+
+# ── Frontend ──────────────────────────────────────────────────────────────────
+/frontend/node_modules
+
+# Keep admin.html out of version control (sensitive)
+/frontend/admin.html
+
+# ── Backend ───────────────────────────────────────────────────────────────────
+/backend/node_modules
+/backend/coverage
+
+# Backend environment variables (never commit real secrets)
+/backend/.env
+
+# ── Database ──────────────────────────────────────────────────────────────────
+# SQLite dev database (local only — use migrations in production)
+/backend/prisma/dev.db
+/backend/prisma/dev.db-journal
+/backend/prisma/dev.db-wal
+/backend/prisma/dev.db-shm
+
+# Generated Prisma client (rebuilt via `prisma generate`)
+/backend/node_modules/.prisma
+
+# ── Root ──────────────────────────────────────────────────────────────────────
 /node_modules
-/تسجيل.md
-/قواعد امان.md

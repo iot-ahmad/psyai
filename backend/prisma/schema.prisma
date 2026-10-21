@@ -1,0 +1,363 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── ENUMS ─────────────────────────────────────────────────────────────────────
+
+enum GenderEnum {
+  male
+  female
+
+  @@map("gender_enum")
+}
+
+enum SpecGenderPrefEnum {
+  any
+  male
+  female
+
+  @@map("spec_gender_pref_enum")
+}
+
+enum LanguageEnum {
+  ar
+  en
+
+  @@map("language_enum")
+}
+
+enum UserStatusEnum {
+  active
+  inactive
+  suspended
+
+  @@map("user_status_enum")
+}
+
+enum UserRoleEnum {
+  user
+  specialist
+  admin
+
+  @@map("user_role_enum")
+}
+
+enum BookingStatusEnum {
+  pending
+  confirmed
+  completed
+  cancelled
+  no_show
+
+  @@map("booking_status_enum")
+}
+
+enum PaymentStatusEnum {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+
+  @@map("payment_status_enum")
+}
+
+enum ArticleStatusEnum {
+  draft
+  published
+  archived
+
+  @@map("article_status_enum")
+}
+
+enum ModerationStatusEnum {
+  pending
+  published
+  rejected
+
+  @@map("moderation_status_enum")
+}
+
+enum B2bStatusEnum {
+  pending
+  approved
+  rejected
+
+  @@map("b2b_status_enum")
+}
+
+enum ReminderTypeEnum {
+  reminder_24h     @map("24h")
+  reminder_1h      @map("1h")
+  session_link     @map("session_link")
+
+  @@map("reminder_type_enum")
+}
+
+enum ReminderStatusEnum {
+  pending
+  sent
+  failed
+
+  @@map("reminder_status_enum")
+}
+
+enum DayEnum {
+  Sunday
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+
+  @@map("day_enum")
+}
+
+// ── MODELS ────────────────────────────────────────────────────────────────────
+
+model User {
+  id                 String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  firstName          String              @map("first_name") @db.VarChar(100)
+  lastName           String              @map("last_name") @db.VarChar(100)
+  
+  emailEncrypted     String              @map("email_encrypted") @db.Text
+  emailHash          String              @unique @map("email_hash") @db.VarChar(64)
+  phoneEncrypted     String              @map("phone_encrypted") @db.Text
+  phoneHash          String              @unique @map("phone_hash") @db.VarChar(64)
+  
+  passwordHash       String              @map("password_hash") @db.VarChar(255)
+  gender             GenderEnum
+  
+  conditionEncrypted String?             @map("condition_encrypted") @db.Text
+  specGenderPref     SpecGenderPrefEnum? @default(any) @map("spec_gender_pref")
+  
+  role               UserRoleEnum        @default(user)
+  isVerified         Boolean             @default(false) @map("is_verified")
+  tokenVersion       Int                 @default(0) @map("token_version")
+  
+  language           LanguageEnum?       @default(ar)
+  status             UserStatusEnum      @default(active)
+  googleId           String?             @unique @map("google_id") @db.VarChar(64)
+  
+  createdAt          DateTime            @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt          DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  // Relations
+  specialist         Specialist?
+  bookings           Booking[]
+  payments           Payment[]
+  b2bRequests        B2bRequest[]        @relation("UserB2bRequests")
+  reviewedB2bRequests B2bRequest[]       @relation("AdminReviewedB2bRequests")
+  articleQuestions   ArticleQuestion[]
+  auditLogs          AuditLog[]
+
+  @@index([status], map: "idx_users_status")
+  @@map("users")
+}
+
+model Specialist {
+  id               String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String               @unique @map("user_id") @db.Uuid
+  user             User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name             String               @db.VarChar(255)
+  title            String               @db.VarChar(255)
+  specialty        String               @db.VarChar(255)
+  bio              String?              @db.Text
+  price            Decimal              @db.Decimal(10, 2)
+  rating           Decimal?             @default(0.0) @db.Decimal(2, 1)
+  isFeatured       Boolean?             @default(false) @map("is_featured")
+  licenseNumber    String?              @map("license_number") @db.VarChar(100)
+  
+  createdAt        DateTime             @default(now()) @map("created_at") @db.Timestamp(6)
+
+  // Relations
+  schedules        SpecialistSchedule[]
+  bookings         Booking[]
+  articles         Article[]
+  answeredQuestions ArticleQuestion[]   @relation("SpecialistAnswers")
+
+  @@index([isFeatured, rating(sort: Desc)], map: "idx_specialists_featured_rating")
+  @@map("specialists")
+}
+
+model SpecialistSchedule {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  specialistId String     @map("specialist_id") @db.Uuid
+  specialist   Specialist @relation(fields: [specialistId], references: [id], onDelete: Cascade)
+  
+  day          DayEnum
+  startTime    DateTime   @map("start_time") @db.Time(6)
+  endTime      DateTime   @map("end_time") @db.Time(6)
+  available    Boolean?   @default(true)
+
+  @@map("specialist_schedule")
+}
+
+model Booking {
+  id                   String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId               String             @map("user_id") @db.Uuid
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Restrict)
+  specialistId         String             @map("specialist_id") @db.Uuid
+  specialist           Specialist         @relation(fields: [specialistId], references: [id], onDelete: Restrict)
+
+  sessionTime          DateTime           @map("session_time") @db.Timestamp(6)
+  status               BookingStatusEnum  @default(pending)
+  meetingLink          String?            @map("meeting_link") @db.VarChar(500)
+  notes                String?            @db.Text
+  conditionEncrypted   String?            @map("condition_encrypted") @db.Text
+
+  // Rating & Reviews
+  rating               Decimal?           @db.Decimal(2, 1)
+  reviewNotes          String?            @map("review_notes") @db.Text
+  reviewedAt           DateTime?          @map("reviewed_at") @db.Timestamp(6)
+
+  createdAt            DateTime           @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt            DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  // Relations
+  payment              Payment?
+  reminders            SessionReminder[]
+
+  // Prevent double-booking: same specialist cannot have two active bookings at the same time
+  @@unique([specialistId, sessionTime], map: "unique_booking_specialist_time")
+  @@index([userId, createdAt(sort: Desc)], map: "idx_bookings_user_created")
+  @@index([specialistId, sessionTime], map: "idx_bookings_specialist_time")
+  @@map("bookings")
+}
+
+model Payment {
+  id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bookingId      String            @unique @map("booking_id") @db.Uuid
+  booking        Booking           @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  userId         String            @map("user_id") @db.Uuid
+  user           User              @relation(fields: [userId], references: [id], onDelete: Restrict)
+  
+  amount         Decimal           @db.Decimal(10, 2)
+  currency       String            @default("SAR") @db.VarChar(10)
+  status         PaymentStatusEnum @default(PENDING)
+  
+  idempotencyKey String            @unique @map("idempotency_key") @db.VarChar(255)
+  visaSessionId  String?           @unique @map("visa_session_id") @db.VarChar(255)
+  transactionId  String?           @unique @map("transaction_id") @db.VarChar(255)
+  
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt      DateTime          @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  @@map("payments")
+}
+
+model Article {
+  id           String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  specialistId String            @map("specialist_id") @db.Uuid
+  specialist   Specialist        @relation(fields: [specialistId], references: [id], onDelete: Cascade)
+  
+  title        String            @db.VarChar(255)
+  categorySlug String            @map("category_slug") @db.VarChar(150)
+  body         String            @db.Text
+  status       ArticleStatusEnum @default(draft)
+  
+  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt    DateTime          @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  // Relations
+  questions    ArticleQuestion[]
+
+  @@index([specialistId], map: "idx_articles_specialist")
+  @@map("articles")
+}
+
+model ArticleQuestion {
+  id         String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  articleId  String               @map("article_id") @db.Uuid
+  article    Article              @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  
+  userId     String?              @map("user_id") @db.Uuid
+  user       User?                @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  guestName  String?              @map("guest_name") @db.VarChar(150)
+  question   String               @db.Text
+  answer     String?              @db.Text
+  
+  answeredBy String?              @map("answered_by") @db.Uuid
+  specialist Specialist?          @relation("SpecialistAnswers", fields: [answeredBy], references: [id], onDelete: SetNull)
+  
+  status     ModerationStatusEnum @default(pending)
+  createdAt  DateTime             @default(now()) @map("created_at") @db.Timestamp(6)
+
+  @@index([articleId, status], map: "idx_article_questions_article_status")
+  @@index([createdAt(sort: Desc)], map: "idx_article_questions_created")
+  @@map("article_questions")
+}
+
+model B2bRequest {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String        @map("user_id") @db.Uuid
+  user           User          @relation("UserB2bRequests", fields: [userId], references: [id], onDelete: Cascade)
+  
+  companyName    String        @map("company_name") @db.VarChar(255)
+  phone          String        @db.VarChar(50)
+  email          String        @db.VarChar(255)
+  employeesCount String        @map("employees_count") @db.VarChar(50)
+  status         B2bStatusEnum @default(pending)
+  
+  reviewedBy     String?       @map("reviewed_by") @db.Uuid
+  reviewer       User?         @relation("AdminReviewedB2bRequests", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  reviewNote     String?       @map("review_note") @db.Text
+  
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamp(6)
+
+  @@index([userId, createdAt(sort: Desc)], map: "idx_b2b_requests_user_created")
+  @@index([status], map: "idx_b2b_requests_status")
+  @@map("b2b_requests")
+}
+
+model SessionReminder {
+  id           String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bookingId    String               @map("booking_id") @db.Uuid
+  booking      Booking              @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  
+  reminderType ReminderTypeEnum     @map("reminder_type")
+  status       ReminderStatusEnum   @default(pending)
+  scheduledAt  DateTime             @map("scheduled_at") @db.Timestamp(6)
+  sentAt       DateTime?            @map("sent_at") @db.Timestamp(6)
+
+  @@unique([bookingId, reminderType], map: "unique_booking_reminder")
+  @@index([status, scheduledAt], map: "idx_session_reminders_status_scheduled")
+  @@map("session_reminders")
+}
+
+model AuditLog {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  action    String   @db.VarChar(255)
+  entity    String?  @db.VarChar(150)
+  entityId  String?  @map("entity_id") @db.Uuid
+  details   Json?    @db.JsonB
+  
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+
+  @@index([action], map: "idx_audit_logs_action")
+  @@index([createdAt(sort: Desc)], map: "idx_audit_logs_created")
+  @@map("audit_logs")
+}
+
+model OtpToken {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  phone          String    @unique @db.VarChar(50)
+  codeHash       String    @map("code_hash") @db.VarChar(255)
+  attempts       Int       @default(0)
+  phoneLockUntil DateTime? @map("phone_lock_until") @db.Timestamp(6)
+  expiresAt      DateTime  @map("expires_at") @db.Timestamp(6)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+
+  @@index([phone], map: "idx_otp_tokens_phone")
+  @@map("otp_tokens")
+}
