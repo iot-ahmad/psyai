@@ -1,0 +1,432 @@
+/* ==========================================================================
+   PsyAI — Apple-Inspired Values Page Styles (apple-values.css)
+   Aesthetic: Apple Pro Editorial — Deep Atmospheric Teal, Warm Gold Highlights,
+   Continuous Curvature (Squircle), Frosted Glassmorphism, Generous Whitespace.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Values Hero Section
+   -------------------------------------------------------------------------- */
+.values-hero {
+  position: relative;
+  background-color: #0e1b1c;
+  background-image: 
+    linear-gradient(180deg, rgba(14, 27, 28, 0.65) 0%, rgba(19, 36, 37, 0.35) 45%, rgba(14, 27, 28, 0.8) 100%),
+    url("../images/hero_teal_gold_bg.jpg") !important;
+  background-size: cover !important;
+  background-position: center 60% !important;
+  background-repeat: no-repeat !important;
+  padding: 6.5rem 0 5rem;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.values-hero::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 850px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(212, 168, 67, 0.12) 0%, rgba(51, 89, 91, 0.18) 50%, transparent 70%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.values-hero .breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 1.15rem;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1.5rem;
+  transition: all 0.25s ease;
+}
+
+.values-hero .breadcrumb a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.values-hero .breadcrumb a:hover {
+  color: var(--apple-gold-light);
+}
+
+.values-hero .breadcrumb span {
+  color: var(--apple-gold);
+  font-weight: 600;
+}
+
+.values-hero .hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--apple-gold);
+  background: rgba(212, 168, 67, 0.12);
+  border: 1px solid rgba(212, 168, 67, 0.28);
+  border-radius: var(--radius-full);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.values-hero .hero-badge-pill::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--apple-gold);
+  box-shadow: 0 0 8px var(--apple-gold);
+}
+
+.values-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+}
+
+.values-hero p.lead {
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 660px;
+  margin: 0 auto 2.5rem;
+}
+
+.values-hero-tags {
+  display: inline-flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3.5rem;
+}
+
+.values-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 1.15rem;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.values-hero-tag:hover {
+  background: rgba(212, 168, 67, 0.18);
+  border-color: rgba(212, 168, 67, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.values-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.75rem 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+.values-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.values-stat:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.values-stat-num {
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--apple-gold-light);
+  line-height: 1.1;
+  margin-bottom: 0.35rem;
+}
+
+.values-stat-label {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* --------------------------------------------------------------------------
+   2. Values Storytelling Section
+   -------------------------------------------------------------------------- */
+.values-story-section {
+  padding: 6.5rem 0;
+  background: var(--apple-bg);
+}
+
+/* --------------------------------------------------------------------------
+   3. Core Values Grid (Apple Bento)
+   -------------------------------------------------------------------------- */
+.core-values-section {
+  padding: 6.5rem 0;
+  background: var(--apple-bg);
+}
+
+.core-values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 3.5rem;
+}
+
+.value-card-item {
+  background: #ffffff;
+  border-radius: var(--radius-2xl);
+  padding: 2.25rem 2rem;
+  border: 1px solid rgba(26, 46, 47, 0.07);
+  box-shadow: var(--apple-shadow-sm);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.value-card-item:hover {
+  transform: translateY(-6px);
+  border-color: rgba(212, 168, 67, 0.35);
+  box-shadow: var(--apple-shadow-lg);
+}
+
+.value-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: rgba(212, 168, 67, 0.12);
+  color: var(--apple-gold-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.value-card-item:hover .value-icon-wrap {
+  background: var(--apple-gold);
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+.value-card-item h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--apple-text-primary);
+  margin-bottom: 0.6rem;
+}
+
+.value-card-item p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--apple-text-secondary);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. Ethical Charter Section (Dark Frosted Silk)
+   -------------------------------------------------------------------------- */
+.charter-section {
+  position: relative;
+  background-color: #0e1b1c;
+  background-image: 
+    linear-gradient(180deg, rgba(14, 27, 28, 0.75) 0%, rgba(19, 36, 37, 0.45) 50%, rgba(14, 27, 28, 0.85) 100%),
+    url("../images/hero_teal_gold_bg.jpg");
+  background-size: cover;
+  background-position: center 60%;
+  color: #ffffff;
+  padding: 6.5rem 0;
+  overflow: hidden;
+}
+
+.charter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+  margin-top: 3.5rem;
+}
+
+.charter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.charter-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1.5rem 1.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl);
+  transition: all 0.3s ease;
+}
+
+.charter-item:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(212, 168, 67, 0.3);
+  transform: translateX(-4px);
+}
+
+.charter-item-num {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: rgba(212, 168, 67, 0.2);
+  color: var(--apple-gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.charter-item-text h5 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+}
+
+.charter-item-text p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. Impact Section
+   -------------------------------------------------------------------------- */
+.impact-section {
+  padding: 6.5rem 0;
+  background: var(--apple-bg);
+}
+
+.impact-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 3.5rem;
+}
+
+.impact-card {
+  background: #ffffff;
+  border: 1px solid rgba(26, 46, 47, 0.07);
+  border-radius: var(--radius-2xl);
+  padding: 2.25rem 2rem;
+  text-align: center;
+  box-shadow: var(--apple-shadow-sm);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.impact-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(212, 168, 67, 0.35);
+  box-shadow: var(--apple-shadow-lg);
+}
+
+.impact-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(212, 168, 67, 0.12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--apple-gold-dark);
+  margin: 0 auto 1.5rem;
+}
+
+.impact-card h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--apple-text-primary);
+  margin-bottom: 0.6rem;
+}
+
+.impact-card p {
+  font-size: 0.92rem;
+  color: var(--apple-text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   6. Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .values-hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .values-stat:nth-child(2)::after {
+    display: none;
+  }
+  .core-values-grid,
+  .impact-cards-grid,
+  .charter-grid {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .values-hero {
+    padding: 4.5rem 0 3.5rem;
+  }
+  .values-hero-stats {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+  .values-stat::after {
+    display: none;
+  }
+}

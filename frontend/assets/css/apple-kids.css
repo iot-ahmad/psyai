@@ -1,0 +1,348 @@
+/* ==========================================================================
+   PsyAI — Apple-Inspired Kids Service Page Styles (apple-kids.css)
+   Aesthetic: Apple Pro Editorial — Deep Atmospheric Teal, Warm Gold Highlights,
+   Continuous Curvature (Squircle), Frosted Glassmorphism, Generous Whitespace.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Kids Hero Section
+   -------------------------------------------------------------------------- */
+.kids-hero {
+  position: relative;
+  background-color: #0e1b1c;
+  background-image: 
+    linear-gradient(180deg, rgba(14, 27, 28, 0.65) 0%, rgba(19, 36, 37, 0.35) 45%, rgba(14, 27, 28, 0.8) 100%),
+    url("../images/hero_teal_gold_bg.jpg") !important;
+  background-size: cover !important;
+  background-position: center 60% !important;
+  background-repeat: no-repeat !important;
+  padding: 6.5rem 0 5rem;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.kids-hero::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 850px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(212, 168, 67, 0.12) 0%, rgba(51, 89, 91, 0.18) 50%, transparent 70%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.kids-hero .breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 1.15rem;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1.5rem;
+  transition: all 0.25s ease;
+}
+
+.kids-hero .breadcrumb a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.kids-hero .breadcrumb a:hover {
+  color: var(--apple-gold-light);
+}
+
+.kids-hero .breadcrumb span {
+  color: var(--apple-gold);
+  font-weight: 600;
+}
+
+.kids-hero .hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--apple-gold);
+  background: rgba(212, 168, 67, 0.12);
+  border: 1px solid rgba(212, 168, 67, 0.28);
+  border-radius: var(--radius-full);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.kids-hero .hero-badge-pill::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--apple-gold);
+  box-shadow: 0 0 8px var(--apple-gold);
+}
+
+.kids-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+}
+
+.kids-hero p.lead {
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 660px;
+  margin: 0 auto 2.5rem;
+}
+
+.kids-hero-tags {
+  display: inline-flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3.5rem;
+}
+
+.kids-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 1.15rem;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.kids-hero-tag:hover {
+  background: rgba(212, 168, 67, 0.18);
+  border-color: rgba(212, 168, 67, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.kids-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.75rem 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+.kids-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.kids-stat:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.kids-stat-num {
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--apple-gold-light);
+  line-height: 1.1;
+  margin-bottom: 0.35rem;
+}
+
+.kids-stat-label {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* --------------------------------------------------------------------------
+   2. Age Banner (Apple Glass Floating Bar)
+   -------------------------------------------------------------------------- */
+.age-banner {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(26, 46, 47, 0.06);
+  padding: 1.25rem 0;
+  box-shadow: var(--apple-shadow-sm);
+}
+
+.age-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.age-banner-text {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--apple-text-primary);
+}
+
+.age-badge {
+  display: inline-block;
+  padding: 0.45rem 1.25rem;
+  background: rgba(212, 168, 67, 0.12);
+  color: var(--apple-gold-dark);
+  border: 1px solid rgba(212, 168, 67, 0.25);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+}
+
+.age-badge:hover {
+  background: rgba(212, 168, 67, 0.2);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   3. Kids Visual Storytelling Section
+   -------------------------------------------------------------------------- */
+.kids-story-section {
+  padding: 6.5rem 0;
+  background: var(--apple-bg);
+}
+
+/* --------------------------------------------------------------------------
+   4. Tracks & Programs Cards (Apple Bento Squircle)
+   -------------------------------------------------------------------------- */
+.tracks-section,
+.activities-section,
+.parents-section {
+  padding: 6.5rem 0;
+  background: var(--apple-bg);
+}
+
+.tracks-grid,
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 3.5rem;
+}
+
+.track-card,
+.activity-card {
+  background: #ffffff;
+  border-radius: var(--radius-2xl);
+  padding: 2.25rem 2rem;
+  border: 1px solid rgba(26, 46, 47, 0.07);
+  box-shadow: var(--apple-shadow-sm);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.track-card:hover,
+.activity-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(212, 168, 67, 0.35);
+  box-shadow: var(--apple-shadow-lg);
+}
+
+.track-icon,
+.activity-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: rgba(212, 168, 67, 0.12);
+  color: var(--apple-gold-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.track-card:hover .track-icon,
+.activity-card:hover .activity-icon {
+  background: var(--apple-gold);
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+.track-card h3,
+.activity-card h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--apple-text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.track-card p,
+.activity-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--apple-text-secondary);
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. CTA & Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .kids-hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .kids-stat:nth-child(2)::after {
+    display: none;
+  }
+  .tracks-grid,
+  .activities-grid {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .kids-hero {
+    padding: 4.5rem 0 3.5rem;
+  }
+  .kids-hero-stats {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+  .kids-stat::after {
+    display: none;
+  }
+}

@@ -35,6 +35,7 @@ CREATE TABLE users (
     
     language            language_enum DEFAULT 'ar',
     status              user_status_enum DEFAULT 'active' NOT NULL,
+    google_id           VARCHAR(64) UNIQUE,
     
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -42,6 +43,7 @@ CREATE TABLE users (
 
 CREATE UNIQUE INDEX idx_users_email_hash ON users(email_hash);
 CREATE UNIQUE INDEX idx_users_phone_hash ON users(phone_hash);
+CREATE UNIQUE INDEX idx_users_google_id ON users(google_id);
 CREATE INDEX idx_users_status ON users(status);
 
 CREATE TABLE specialists (
@@ -78,6 +80,7 @@ CREATE TABLE bookings (
     status              booking_status_enum DEFAULT 'pending' NOT NULL,
     meeting_link        VARCHAR(500),
     notes               TEXT,
+    condition_encrypted TEXT,
     
     -- Integrated Review & Rating Fields
     rating              NUMERIC(2, 1),
@@ -87,7 +90,8 @@ CREATE TABLE bookings (
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     
-    CONSTRAINT chk_booking_rating_range CHECK (rating IS NULL OR (rating >= 1.0 AND rating <= 5.0))
+    CONSTRAINT chk_booking_rating_range CHECK (rating IS NULL OR (rating >= 1.0 AND rating <= 5.0)),
+    CONSTRAINT unique_booking_specialist_time UNIQUE (specialist_id, session_time)
 );
 
 CREATE INDEX idx_bookings_user_created ON bookings(user_id, created_at DESC);

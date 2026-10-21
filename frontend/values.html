@@ -26,8 +26,10 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
-      <link rel="stylesheet" href="assets/css/fonts.css" />
+    <link rel="stylesheet" href="style.css?v=20261019" />
+    <link rel="stylesheet" href="assets/css/fonts.css?v=20261019" />
+    <link rel="stylesheet" href="assets/css/apple-homepage.css?v=20261019" />
+    <link rel="stylesheet" href="assets/css/apple-values.css?v=20261019" />
   </head>
   <body>
     <!-- Header -->
@@ -104,7 +106,7 @@
     </header>
 
     <!-- Hero -->
-    <section class="values-hero">
+    <section class="values-hero" style="background-color: #0e1b1c; background-image: linear-gradient(180deg, rgba(14, 27, 28, 0.65) 0%, rgba(19, 36, 37, 0.35) 45%, rgba(14, 27, 28, 0.8) 100%), url('assets/images/hero_teal_gold_bg.jpg'); background-size: cover; background-position: center 60%; background-repeat: no-repeat;">
       <div class="container">
         <div class="breadcrumb" data-anim="fade-down">
           <a href="index.html">الرئيسية</a>
@@ -216,9 +218,10 @@
             <div class="alt-feature-img-box">
               <div class="alt-feature-img-wrap">
                 <img
-                  src="assets/images/wellness_duo_glass.jpg"
+                  src="assets/images/wellness_guide_journal.jpg"
                   alt="قيم ومبادئ PsyAI"
                   class="alt-feature-img"
+                  loading="lazy"
                 />
               </div>
               <div class="alt-floating-badge">
@@ -263,7 +266,7 @@
 
         <div class="core-values-grid">
           <!-- Value 1 -->
-          <div class="value-card-item">
+          <div class="value-card-item" data-anim="fade-up" data-delay="100">
             <div class="value-icon-wrap">
               <svg
                 viewBox="0 0 24 24"
@@ -285,7 +288,7 @@
           </div>
 
           <!-- Value 2 -->
-          <div class="value-card-item">
+          <div class="value-card-item" data-anim="fade-up" data-delay="180">
             <div class="value-icon-wrap">
               <svg
                 viewBox="0 0 24 24"
@@ -308,7 +311,7 @@
           </div>
 
           <!-- Value 3 -->
-          <div class="value-card-item">
+          <div class="value-card-item" data-anim="fade-up" data-delay="260">
             <div class="value-icon-wrap">
               <svg
                 viewBox="0 0 24 24"
@@ -330,7 +333,7 @@
           </div>
 
           <!-- Value 4 -->
-          <div class="value-card-item">
+          <div class="value-card-item" data-anim="fade-up" data-delay="100">
             <div class="value-icon-wrap">
               <svg
                 viewBox="0 0 24 24"
@@ -355,7 +358,7 @@
           </div>
 
           <!-- Value 5 -->
-          <div class="value-card-item">
+          <div class="value-card-item" data-anim="fade-up" data-delay="180">
             <div class="value-icon-wrap">
               <svg
                 viewBox="0 0 24 24"
@@ -378,7 +381,7 @@
           </div>
 
           <!-- Value 6 -->
-          <div class="value-card-item">
+          <div class="value-card-item" data-anim="fade-up" data-delay="260">
             <div class="value-icon-wrap">
               <svg
                 viewBox="0 0 24 24"
@@ -411,28 +414,11 @@
         </div>
 
         <div class="charter-grid">
-          <div>
-            <h3
-              style="
-                font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;Tajawal&quot;, sans-serif;
-                font-size: 1.6rem;
-                font-weight: 900;
-                color: var(--gold-light);
-                margin-bottom: 1rem;
-                line-height: 1.3;
-              "
-            >
+          <div class="charter-intro" data-anim="fade-up">
+            <h3 class="charter-intro-title">
               أخلاقيات العمل ورعاية المستفيد تأتي دائماً قبل أي اعتبار تجاري
             </h3>
-            <p
-              style="
-                font-family: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;Cairo&quot;, sans-serif;
-                font-size: 1rem;
-                color: rgba(255, 255, 255, 0.8);
-                line-height: 1.85;
-                margin-bottom: 2rem;
-              "
-            >
+            <p class="charter-intro-desc">
               نحن نؤمن بأن الثقة هي حجر الزاوية في مجال الدعم النفسي. لذلك وضعنا
               معايير صارمة تضمن الحفاظ على كرامة المستفيد، سرية معلوماته،
               واستقلالية قراراته في كل مرحلة.
@@ -442,7 +428,7 @@
             >
           </div>
 
-          <div class="charter-list">
+          <div class="charter-list" data-anim="fade-up" data-delay="150">
             <div class="charter-item">
               <div class="charter-item-num">1</div>
               <div class="charter-item-text">
@@ -500,7 +486,7 @@
         </div>
 
         <div class="impact-cards-grid">
-          <div class="impact-card">
+          <div class="impact-card" data-anim="fade-up" data-delay="100">
             <div class="impact-icon">
               <svg
                 viewBox="0 0 24 24"
@@ -515,15 +501,15 @@
               </svg>
             </div>
             <h4>تمكين الفرد</h4>
-            <p>
+            <p class="impact-subtitle">
               نساعد كل شخص على بناء حياة أكثر توازنًا وسعادة.
             </p>
-            <p style="margin-top:0.75rem;">
+            <p>
               من خلال الدعم والرفاه النفسي، نساعد الأفراد على فهم مشاعرهم، التعامل مع الضغوط اليومية، وبناء عادات ومهارات نفسية تساعدهم على مواجهة تحديات الحياة بصورة أكثر وعيًا وتوازنًا.
             </p>
           </div>
 
-          <div class="impact-card">
+          <div class="impact-card" data-anim="fade-up" data-delay="200">
             <div class="impact-icon">
               <svg
                 viewBox="0 0 24 24"
@@ -539,18 +525,18 @@
               </svg>
             </div>
             <h4>بيئات عمل صحية</h4>
-            <p>
+            <p class="impact-subtitle">
               رفاه الموظف جزء أساسي من بيئة العمل الصحية.
             </p>
-            <p style="margin-top:0.75rem;">
+            <p>
               نعمل مع المؤسسات على تعزيز الرفاه النفسي للموظفين، ورفع الوعي بالصحة النفسية، وبناء بيئة عمل أكثر دعمًا وإنسانية، بما يساعد الأفراد والمؤسسات على النمو بصورة أكثر استدامة.
             </p>
-            <p style="margin-top:0.75rem;">
+            <p>
               ويتضمن نموذج PsyAI برامج مخصصة للشركات تهدف إلى دعم الرفاه النفسي وتحسين بيئة العمل.
             </p>
           </div>
 
-          <div class="impact-card">
+          <div class="impact-card" data-anim="fade-up" data-delay="300">
             <div class="impact-icon">
               <svg
                 viewBox="0 0 24 24"
@@ -567,13 +553,13 @@
               </svg>
             </div>
             <h4>أجيال أكثر ثقة</h4>
-            <p>
+            <p class="impact-subtitle">
               نبني المهارات النفسية منذ الطفولة.
             </p>
-            <p style="margin-top:0.75rem;">
+            <p>
               من خلال PsyAI Kids، نساعد الأطفال على اكتساب المهارات النفسية الأساسية بطريقة ممتعة وقريبة من عالمهم، من خلال القصص والأنشطة التفاعلية.
             </p>
-            <p style="margin-top:0.75rem;">
+            <p>
               نطمح إلى المساهمة في بناء أطفال أكثر قدرة على فهم مشاعرهم، التواصل مع الآخرين، اتخاذ القرارات، وبناء ثقة صحية بأنفسهم منذ سنواتهم الأولى. ويستهدف مسار PsyAI Kids الأطفال من عمر 4–10 سنوات.
             </p>
           </div>

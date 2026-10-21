@@ -1,0 +1,913 @@
+/* ==========================================================================
+   PsyAI — Apple-Inspired Individual Therapy & Support Page Styles
+   File: apple-individual.css
+   Aesthetic: Apple Pro Editorial — Deep Atmospheric Teal, Warm Gold Highlights,
+   Continuous Curvature (Squircle), Frosted Glassmorphism, Generous Whitespace.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Individual Hero Section (Atmospheric Silk & Gold)
+   -------------------------------------------------------------------------- */
+.svc-hero {
+  position: relative;
+  background-color: #0e1b1c;
+  background-image: 
+    linear-gradient(180deg, rgba(14, 27, 28, 0.65) 0%, rgba(19, 36, 37, 0.35) 45%, rgba(14, 27, 28, 0.8) 100%),
+    url("../images/hero_teal_gold_bg.jpg") !important;
+  background-size: cover !important;
+  background-position: center 60% !important;
+  background-repeat: no-repeat !important;
+  padding: 6.5rem 0 5rem;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.svc-hero::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 850px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(212, 168, 67, 0.12) 0%, rgba(51, 89, 91, 0.18) 50%, transparent 70%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.svc-hero .breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 1.15rem;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1.5rem;
+  transition: all 0.25s ease;
+}
+
+.svc-hero .breadcrumb a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.svc-hero .breadcrumb a:hover {
+  color: var(--apple-gold-light);
+}
+
+.svc-hero .breadcrumb span {
+  color: var(--apple-gold);
+  font-weight: 600;
+}
+
+.svc-hero .hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--apple-gold);
+  background: rgba(212, 168, 67, 0.12);
+  border: 1px solid rgba(212, 168, 67, 0.28);
+  border-radius: var(--radius-full);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.svc-hero .hero-badge-pill::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--apple-gold);
+  box-shadow: 0 0 8px var(--apple-gold);
+}
+
+.svc-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+}
+
+.svc-hero p.lead {
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 660px;
+  margin: 0 auto 2.5rem;
+}
+
+.svc-hero-tags {
+  display: inline-flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3.5rem;
+}
+
+.svc-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 1.15rem;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.svc-hero-tag:hover {
+  background: rgba(212, 168, 67, 0.18);
+  border-color: rgba(212, 168, 67, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Apple Hero Stats Container */
+.svc-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.75rem 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.svc-stat {
+  text-align: center;
+  padding: 0.5rem 1rem;
+  position: relative;
+}
+
+.svc-stat:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.svc-stat-num {
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--apple-gold-light);
+  line-height: 1.1;
+  margin-bottom: 0.35rem;
+}
+
+.svc-stat-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   2. Storytelling Section (.svc-story-section)
+   -------------------------------------------------------------------------- */
+.svc-story-section {
+  padding: 6.5rem 0;
+  background: #ffffff;
+  border-bottom: 1px solid var(--apple-glass-border-subtle);
+}
+
+/* --------------------------------------------------------------------------
+   3. Feature Items Section (Apple Bento Cards)
+   -------------------------------------------------------------------------- */
+.feature-items-section {
+  padding: 6.5rem 0;
+  background: var(--apple-cream);
+  border-bottom: 1px solid var(--apple-glass-border-subtle);
+}
+
+.feature-items-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 3rem;
+}
+
+.feature-item-card {
+  position: relative;
+  background: #ffffff;
+  padding: 2.25rem 1.85rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(26, 46, 47, 0.08);
+  box-shadow: var(--apple-shadow-sm);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--apple-shadow-xl);
+  border-color: rgba(212, 168, 67, 0.35);
+}
+
+.feature-item-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: rgba(212, 168, 67, 0.12);
+  color: var(--apple-gold-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.35rem;
+  border: 1px solid rgba(212, 168, 67, 0.22);
+}
+
+.feature-item-card h5 {
+  font-size: 1.22rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--apple-text-primary);
+  margin-bottom: 0.65rem;
+  line-height: 1.35;
+}
+
+.feature-item-card p {
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: var(--apple-text-secondary);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. Pricing Section (Apple Pricing Boxes)
+   -------------------------------------------------------------------------- */
+.pricing-section {
+  padding: 7rem 0;
+  background: #ffffff;
+  border-bottom: 1px solid var(--apple-glass-border-subtle);
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  align-items: stretch;
+  margin-top: 3.5rem;
+}
+
+.pricing-box {
+  position: relative;
+  background: var(--apple-cream);
+  padding: 2.75rem 2.2rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(26, 46, 47, 0.09);
+  box-shadow: var(--apple-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pricing-box:hover {
+  transform: translateY(-6px);
+  background: #ffffff;
+  box-shadow: var(--apple-shadow-xl);
+}
+
+/* Featured Tier: باقة 4 جلسات */
+.pricing-box.featured {
+  background: #ffffff;
+  border: 2px solid var(--apple-gold);
+  box-shadow: 0 16px 40px rgba(212, 168, 67, 0.16), 0 4px 12px rgba(19, 36, 37, 0.05);
+  transform: scale(1.02);
+}
+
+.pricing-box.featured:hover {
+  transform: scale(1.02) translateY(-6px);
+  box-shadow: 0 24px 50px rgba(212, 168, 67, 0.22), 0 8px 16px rgba(19, 36, 37, 0.06);
+}
+
+.pricing-box-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.95rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--apple-teal-dark);
+  background: rgba(26, 46, 47, 0.06);
+  border-radius: var(--radius-full);
+  margin-bottom: 1.25rem;
+}
+
+.pricing-box.featured .pricing-box-badge {
+  color: var(--apple-gold-dark);
+  background: rgba(212, 168, 67, 0.15);
+  border: 1px solid rgba(212, 168, 67, 0.35);
+}
+
+.pricing-box h3 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--apple-text-primary);
+  margin-bottom: 0.65rem;
+}
+
+.pricing-box p.desc {
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: var(--apple-text-secondary);
+  margin-bottom: 1.75rem;
+}
+
+.pricing-box-price {
+  font-size: clamp(2.2rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--apple-teal-dark);
+  line-height: 1.1;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(26, 46, 47, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-box.featured .pricing-box-price {
+  color: var(--apple-gold-dark);
+}
+
+.pricing-box-price span {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--apple-text-muted);
+  margin-top: 0.35rem;
+  letter-spacing: 0;
+}
+
+.pricing-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-bottom: 2.25rem;
+}
+
+.pricing-feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--apple-text-primary);
+  line-height: 1.5;
+}
+
+.pricing-feat::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: rgba(212, 168, 67, 0.15) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4a843' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center center;
+  background-size: 11px 11px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Specialties Section (Apple Areas of Support)
+   -------------------------------------------------------------------------- */
+.specialties-section {
+  padding: 6.5rem 0;
+  background: var(--apple-cream);
+  border-bottom: 1px solid var(--apple-glass-border-subtle);
+}
+
+.specialties-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 3rem;
+}
+
+.specialty-card {
+  background: #ffffff;
+  padding: 2.2rem 1.85rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(26, 46, 47, 0.08);
+  box-shadow: var(--apple-shadow-sm);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.specialty-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--apple-shadow-lg);
+  border-color: rgba(212, 168, 67, 0.35);
+}
+
+.specialty-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: rgba(26, 46, 47, 0.05);
+  color: var(--apple-teal-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  transition: all 0.25s ease;
+}
+
+.specialty-card:hover .specialty-icon {
+  background: rgba(212, 168, 67, 0.15);
+  color: var(--apple-gold-dark);
+}
+
+.specialty-card h4 {
+  font-size: 1.22rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--apple-text-primary);
+  margin-bottom: 0.6rem;
+}
+
+.specialty-card p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--apple-text-secondary);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   6. Process Steps (.process-section)
+   -------------------------------------------------------------------------- */
+.process-section {
+  padding: 6.5rem 0;
+  background: #ffffff;
+  border-bottom: 1px solid var(--apple-glass-border-subtle);
+}
+
+/* --------------------------------------------------------------------------
+   7. Comparison Section (Apple Clean Glass Table)
+   -------------------------------------------------------------------------- */
+.comparison-section {
+  padding: 6.5rem 0;
+  background: var(--apple-cream);
+  border-bottom: 1px solid var(--apple-glass-border-subtle);
+}
+
+.comparison-table {
+  max-width: 860px;
+  margin: 3rem auto 0;
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid rgba(26, 46, 47, 0.09);
+  box-shadow: var(--apple-shadow-md);
+}
+
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+}
+
+.comparison-table th {
+  padding: 1.35rem 1.75rem;
+  background: rgba(26, 46, 47, 0.03);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--apple-text-primary);
+  border-bottom: 1px solid rgba(26, 46, 47, 0.08);
+}
+
+.comparison-table th.col-us {
+  background: rgba(212, 168, 67, 0.08);
+  color: var(--apple-gold-dark);
+}
+
+.comparison-table td {
+  padding: 1.15rem 1.75rem;
+  border-bottom: 1px solid rgba(26, 46, 47, 0.05);
+  font-size: 0.94rem;
+  color: var(--apple-text-secondary);
+}
+
+.comparison-table tbody tr:hover {
+  background: rgba(251, 249, 245, 0.8);
+}
+
+.check-gold {
+  color: var(--apple-gold-dark);
+  font-weight: 700;
+}
+
+.check-yes {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.check-no {
+  color: var(--apple-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   8. Who Section (.who-section)
+   -------------------------------------------------------------------------- */
+.who-section {
+  padding: 6.5rem 0;
+  background: #ffffff;
+  border-bottom: 1px solid var(--apple-glass-border-subtle);
+}
+
+.who-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 3rem;
+}
+
+.who-card {
+  background: var(--apple-cream);
+  padding: 2rem 1.75rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(26, 46, 47, 0.06);
+  box-shadow: var(--apple-shadow-sm);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  gap: 1.15rem;
+  align-items: flex-start;
+}
+
+.who-card:hover {
+  transform: translateY(-4px);
+  background: #ffffff;
+  box-shadow: var(--apple-shadow-md);
+  border-color: rgba(212, 168, 67, 0.3);
+}
+
+.who-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: var(--radius-sm);
+  background: rgba(212, 168, 67, 0.12);
+  color: var(--apple-gold-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.who-text h5 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--apple-text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.who-text p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--apple-text-secondary);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   8b. Comparison Table Section (Apple Glassmorphic Spec Sheet)
+   -------------------------------------------------------------------------- */
+.comparison-section {
+  padding: 6.5rem 0;
+  background: var(--apple-bg);
+}
+
+.comparison-table {
+  max-width: 880px;
+  margin: 3rem auto 0;
+  background: #ffffff;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--apple-shadow-md);
+  border: 1px solid rgba(26, 46, 47, 0.08);
+}
+
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+}
+
+.comparison-table thead th {
+  padding: 1.5rem 1.75rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--apple-text-primary);
+  background: #fbfbfb;
+  border-bottom: 2px solid rgba(26, 46, 47, 0.08);
+}
+
+.comparison-table thead th.col-us {
+  color: var(--apple-teal-base);
+  background: rgba(212, 168, 67, 0.08);
+  font-weight: 800;
+  font-size: 1.15rem;
+  position: relative;
+}
+
+.comparison-table thead th.col-us::after {
+  content: "الأفضل قيمة";
+  position: absolute;
+  top: 0.6rem;
+  left: 1.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  background: var(--apple-gold);
+  color: #ffffff;
+  border-radius: var(--radius-full);
+}
+
+.comparison-table tbody tr {
+  border-bottom: 1px solid rgba(26, 46, 47, 0.06);
+  transition: background 0.2s ease;
+}
+
+.comparison-table tbody tr:hover {
+  background: rgba(244, 246, 245, 0.7);
+}
+
+.comparison-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.comparison-table tbody td {
+  padding: 1.25rem 1.75rem;
+  font-size: 0.96rem;
+  color: var(--apple-text-primary);
+}
+
+.comparison-table tbody td:first-child {
+  font-weight: 600;
+  color: var(--apple-text-primary);
+}
+
+.comparison-table tbody td:nth-child(2) {
+  background: rgba(212, 168, 67, 0.03);
+  font-weight: 700;
+}
+
+.check-yes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(46, 125, 50, 0.12);
+  color: #2e7d32;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.check-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(198, 40, 40, 0.08);
+  color: #c62828;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.check-gold {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  background: rgba(212, 168, 67, 0.15);
+  color: var(--apple-gold-dark);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   8c. FAQ Section (Apple Smooth Accordion)
+   -------------------------------------------------------------------------- */
+.faq-section {
+  padding: 6.5rem 0;
+  background: var(--apple-bg);
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background: #ffffff;
+  border: 1px solid rgba(26, 46, 47, 0.07);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--apple-shadow-sm);
+}
+
+.faq-item:hover {
+  border-color: rgba(212, 168, 67, 0.3);
+  box-shadow: var(--apple-shadow-md);
+}
+
+.faq-question-btn {
+  width: 100%;
+  padding: 1.35rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: right;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--apple-text-primary);
+  transition: color 0.2s ease;
+}
+
+.faq-question-btn:hover {
+  color: var(--apple-gold-dark);
+}
+
+.faq-question-btn svg {
+  color: var(--apple-gold);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  margin-right: 1rem;
+}
+
+.faq-item.active .faq-question-btn svg {
+  transform: rotate(45deg);
+}
+
+.faq-body {
+  padding: 0 1.75rem 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--apple-text-secondary);
+  display: none;
+}
+
+.faq-item.active .faq-body {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   8d. CTA Section (Signature Golden Sunrise Wave)
+   -------------------------------------------------------------------------- */
+.cta-section {
+  position: relative;
+  padding: 6.5rem 0;
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, #132425 0%, #1a2e2f 60%, #101c1d 100%);
+  background-image: url("../images/hero_teal_gold_bg.jpg");
+  background-size: cover;
+  background-position: center 60%;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(212, 168, 67, 0.12) 0%, rgba(19, 36, 37, 0.7) 70%, #132425 100%);
+  pointer-events: none;
+}
+
+.cta-section .container {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+
+.cta-section h2 {
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+}
+
+.cta-section p {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 2.5rem;
+}
+
+.cta-btns {
+  display: inline-flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cta-btns .btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.cta-btns .btn-outline-white:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   9. Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .svc-hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .svc-stat:nth-child(2)::after {
+    display: none;
+  }
+  .feature-items-grid,
+  .pricing-grid,
+  .specialties-grid,
+  .who-grid {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .pricing-box.featured {
+    transform: none;
+  }
+  .pricing-box.featured:hover {
+    transform: translateY(-6px);
+  }
+}
+
+@media (max-width: 640px) {
+  .svc-hero {
+    padding: 4.5rem 0 3.5rem;
+  }
+  .svc-hero-stats {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+  .svc-stat::after {
+    display: none;
+  }
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.85rem 1rem;
+    font-size: 0.85rem;
+  }
+}

@@ -43,8 +43,14 @@
 }
 
 body {
-  font-family: 'Montserrat-Arabic', 'Montaser Arabic', 'Montserrat Arabic', 'Alexandria', 'Poppins', 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg-page);
+  font-family: 'IBM Plex Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #0e191a;
+  background-image: 
+    linear-gradient(180deg, rgba(14, 27, 28, 0.75) 0%, rgba(19, 36, 37, 0.45) 50%, rgba(14, 27, 28, 0.85) 100%),
+    url("../images/hero_teal_gold_bg.jpg");
+  background-size: cover;
+  background-position: center 60%;
+  background-attachment: fixed;
   color: var(--text-main);
   min-height: 100vh;
   display: flex;

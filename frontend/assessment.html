@@ -26,7 +26,9 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=20261019" />
+    <link rel="stylesheet" href="assets/css/fonts.css?v=20261019" />
+    <link rel="stylesheet" href="assets/css/apple-homepage.css?v=20261019" />
     <style>
       /* ── Assessment Page Styles ── */
       :root {
@@ -46,22 +48,34 @@
         padding: 6.5rem 1.5rem 3.5rem;
         position: relative;
         overflow: hidden;
+        background-color: #0e1b1c;
+        background-image: 
+          linear-gradient(180deg, rgba(14, 27, 28, 0.75) 0%, rgba(19, 36, 37, 0.45) 50%, rgba(14, 27, 28, 0.85) 100%),
+          url("assets/images/hero_teal_gold_bg.jpg") !important;
+        background-size: cover !important;
+        background-position: center 60% !important;
+        background-repeat: no-repeat !important;
+        color: #ffffff;
       }
 
-      .asm-intro::before {
-        content: "";
-        position: absolute;
-        width: 600px;
-        height: 600px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(212, 168, 67, 0.07) 0%,
-          transparent 70%
-        );
-        top: -100px;
-        left: -100px;
-        pointer-events: none;
+      .asm-intro .alt-feature-title {
+        color: #ffffff !important;
+      }
+      .asm-intro .alt-feature-subtitle {
+        color: var(--apple-gold) !important;
+      }
+      .asm-intro .alt-feature-desc {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      .asm-intro .alt-feature-tags span {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+      .asm-intro .alt-icon-badge {
+        background: rgba(212, 168, 67, 0.15) !important;
+        border: 1px solid rgba(212, 168, 67, 0.3) !important;
+        color: var(--apple-gold) !important;
       }
 
       .asm-hero-container {
@@ -963,7 +977,7 @@
     </header>
 
     <!-- ══ Intro Screen ══ -->
-    <div id="screenIntro" class="asm-intro">
+    <div id="screenIntro" class="asm-intro" style="background-color: #0e1b1c; background-image: linear-gradient(180deg, rgba(14, 27, 28, 0.75) 0%, rgba(19, 36, 37, 0.45) 50%, rgba(14, 27, 28, 0.85) 100%), url('assets/images/hero_teal_gold_bg.jpg'); background-size: cover; background-position: center 60%; background-repeat: no-repeat;">
       <div class="asm-hero-container">
         <div class="alt-feature-row asm-hero-row">
           <div class="alt-feature-text">

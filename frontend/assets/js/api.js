@@ -32,6 +32,20 @@ async function postJson(path, body) {
 }
 
 /**
+ * Fetch public authentication configuration from backend.
+ * @returns {Promise<{success: boolean, googleClientId: string}>}
+ */
+export async function getAuthConfig() {
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/config`);
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (_) {}
+  return { success: false, googleClientId: '' };
+}
+
+/**
  * Request a WhatsApp OTP for a phone number.
  * @param {string} phone
  * @returns {Promise<{success: boolean, devCode?: string}>}
@@ -94,5 +108,14 @@ export async function googleAuth(payload) {
   if (!ok || !data.success) {
     throw new Error(data.message || 'Google authentication failed');
   }
-  return { user: data.user, token: data.token, message: data.message };
+  return {
+    user: data.user,
+    token: data.token,
+    needPhone: data.needPhone,
+    email: data.email,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    message: data.message
+  };
 }
+

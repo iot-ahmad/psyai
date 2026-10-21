@@ -84,6 +84,9 @@ function wireEvents() {
 function bootstrap() {
   applyLang(getLang());
 
+  // Initialize Google Identity Services (GSI)
+  auth.initGoogleAuth();
+
   const params = new URLSearchParams(window.location.search);
   if (params.get('mode') === 'register' || params.get('signup') === 'true') {
     auth.showRegister();

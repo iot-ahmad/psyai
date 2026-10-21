@@ -57,3 +57,9 @@ export const REDIRECT_DELAY_MS = 1200;
 
 /** Default specialist preference when the user has not chosen one. */
 export const DEFAULT_SPEC_GENDER = 'any';
+
+/** Google Identity Services (GSI) OAuth 2.0 Client ID */
+export const GOOGLE_CLIENT_ID =
+  (typeof window !== 'undefined' && window.PSYAI_GOOGLE_CLIENT_ID) ||
+  'your-google-oauth-client-id.apps.googleusercontent.com';
+

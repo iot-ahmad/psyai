@@ -16,6 +16,7 @@ import {
   ROLE_REDIRECTS,
   SPECIALISTS_PAGE,
   DEFAULT_SPEC_GENDER,
+  GOOGLE_CLIENT_ID,
 } from './config.js';
 import { t, getLang } from './i18n.js';
 
@@ -28,6 +29,8 @@ const state = {
   specGender: DEFAULT_SPEC_GENDER,
   /** Data collected across the two registration steps (or the Google flow). */
   pendingRegistration: null,
+  /** Stored Google ID token from GSI response */
+  pendingGoogleIdToken: null,
   /** Latest dev/simulator OTP code, used as an offline fallback. */
   currentDevCode: null,
   otpTimer: null,
@@ -570,8 +573,93 @@ export function handleForgot(event) {
 }
 
 /* ---------------------------------------------------------------------------
- * Google sign-in
+ * Google Identity Services (GSI) & Sign-In
  * ------------------------------------------------------------------------ */
+
+/**
+ * Initialize Google Identity Services (GSI)
+ */
+export async function initGoogleAuth() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  let clientId = GOOGLE_CLIENT_ID;
+  try {
+    const config = await api.getAuthConfig();
+    if (config?.googleClientId) {
+      clientId = config.googleClientId;
+      state.googleClientId = clientId;
+    }
+  } catch (_) {}
+
+  if (!window.google?.accounts?.id || !clientId || clientId.includes('your-google')) {
+    return false;
+  }
+
+  try {
+    window.google.accounts.id.initialize({
+      client_id: clientId,
+      callback: handleGoogleCredentialResponse,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+    });
+    return true;
+  } catch (err) {
+    console.warn('[GSI] Init failed:', err);
+    return false;
+  }
+}
+
+/**
+ * Handle Google credential (idToken) response from Google Identity Services
+ */
+export async function handleGoogleCredentialResponse(response) {
+  const idToken = response?.credential;
+  if (!idToken) {
+    ui.showToast('تعذّر استلام رمز المصادقة من Google', 'err');
+    return;
+  }
+
+  state.pendingGoogleIdToken = idToken;
+
+  // Parse basic profile info from JWT payload
+  let decoded = {};
+  try {
+    const base64Url = idToken.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    decoded = JSON.parse(decodeURIComponent(escape(atob(base64))));
+  } catch (_) {}
+
+  const email = decoded.email || '';
+  const firstName = decoded.given_name || '';
+  const lastName = decoded.family_name || '';
+  const fullName = `${firstName} ${lastName}`.trim() || 'مستخدم Google';
+
+  try {
+    const res = await api.googleAuth({ idToken });
+    if (res.token && res.user) {
+      persistSession(res.token, res.user);
+      ui.showToast(res.message || 'تم تسجيل الدخول عبر Google بنجاح!');
+      redirectAfterAuth(res.user);
+      return;
+    }
+
+    if (res.needPhone) {
+      openGoogleModal({
+        idToken,
+        email: res.email || email,
+        name: `${res.firstName || firstName} ${res.lastName || lastName}`.trim() || fullName,
+      });
+    }
+  } catch (err) {
+    openGoogleModal({
+      idToken,
+      email,
+      name: fullName,
+    });
+  }
+}
 
 /**
  * Open the Google phone-collection modal.
@@ -582,7 +670,8 @@ export function openGoogleModal(source) {
   let finalName = '';
   let phone = '';
 
-  if (typeof source === 'object' && source !== null && (source.email || source.name)) {
+  if (typeof source === 'object' && source !== null && (source.email || source.name || source.idToken)) {
+    if (source.idToken) state.pendingGoogleIdToken = source.idToken;
     finalEmail = source.email || '';
     finalName = source.name || 'مستخدم Google';
   } else {
@@ -591,19 +680,22 @@ export function openGoogleModal(source) {
     const fName = pick('rFirst');
     const lName = pick('rLast');
     phone = pick('rPhone');
-    finalEmail = emailInput.includes('@') ? emailInput : 'user.google@gmail.com';
-    finalName = (fName || lName) ? `${fName} ${lName}`.trim() : 'مستخدم Google';
+    finalEmail = emailInput.includes('@') ? emailInput : '';
+    finalName = (fName || lName) ? `${fName} ${lName}`.trim() : '';
   }
 
   setValue('gEmail', finalEmail);
   setValue('gName', finalName);
   setValue('gPhone', phone);
-  setText('gAccountName', finalName);
-  setText('gAccountEmail', finalEmail);
+  setText('gAccountName', finalName || 'حسابك في Google');
+  setText('gAccountEmail', finalEmail || 'يرجى إدخال بريدك الإلكتروني');
   setText('gAccountAvatar', (finalName[0] || 'G').toUpperCase());
 
   ui.openModal('googlePhoneModal');
-  setTimeout(() => document.getElementById('gPhone')?.focus(), 150);
+  setTimeout(() => {
+    if (!finalEmail) document.getElementById('gEmail')?.focus();
+    else document.getElementById('gPhone')?.focus();
+  }, 150);
 }
 
 /** Close the Google modal. */
@@ -611,14 +703,36 @@ export function closeGoogleModal() {
   ui.closeModal('googlePhoneModal');
 }
 
+/**
+ * Trigger Google Identity Sign-In popup / prompt
+ */
+export async function triggerGoogleSignIn(source = 'login') {
+  const clientId = state.googleClientId || GOOGLE_CLIENT_ID;
+  const isRealClient = clientId && !clientId.includes('your-google');
+
+  if (typeof window !== 'undefined' && window.google?.accounts?.id && isRealClient) {
+    await initGoogleAuth();
+    window.google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        ui.showToast('يرجى السماح بنوافذ Google المنبثقة لإكمال تسجيل الدخول', 'warn');
+      }
+    });
+  } else {
+    // Alert the user that GOOGLE_CLIENT_ID needs to be set in backend/.env for production OAuth
+    ui.showToast('لربط حساب Google الحقيقي، يرجى وضع GOOGLE_CLIENT_ID في ملف backend/.env', 'warn');
+    openGoogleModal(source);
+  }
+}
+
+
 /** Google sign-up button handler. */
 export function handleGoogleSignUp() {
-  openGoogleModal('register');
+  triggerGoogleSignIn('register');
 }
 
 /** Google sign-in button handler. */
 export function handleGoogleLogin() {
-  openGoogleModal('login');
+  triggerGoogleSignIn('login');
 }
 
 /**
@@ -674,14 +788,18 @@ export async function submitGooglePhone(event) {
   );
 
   try {
-    const res = await api.googleAuth({
+    const payload = {
       email,
       firstName: firstName || 'مستخدم',
       lastName: rest.join(' ') || 'Google',
       phone: rawPhone,
       condition: cond,
       specGenderPref: specGen,
-    });
+    };
+    if (state.pendingGoogleIdToken) {
+      payload.idToken = state.pendingGoogleIdToken;
+    }
+    const res = await api.googleAuth(payload);
     const user = res.user;
     const token = res.token;
     persistSession(token, user);
@@ -718,6 +836,9 @@ if (typeof window !== 'undefined') {
     verifyAndCompleteRegistration,
     resendOtp,
     submitLogin,
+    initGoogleAuth,
+    handleGoogleCredentialResponse,
+    triggerGoogleSignIn,
     openGoogleModal,
     closeGoogleModal,
     handleGoogleSignUp,
