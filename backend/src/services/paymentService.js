@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const prisma = require('../config/db');
 const AuditService = require('./auditService');
 const WhatsAppService = require('./whatsappService');
+const EncryptionService = require('./encryptionService');
+const { scheduleBookingReminders } = require('./reminderWorker');
 
 class PaymentService {
   /**
@@ -258,7 +260,7 @@ class PaymentService {
 
     // Step 6: Trigger downstream actions if succeeded
     if (isSuccess && payment.bookingId) {
-      await prisma.booking.update({
+      const updatedBooking = await prisma.booking.update({
         where: { id: payment.bookingId },
         data: {
           status: 'confirmed',
@@ -266,14 +268,24 @@ class PaymentService {
         }
       });
 
+      // Schedule reminders for the confirmed session
+      const sessionTime = updatedBooking.sessionTime || payment.booking?.sessionTime;
+      if (sessionTime) {
+        scheduleBookingReminders(payment.bookingId, sessionTime).catch((err) =>
+          console.error('[REMINDER] Error scheduling reminders after payment:', err.message)
+        );
+      }
+
       // Async WhatsApp notification (non-blocking)
-      const userPhone = payment.booking?.user?.phone;
-      const patientName = `${payment.booking?.user?.firstName || ''} ${payment.booking?.user?.lastName || ''}`.trim() || 'العميل';
+      const rawPhone = EncryptionService.decryptField(payment.booking?.user?.phoneEncrypted) || payment.booking?.user?.phone;
+      const patientFirstName = EncryptionService.decryptField(payment.booking?.user?.firstName) || payment.booking?.user?.firstName || '';
+      const patientLastName = EncryptionService.decryptField(payment.booking?.user?.lastName) || payment.booking?.user?.lastName || '';
+      const patientName = `${patientFirstName} ${patientLastName}`.trim() || 'العميل';
       const specName = payment.booking?.specialist?.name || 'الأخصائي';
 
-      if (userPhone) {
+      if (rawPhone) {
         WhatsAppService.sendSessionStartNotification(
-          userPhone,
+          rawPhone,
           patientName,
           specName,
           `https://psyai.app/session/${payment.bookingId}`

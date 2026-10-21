@@ -81,14 +81,25 @@ function createPrismaMock() {
       findUnique: jest.fn(),
       findMany: jest.fn(),
       create: jest.fn(),
-      update: jest.fn()
+      update: jest.fn(),
+      updateMany: jest.fn(),
+      upsert: jest.fn(),
+      deleteMany: jest.fn()
     },
     passwordResetToken: {
       findUnique: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       deleteMany: jest.fn()
-    }
+    },
+    // Prisma interactive transaction support
+    $transaction: jest.fn().mockImplementation(async (fn) => {
+      if (typeof fn === 'function') {
+        // Execute the callback with a minimal tx proxy (tests override this per-test)
+        return fn({});
+      }
+      return Promise.all(fn);
+    })
   };
 }
 

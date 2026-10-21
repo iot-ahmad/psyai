@@ -2,6 +2,7 @@ const prisma = require('../config/db');
 const WhatsappService = require('../services/whatsappService');
 const AuditService = require('../services/auditService');
 const EncryptionService = require('../services/encryptionService');
+const { scheduleBookingReminders } = require('../services/reminderWorker');
 
 /**
  * Helper: Find specialist record associated with the authenticated user
@@ -147,10 +148,17 @@ async function confirmBooking(req, res, next) {
     const updated = await prisma.booking.update({
       where: { id },
       data: {
-        status: 'scheduled',
+        status: 'confirmed',
         confirmedAt: new Date()
       }
     });
+
+    // Schedule reminders asynchronously (non-blocking)
+    if (updated.sessionTime) {
+      scheduleBookingReminders(updated.id, updated.sessionTime).catch((err) =>
+        console.error(`[REMINDER] Failed to schedule reminders for booking ${updated.id}:`, err.message)
+      );
+    }
 
     res.status(200).json({
       success: true,
@@ -194,7 +202,7 @@ async function sendMeetingLink(req, res, next) {
       where: { id },
       data: {
         meetingLink: meetingLink.trim(),
-        status: 'scheduled'
+        status: 'confirmed'
       }
     });
 

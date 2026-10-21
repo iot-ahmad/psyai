@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const prisma = require('../config/db');
 const EncryptionService = require('../services/encryptionService');
+const { scheduleBookingReminders, cancelBookingReminders } = require('../services/reminderWorker');
 
 /**
  * GET /api/admin/dashboard
@@ -280,6 +281,17 @@ async function updateBookingStatus(req, res, next) {
       where: { id },
       data: { status }
     });
+
+    // Schedule or cancel reminders based on updated status
+    if (status === 'confirmed' && booking.sessionTime) {
+      scheduleBookingReminders(booking.id, booking.sessionTime).catch((err) =>
+        console.error(`[REMINDER] Failed to schedule reminders for booking ${booking.id}:`, err.message)
+      );
+    } else if (status === 'cancelled') {
+      cancelBookingReminders(booking.id).catch((err) =>
+        console.error(`[REMINDER] Failed to cancel reminders for booking ${booking.id}:`, err.message)
+      );
+    }
 
     res.status(200).json({ success: true, booking });
   } catch (err) {

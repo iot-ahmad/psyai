@@ -18,6 +18,7 @@ const {
   validate,
   registerSchema,
   loginSchema,
+  googleAuthSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
   verifyOtpSchema,
@@ -28,9 +29,18 @@ const {
   createB2bRequestSchema,
   reviewB2bRequestSchema,
   updateProfileSchema,
+  sendPhoneUpdateOtpSchema,
   updatePhoneSchema,
   changePasswordSchema,
-  deleteAccountSchema
+  deleteAccountSchema,
+  adminCreateUserSchema,
+  adminUpdateUserStatusSchema,
+  adminCreateSpecialistSchema,
+  adminUpdateBookingStatusSchema,
+  adminCreateServiceSchema,
+  adminCreateCompanySchema,
+  sendMeetingLinkSchema,
+  publishArticleSchema
 } = require('./middlewares/validate');
 
 // Controllers
@@ -41,6 +51,9 @@ const paymentsController = require('./controllers/paymentsController');
 const adminController = require('./controllers/adminController');
 const specialistPortalController = require('./controllers/specialistPortalController');
 const b2bController = require('./controllers/b2bController');
+
+// Background Workers & Cron Jobs
+const { startReminderWorker } = require('./services/reminderWorker');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -90,7 +103,13 @@ authRouter.post('/register', validate(registerSchema), authController.register);
 authRouter.post('/login', loginRateLimiter, validate(loginSchema), authController.login);
 authRouter.post('/forgot-password', passwordResetLimiter, validate(forgotPasswordSchema), authController.forgotPassword);
 authRouter.post('/reset-password', passwordResetLimiter, validate(resetPasswordSchema), authController.resetPassword);
-authRouter.post('/google', authController.googleAuth);
+authRouter.post('/google', loginRateLimiter, validate(googleAuthSchema), authController.googleAuth);
+authRouter.get('/config', (req, res) => {
+  res.status(200).json({
+    success: true,
+    googleClientId: process.env.GOOGLE_CLIENT_ID || ''
+  });
+});
 authRouter.get('/me', protect, authController.getMe);
 app.use('/api/auth', authRouter);
 
@@ -100,7 +119,7 @@ app.use('/api/auth', authRouter);
 const userRouter = express.Router();
 userRouter.get('/profile', protect, authController.getMe);
 userRouter.put('/profile', protect, validate(updateProfileSchema), authController.updateProfile);
-userRouter.post('/send-phone-otp', protect, otpRateLimiter, authController.sendPhoneUpdateOtp);
+userRouter.post('/send-phone-otp', protect, otpRateLimiter, validate(sendPhoneUpdateOtpSchema), authController.sendPhoneUpdateOtp);
 userRouter.post('/update-phone', protect, validate(updatePhoneSchema), authController.verifyAndUpdatePhone);
 userRouter.put('/change-password', protect, validate(changePasswordSchema), authController.changePassword);
 userRouter.delete('/account', protect, validate(deleteAccountSchema), authController.deleteAccount);
@@ -160,22 +179,22 @@ adminRouter.use(protect, restrictTo('admin'));
 
 adminRouter.get('/dashboard', adminController.getDashboard);
 adminRouter.get('/users', adminController.getUsers);
-adminRouter.post('/users', adminController.createUser);
-adminRouter.patch('/users/:id/status', adminController.updateUserStatus);
+adminRouter.post('/users', validate(adminCreateUserSchema), adminController.createUser);
+adminRouter.patch('/users/:id/status', validate(adminUpdateUserStatusSchema), adminController.updateUserStatus);
 adminRouter.delete('/users/:id', adminController.deleteUser);
 
 adminRouter.get('/specialists', adminController.getSpecialists);
-adminRouter.post('/specialists', adminController.createSpecialist);
+adminRouter.post('/specialists', validate(adminCreateSpecialistSchema), adminController.createSpecialist);
 adminRouter.delete('/specialists/:id', adminController.deleteSpecialist);
 
 adminRouter.get('/bookings', adminController.getBookings);
-adminRouter.patch('/bookings/:id/status', adminController.updateBookingStatus);
+adminRouter.patch('/bookings/:id/status', validate(adminUpdateBookingStatusSchema), adminController.updateBookingStatus);
 
 adminRouter.get('/services', adminController.getServices);
-adminRouter.post('/services', adminController.createService);
+adminRouter.post('/services', validate(adminCreateServiceSchema), adminController.createService);
 
 adminRouter.get('/companies', adminController.getCompanies);
-adminRouter.post('/companies', adminController.createCompany);
+adminRouter.post('/companies', validate(adminCreateCompanySchema), adminController.createCompany);
 
 // B2B Corporate Partnership Applications (Admin review)
 adminRouter.get('/b2b-requests', b2bController.getAdminRequests);
@@ -197,11 +216,11 @@ const specialistRouter = express.Router();
 specialistRouter.get('/profile', protect, specialistPortalController.getProfile);
 specialistRouter.get('/bookings', protect, specialistPortalController.getMyBookings);
 specialistRouter.patch('/bookings/:id/confirm', protect, specialistPortalController.confirmBooking);
-specialistRouter.post('/bookings/:id/send-link', protect, specialistPortalController.sendMeetingLink);
+specialistRouter.post('/bookings/:id/send-link', protect, validate(sendMeetingLinkSchema), specialistPortalController.sendMeetingLink);
 specialistRouter.get('/session/:id', protect, specialistPortalController.getSessionDetails);
 specialistRouter.get('/articles', protect, specialistPortalController.getMyArticles);
 specialistRouter.get('/my-articles', protect, specialistPortalController.getMyArticles);
-specialistRouter.post('/articles', protect, specialistPortalController.publishArticle);
+specialistRouter.post('/articles', protect, validate(publishArticleSchema), specialistPortalController.publishArticle);
 specialistRouter.delete('/articles/:id', protect, specialistPortalController.deleteArticle);
 app.use('/api/specialist', specialistRouter);
 
@@ -235,6 +254,9 @@ app.listen(PORT, () => {
   console.log(`Visa Payments: Active (${process.env.PAYMENT_GATEWAY || 'simulator'})`);
   console.log(`Security: Helmet, CORS, Rate Limiters, Bcrypt, JWT enabled`);
   console.log('='.repeat(60) + '\n');
+
+  // Start background cron jobs (reminders, etc.)
+  startReminderWorker();
 });
 
 module.exports = app;

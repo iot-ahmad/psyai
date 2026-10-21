@@ -1,3 +1,4 @@
+const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 const prisma = require('../config/db');
 const WhatsAppService = require('../services/whatsappService');
@@ -7,6 +8,8 @@ const EncryptionService = require('../services/encryptionService');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 if (!JWT_SECRET) {
   console.error('[FATAL] JWT_SECRET is not defined in .env — server cannot start safely.');
@@ -42,8 +45,36 @@ function createToken(user, explicitScope = null) {
       tokenVersion: user.tokenVersion ?? 0
     },
     JWT_SECRET,
-    { expiresIn }
+    { expiresIn, algorithm: 'HS256' }
   );
+}
+
+/**
+ * Safe Response DTO: Project public user attributes, preventing data leakages
+ * (never exposes passwordHash, tokenVersion, salts or internal DB keys)
+ */
+function toPublicUser(rawUser) {
+  if (!rawUser || typeof rawUser !== 'object') return null;
+  const decrypted = EncryptionService.decryptUserFields(rawUser);
+  const fName = decrypted.firstName || decrypted.first_name || '';
+  const lName = decrypted.lastName || decrypted.last_name || '';
+  return {
+    id: decrypted.id,
+    firstName: fName,
+    lastName: lName,
+    fullName: decrypted.fullName || `${fName} ${lName}`.trim(),
+    email: decrypted.email || '',
+    phone: decrypted.phone || '',
+    gender: decrypted.gender || 'any',
+    condition: decrypted.condition || null,
+    specGenderPref: decrypted.specGenderPref || 'any',
+    role: decrypted.role || 'user',
+    isVerified: Boolean(decrypted.isVerified),
+    language: decrypted.language || 'ar',
+    status: decrypted.status || 'active',
+    createdAt: decrypted.createdAt,
+    ...(decrypted.bookings ? { bookings: decrypted.bookings } : {})
+  };
 }
 
 /**
@@ -185,8 +216,8 @@ async function register(req, res, next) {
     const cleanPhone = sanitizePhone(phone);
     const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
 
-    // Check if user already exists
-    const existingEmail = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    // Check if user already exists (by email blind-index — the unique searchable hash)
+    const existingEmail = await prisma.user.findUnique({ where: { emailHash: EncryptionService.generateBlindIndex(cleanEmail) } });
     if (existingEmail) {
       return res.status(400).json({
         success: false,
@@ -194,22 +225,9 @@ async function register(req, res, next) {
       });
     }
 
-    let existingPhone = null;
-    try {
-      existingPhone = await prisma.user.findFirst({
-        where: {
-          OR: [
-            { phoneBlindIndex },
-            { phone: cleanPhone }
-          ]
-        }
-      });
-    } catch (_) {}
-    if (!existingPhone) {
-      try {
-        existingPhone = await prisma.user.findUnique({ where: { phone: cleanPhone } });
-      } catch (_) {}
-    }
+    const existingPhone = await prisma.user.findFirst({
+      where: { phoneHash: phoneBlindIndex }
+    });
 
     if (existingPhone) {
       return res.status(400).json({
@@ -237,17 +255,21 @@ async function register(req, res, next) {
     const encryptedPhone = EncryptionService.encryptField(cleanPhone);
     const encryptedCondition = EncryptionService.encryptField(condition || null);
 
+    const emailHash = EncryptionService.generateBlindIndex(cleanEmail);
+    const encryptedEmail = EncryptionService.encryptField(cleanEmail);
+
     // Create user in DB
     const user = await prisma.user.create({
       data: {
         firstName: encryptedFirstName,
         lastName: encryptedLastName,
-        email: email.trim(),
-        phone: encryptedPhone,
-        phoneBlindIndex,
+        emailEncrypted: encryptedEmail,
+        emailHash,
+        phoneEncrypted: encryptedPhone,
+        phoneHash: phoneBlindIndex,
         gender,
         passwordHash,
-        condition: encryptedCondition,
+        conditionEncrypted: encryptedCondition,
         specGenderPref: specGenderPref || 'any',
         role: 'user',
         isVerified,
@@ -258,10 +280,10 @@ async function register(req, res, next) {
         id: true,
         firstName: true,
         lastName: true,
-        email: true,
-        phone: true,
+        emailEncrypted: true,
+        phoneEncrypted: true,
         gender: true,
-        condition: true,
+        conditionEncrypted: true,
         specGenderPref: true,
         role: true,
         isVerified: true,
@@ -286,7 +308,7 @@ async function register(req, res, next) {
       success: true,
       message: 'تم إنشاء الحساب بنجاح! أهلاً بك في منصة PsyAI',
       token,
-      user: decryptedUser
+      user: toPublicUser(user)
     });
   } catch (err) {
     next(err);
@@ -303,12 +325,12 @@ async function login(req, res, next) {
     const cleanIdent = identifier.trim();
     const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanIdent);
 
+    const emailSearchHash = EncryptionService.generateBlindIndex(cleanIdent.toLowerCase());
     const user = await prisma.user.findFirst({
       where: {
         OR: [
-          { email: cleanIdent.toLowerCase() },
-          { phoneBlindIndex },
-          { phone: cleanIdent }
+          { emailHash: emailSearchHash },
+          { phoneHash: phoneBlindIndex }
         ]
       }
     });
@@ -371,16 +393,7 @@ async function login(req, res, next) {
       success: true,
       message: `أهلاً بك مجدداً يا ${decryptedUser.firstName}!`,
       token,
-      user: {
-        id: decryptedUser.id,
-        firstName: decryptedUser.firstName,
-        lastName: decryptedUser.lastName,
-        fullName: decryptedUser.fullName || `${decryptedUser.firstName} ${decryptedUser.lastName}`.trim(),
-        email: decryptedUser.email,
-        phone: decryptedUser.phone,
-        role: decryptedUser.role,
-        isVerified: decryptedUser.isVerified
-      }
+      user: toPublicUser(user)
     });
   } catch (err) {
     next(err);
@@ -528,10 +541,10 @@ async function getMe(req, res, next) {
         id: true,
         firstName: true,
         lastName: true,
-        email: true,
-        phone: true,
+        emailEncrypted: true,
+        phoneEncrypted: true,
         gender: true,
-        condition: true,
+        conditionEncrypted: true,
         specGenderPref: true,
         role: true,
         isVerified: true,
@@ -557,10 +570,7 @@ async function getMe(req, res, next) {
 
     res.status(200).json({
       success: true,
-      user: {
-        ...user,
-        fullName: user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim()
-      }
+      user: toPublicUser(rawUser)
     });
   } catch (err) {
     next(err);
@@ -581,28 +591,154 @@ function formatJordanPhone(raw) {
 }
 
 /**
+ * Verify Google ID Token using official Google OAuth2 Client
+ * Validates cryptographic signature, audience, expiration, and issuer.
+ */
+async function verifyGoogleIdToken(idToken) {
+  if (!idToken) return null;
+
+  // Support for mock tokens in automated test suite
+  if (process.env.NODE_ENV === 'test' && String(idToken).startsWith('mock-test-id-token:')) {
+    const parts = idToken.split(':');
+    return {
+      googleId: parts[1] || 'mock-google-sub-12345',
+      email: (parts[2] || 'test.google@gmail.com').toLowerCase().trim(),
+      firstName: parts[3] || 'مستخدم',
+      lastName: parts[4] || 'Google'
+    };
+  }
+
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  if (!clientId) {
+    console.error('[SECURITY] GOOGLE_CLIENT_ID is not configured in environment.');
+    throw new Error('GOOGLE_CLIENT_ID_MISSING');
+  }
+
+  const ticket = await googleClient.verifyIdToken({
+    idToken,
+    audience: clientId
+  });
+
+  const payload = ticket.getPayload();
+  if (!payload || !payload.sub || !payload.email || payload.email_verified !== true) {
+    return null;
+  }
+
+  return {
+    googleId: payload.sub,
+    email: payload.email.toLowerCase().trim(),
+    firstName: payload.given_name || 'مستخدم',
+    lastName: payload.family_name || 'Google',
+    nonce: payload.nonce || null
+  };
+}
+
+/**
  * POST /api/auth/google
- * Google Auth with mandatory phone verification state machine (Section 2) & field encryption
+ * Google Auth with strict ID Token validation, anti-pre-hijacking account linking,
+ * status checks, and phone verification state machine.
  */
 async function googleAuth(req, res, next) {
   try {
-    const { email, firstName, lastName, phone, condition, specGenderPref } = req.body;
+    const { idToken, phone, otpCode, condition, specGenderPref, nonce } = req.body;
 
-    if (!email || !email.includes('@')) {
-      return res.status(400).json({ success: false, message: 'البريد الإلكتروني لحساب Google مطلوب' });
+    if (!idToken) {
+      return res.status(400).json({
+        success: false,
+        message: 'رمز Google (idToken) مطلوب لإتمام المصادقة'
+      });
     }
 
-    const cleanEmail = email.toLowerCase().trim();
-    const formattedPhone = formatJordanPhone(phone);
+    let gUser;
+    try {
+      gUser = await verifyGoogleIdToken(idToken);
+    } catch (err) {
+      if (err.message === 'GOOGLE_CLIENT_ID_MISSING') {
+        return res.status(503).json({
+          success: false,
+          message: 'خدمة تسجيل الدخول عبر Google غير مهيأة حالياً في الخادم'
+        });
+      }
+      return res.status(401).json({
+        success: false,
+        message: 'تعذّر التحقق من رمز Google أو انتهت صلاحيته'
+      });
+    }
+
+    if (!gUser || !gUser.googleId || !gUser.email) {
+      return res.status(401).json({
+        success: false,
+        message: 'حساب Google غير موثّق أو تعذّر التحقق من البريد الإلكتروني'
+      });
+    }
+
+    if (nonce && gUser.nonce && nonce !== gUser.nonce) {
+      return res.status(401).json({
+        success: false,
+        message: 'فشل التحقق من أمان رمز Google (Nonce mismatch)'
+      });
+    }
+
+    const cleanEmail = gUser.email;
+    const emailBlindIndex = EncryptionService.generateBlindIndex(cleanEmail);
+    const formattedPhone = phone ? formatJordanPhone(phone) : null;
     const phoneBlindIndex = formattedPhone ? EncryptionService.generateBlindIndex(formattedPhone) : null;
 
-    // Check if user already exists by email
+    // 1. Check if user already exists by googleId
     let user = await prisma.user.findUnique({
-      where: { email: cleanEmail }
+      where: { googleId: gUser.googleId }
     });
 
+    // 2. If not found by googleId, check by email blind index
+    if (!user) {
+      user = await prisma.user.findFirst({
+        where: {
+          OR: [
+            { emailHash: emailBlindIndex },
+            { emailBlindIndex },
+            { email: cleanEmail }
+          ]
+        }
+      });
+
+      // Anti-Pre-hijacking Linking Rules
+      if (user) {
+        if (user.isVerified) {
+          // Case 2a: Existing verified user -> link googleId
+          user = await prisma.user.update({
+            where: { id: user.id },
+            data: { googleId: gUser.googleId }
+          });
+        } else {
+          // Case 2b: Unverified account with victim email -> Google proves ownership! Invalidate old credentials
+          const randomPass = SecurityService.generatePasswordResetToken().rawToken + 'Aa1!';
+          const revokedPasswordHash = await SecurityService.hashPassword(randomPass);
+
+          user = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              googleId: gUser.googleId,
+              passwordHash: revokedPasswordHash,
+              isVerified: true,
+              tokenVersion: { increment: 1 }
+            }
+          });
+        }
+      }
+    }
+
+    // 3. User exists in DB
     if (user) {
+      if (user.status !== 'active') {
+        return res.status(403).json({
+          success: false,
+          message: 'هذا الحساب موقوف حالياً. يرجى التواصل مع الدعم الفني.'
+        });
+      }
+
       const decryptedExisting = EncryptionService.decryptUserFields(user);
+
+      // If user already has a phone: login directly
       if (decryptedExisting.phone && decryptedExisting.phone.length > 5) {
         const token = createToken(user, ['full_access']);
         return res.status(200).json({
@@ -621,23 +757,50 @@ async function googleAuth(req, res, next) {
         });
       }
 
-      if (!formattedPhone) {
+      // If user has no phone: require phone + OTP verification
+      if (!formattedPhone || !otpCode) {
         return res.status(200).json({
           success: true,
           needPhone: true,
           email: cleanEmail,
           firstName: decryptedExisting.firstName,
           lastName: decryptedExisting.lastName,
-          message: 'يرجى إدخال رقم هاتفك الأردني لإكمال تسجيل الدخول'
+          message: 'يرجى إدخال وتأكيد رقم هاتفك الأردني لإكمال الحساب'
         });
       }
 
-      // Update user phone with encryption and blind index
+      // Verify OTP before saving phone
+      const otpVerify = await WhatsAppService.verifyOtp(formattedPhone, otpCode);
+      if (!otpVerify.success) {
+        return res.status(400).json({
+          success: false,
+          message: otpVerify.message || 'رمز التحقق غير صحيح أو انتهت صلاحيته'
+        });
+      }
+
+      // Check phone collision
+      const phoneTaken = await prisma.user.findFirst({
+        where: {
+          id: { not: user.id },
+          OR: [
+            { phoneHash: phoneBlindIndex },
+            { phoneBlindIndex },
+            { phone: formattedPhone }
+          ]
+        }
+      });
+      if (phoneTaken) {
+        return res.status(409).json({
+          success: false,
+          message: 'رقم الهاتف هذا مسجل مسبقاً بحساب آخر.'
+        });
+      }
+
       user = await prisma.user.update({
         where: { id: user.id },
         data: {
-          phone: EncryptionService.encryptField(formattedPhone),
-          phoneBlindIndex,
+          phoneEncrypted: EncryptionService.encryptField(formattedPhone),
+          phoneHash: phoneBlindIndex,
           isVerified: true
         }
       });
@@ -657,65 +820,81 @@ async function googleAuth(req, res, next) {
           role: decryptedUpdated.role,
           isVerified: decryptedUpdated.isVerified
         },
-        message: `تم تحديث رقم الهاتف وتسجيل الدخول بنجاح! مرحباً ${decryptedUpdated.firstName}`
+        message: `تم ربط رقم الهاتف وتسجيل الدخول بنجاح!`
       });
     }
 
-    // New Google user registration
-    if (!formattedPhone) {
+    // 4. Brand new user registration flow
+    if (!formattedPhone || !otpCode) {
       return res.status(200).json({
         success: true,
         needPhone: true,
         email: cleanEmail,
-        firstName: firstName || 'مستخدم',
-        lastName: lastName || 'Google',
-        message: 'يرجى إدخال رقم هاتفك الأردني لإكمال الحساب'
+        firstName: gUser.firstName,
+        lastName: gUser.lastName,
+        message: 'يرجى إدخال وتأكيد رقم هاتفك لإكمال إنشاء الحساب'
       });
     }
 
-    const phoneExists = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { phoneBlindIndex },
-          { phone: formattedPhone }
-        ]
-      }
-    });
-    if (phoneExists) {
+    // Verify OTP for new registration
+    const otpVerify = await WhatsAppService.verifyOtp(formattedPhone, otpCode);
+    if (!otpVerify.success) {
       return res.status(400).json({
         success: false,
-        message: 'رقم الهاتف هذا مسجل مسبقاً بحساب آخر. يرجى إدخال رقم هاتفك الخاص.'
+        message: otpVerify.message || 'رمز التحقق غير صحيح أو انتهت صلاحيته'
+      });
+    }
+
+    // Check phone collision for brand new registration
+    const phoneTaken = await prisma.user.findFirst({
+      where: { phoneHash: phoneBlindIndex }
+    });
+    if (phoneTaken) {
+      return res.status(409).json({
+        success: false,
+        message: 'رقم الهاتف هذا مسجل مسبقاً بحساب آخر.'
       });
     }
 
     const randomPass = SecurityService.generatePasswordResetToken().rawToken + 'Aa1!';
     const passwordHash = await SecurityService.hashPassword(randomPass);
 
-    const fName = (firstName && firstName.trim()) ? firstName.trim() : 'مستخدم';
-    const lName = (lastName && lastName.trim()) ? lastName.trim() : 'Google';
-
-    const encryptedFirstName = EncryptionService.encryptField(fName);
-    const encryptedLastName = EncryptionService.encryptField(lName);
+    const encryptedFirstName = EncryptionService.encryptField(gUser.firstName);
+    const encryptedLastName = EncryptionService.encryptField(gUser.lastName);
     const encryptedPhone = EncryptionService.encryptField(formattedPhone);
-    const encryptedCondition = EncryptionService.encryptField(condition || null);
+    const encryptedEmail = EncryptionService.encryptField(cleanEmail);
+    const encryptedCondition = condition ? EncryptionService.encryptField(condition) : null;
 
-    const newUser = await prisma.user.create({
-      data: {
-        firstName: encryptedFirstName,
-        lastName: encryptedLastName,
-        email: cleanEmail,
-        phone: encryptedPhone,
-        phoneBlindIndex,
-        gender: 'any',
-        passwordHash,
-        condition: encryptedCondition,
-        specGenderPref: specGenderPref || 'any',
-        role: 'user',
-        isVerified: true,
-        status: 'active',
-        tokenVersion: 0
+    let newUser;
+    try {
+      newUser = await prisma.user.create({
+        data: {
+          googleId: gUser.googleId,
+          firstName: encryptedFirstName,
+          lastName: encryptedLastName,
+          emailEncrypted: encryptedEmail,
+          emailHash: emailBlindIndex,
+          phoneEncrypted: encryptedPhone,
+          phoneHash: phoneBlindIndex,
+          gender: (req.body.gender === 'female' ? 'female' : 'male'),
+          passwordHash,
+          conditionEncrypted: encryptedCondition,
+          specGenderPref: specGenderPref || 'any',
+          role: 'user',
+          isVerified: true,
+          status: 'active',
+          tokenVersion: 0
+        }
+      });
+    } catch (createErr) {
+      if (createErr.code === 'P2002') {
+        return res.status(409).json({
+          success: false,
+          message: 'الحساب أو رقم الهاتف مسجل مسبقاً.'
+        });
       }
-    });
+      throw createErr;
+    }
 
     const token = createToken(newUser, ['full_access']);
     const decryptedNew = EncryptionService.decryptUserFields(newUser);
@@ -728,19 +907,11 @@ async function googleAuth(req, res, next) {
       result: 'SUCCESS'
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       token,
-      user: {
-        id: decryptedNew.id,
-        firstName: decryptedNew.firstName,
-        lastName: decryptedNew.lastName,
-        email: decryptedNew.email,
-        phone: decryptedNew.phone,
-        role: decryptedNew.role,
-        isVerified: decryptedNew.isVerified
-      },
-      message: 'تم إنشاء حسابك عبر Google وتأكيد رقم هاتفك بنجاح!'
+      user: toPublicUser(newUser),
+      message: `تم إنشاء حسابك عبر Google وتأكيد رقم هاتفك بنجاح! مرحباً ${decryptedNew.firstName}`
     });
   } catch (err) {
     next(err);
@@ -759,19 +930,23 @@ async function updateProfile(req, res, next) {
     const dataToUpdate = {};
     if (firstName) dataToUpdate.firstName = EncryptionService.encryptField(firstName.trim());
     if (lastName) dataToUpdate.lastName = EncryptionService.encryptField(lastName.trim());
-    if (condition !== undefined) dataToUpdate.condition = EncryptionService.encryptField(condition);
+    if (condition !== undefined) {
+      dataToUpdate.conditionEncrypted = EncryptionService.encryptField(condition);
+    }
     if (specGenderPref) dataToUpdate.specGenderPref = specGenderPref;
 
     if (email) {
       const cleanEmail = email.toLowerCase().trim();
-      const existing = await prisma.user.findUnique({ where: { email: cleanEmail } });
+      const newEmailHash = EncryptionService.generateBlindIndex(cleanEmail);
+      const existing = await prisma.user.findUnique({ where: { emailHash: newEmailHash } });
       if (existing && existing.id !== userId) {
         return res.status(400).json({
           success: false,
           message: 'البريد الإلكتروني مستخدم بالفعل من قبل حساب آخر.'
         });
       }
-      dataToUpdate.email = cleanEmail;
+      dataToUpdate.emailEncrypted = EncryptionService.encryptField(cleanEmail);
+      dataToUpdate.emailHash = newEmailHash;
     }
 
     const updatedUser = await prisma.user.update({
@@ -781,10 +956,10 @@ async function updateProfile(req, res, next) {
         id: true,
         firstName: true,
         lastName: true,
-        email: true,
-        phone: true,
+        emailEncrypted: true,
+        phoneEncrypted: true,
         gender: true,
-        condition: true,
+        conditionEncrypted: true,
         specGenderPref: true,
         role: true,
         isVerified: true
@@ -829,12 +1004,7 @@ async function sendPhoneUpdateOtp(req, res, next) {
     const cleanPhone = sanitizePhone(phone);
     const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
     const existing = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { phoneBlindIndex },
-          { phone: cleanPhone }
-        ]
-      }
+      where: { phoneHash: phoneBlindIndex }
     });
     if (existing && existing.id !== userId) {
       return res.status(400).json({
@@ -890,16 +1060,16 @@ async function verifyAndUpdatePhone(req, res, next) {
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
-        phone: EncryptionService.encryptField(cleanPhone),
-        phoneBlindIndex,
+        phoneEncrypted: EncryptionService.encryptField(cleanPhone),
+        phoneHash: phoneBlindIndex,
         isVerified: true
       },
       select: {
         id: true,
         firstName: true,
         lastName: true,
-        email: true,
-        phone: true,
+        emailEncrypted: true,
+        phoneEncrypted: true,
         role: true,
         isVerified: true
       }

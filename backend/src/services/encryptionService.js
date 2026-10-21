@@ -166,7 +166,14 @@ function decryptBookingFields(booking) {
   }
 
   const copy = { ...booking };
-  if (copy.condition !== undefined) copy.condition = decryptField(copy.condition);
+
+  // Decrypt condition (supports both new and legacy field names)
+  if (copy.conditionEncrypted !== undefined) {
+    copy.condition = decryptField(copy.conditionEncrypted);
+  } else if (copy.condition !== undefined) {
+    copy.condition = decryptField(copy.condition);
+  }
+
   if (copy.notes !== undefined) copy.notes = decryptField(copy.notes);
 
   if (copy.user && typeof copy.user === 'object') {

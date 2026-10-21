@@ -131,10 +131,86 @@ const reviewB2bRequestSchema = z.object({
   reviewNote: z.string().max(1000).optional()
 });
 
+const googleAuthSchema = z.object({
+  idToken: z.string().min(10, 'رمز Google (idToken) مطلوب').max(4096, 'رمز Google غير صالح').trim(),
+  nonce: z.string().max(128).optional(),
+  phone: z.string().max(50).optional(),
+  otpCode: z.string().regex(/^\d{6}$/, 'رمز التحقق يجب أن يتكون من 6 أرقام').optional(),
+  condition: z.string().max(100).optional(),
+  specGenderPref: z.enum(['any', 'male', 'female']).optional()
+}).strict();
+
+const sendPhoneUpdateOtpSchema = z.object({
+  phone: z.string().trim().regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)').optional(),
+  newPhone: z.string().trim().regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)').optional()
+}).refine((data) => data.phone || data.newPhone, {
+  message: 'رقم الهاتف الجديد مطلوب'
+});
+
+const adminCreateUserSchema = z.object({
+  first_name: z.string().min(2, 'الاسم الأول يجب أن يتكون من حرفين على الأقل').trim(),
+  last_name: z.string().min(2, 'اسم العائلة يجب أن يتكون من حرفين على الأقل').trim(),
+  email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim(),
+  phone: z.string().trim().optional().or(z.literal('')),
+  password: z.string().min(6, 'كلمة المرور يجب أن لا تقل عن 6 أحرف').optional(),
+  role: z.enum(['user', 'specialist', 'admin']).optional(),
+  gender: z.enum(['male', 'female']).optional()
+});
+
+const adminUpdateUserStatusSchema = z.object({
+  status: z.enum(['active', 'inactive', 'suspended'], {
+    errorMap: () => ({ message: 'الحالة يجب أن تكون إما active أو inactive أو suspended' })
+  })
+});
+
+const adminCreateSpecialistSchema = z.object({
+  name: z.string().min(2, 'اسم الأخصائي مطلوب').max(200).trim(),
+  title: z.string().max(200).optional(),
+  specialization: z.string().max(200).optional(),
+  years_experience: z.union([z.number().int().min(0), z.string().regex(/^\d+$/)]).optional(),
+  price: z.union([z.number().positive(), z.string().regex(/^\d+(\.\d+)?$/)]).optional(),
+  gender: z.enum(['male', 'female']).optional()
+});
+
+const adminUpdateBookingStatusSchema = z.object({
+  status: z.enum(['pending', 'confirmed', 'completed', 'cancelled', 'no_show'], {
+    errorMap: () => ({ message: 'الحالة يجب أن تكون pending أو confirmed أو completed أو cancelled أو no_show' })
+  })
+});
+
+const adminCreateServiceSchema = z.object({
+  name: z.string().min(2, 'اسم الخدمة مطلوب').max(200).trim(),
+  slug: z.string().max(200).optional(),
+  description: z.string().optional(),
+  icon: z.string().optional()
+});
+
+const adminCreateCompanySchema = z.object({
+  name: z.string().min(2, 'اسم الشركة مطلوب').max(200).trim(),
+  email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim().optional(),
+  phone: z.string().trim().optional().or(z.literal('')),
+  employees_count: z.union([z.number().int().positive(), z.string().regex(/^\d+$/)]).optional()
+});
+
+const sendMeetingLinkSchema = z.object({
+  meetingLink: z.string().min(5, 'يرجى إدخال رابط الاجتماع بشكل صحيح').trim()
+});
+
+const publishArticleSchema = z.object({
+  title: z.string().min(3, 'عنوان المقال يجب أن يتكون من 3 أحرف على الأقل').max(300).trim(),
+  lead: z.string().max(1000).optional(),
+  content: z.string().min(10, 'محتوى المقال يجب أن لا يقل عن 10 أحرف').trim(),
+  category: z.string().max(100).optional(),
+  categorySlug: z.string().max(100).optional(),
+  takeaways: z.union([z.array(z.string()), z.string()]).optional(),
+  readTime: z.string().max(50).optional()
+});
+
 module.exports = {
   validate,
   registerSchema,
   loginSchema,
+  googleAuthSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
   verifyOtpSchema,
@@ -146,7 +222,17 @@ module.exports = {
   createB2bRequestSchema,
   reviewB2bRequestSchema,
   updateProfileSchema,
+  sendPhoneUpdateOtpSchema,
   updatePhoneSchema,
   changePasswordSchema,
-  deleteAccountSchema
+  deleteAccountSchema,
+  adminCreateUserSchema,
+  adminUpdateUserStatusSchema,
+  adminCreateSpecialistSchema,
+  adminUpdateBookingStatusSchema,
+  adminCreateServiceSchema,
+  adminCreateCompanySchema,
+  sendMeetingLinkSchema,
+  publishArticleSchema
 };
+

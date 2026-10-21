@@ -8,7 +8,23 @@ const {
   bookingSchema,
   visaPaymentSchema,
   createPaymentSessionSchema,
-  paymentWebhookSchema
+  paymentWebhookSchema,
+  googleAuthSchema,
+  sendPhoneUpdateOtpSchema,
+  updateProfileSchema,
+  updatePhoneSchema,
+  changePasswordSchema,
+  deleteAccountSchema,
+  createB2bRequestSchema,
+  reviewB2bRequestSchema,
+  adminCreateUserSchema,
+  adminUpdateUserStatusSchema,
+  adminCreateSpecialistSchema,
+  adminUpdateBookingStatusSchema,
+  adminCreateServiceSchema,
+  adminCreateCompanySchema,
+  sendMeetingLinkSchema,
+  publishArticleSchema
 } = require('../src/middlewares/validate');
 
 /**
@@ -338,4 +354,184 @@ describe('paymentWebhookSchema', () => {
     ).toThrow();
   });
 });
+
+describe('googleAuthSchema', () => {
+  it('accepts a valid Google idToken payload', () => {
+    expect(() =>
+      googleAuthSchema.parse({
+        idToken: 'valid_google_id_token_1234567890'
+      })
+    ).not.toThrow();
+  });
+
+  it('rejects extra unknown fields (strict mode)', () => {
+    expect(() =>
+      googleAuthSchema.parse({
+        idToken: 'valid_google_id_token_1234567890',
+        maliciousField: 'exploit'
+      })
+    ).toThrow();
+  });
+
+  it('rejects an idToken shorter than 10 chars', () => {
+    expect(() =>
+      googleAuthSchema.parse({
+        idToken: 'short'
+      })
+    ).toThrow();
+  });
+});
+
+describe('sendPhoneUpdateOtpSchema & updatePhoneSchema', () => {
+  it('accepts valid Jordanian phone in sendPhoneUpdateOtpSchema', () => {
+    expect(() =>
+      sendPhoneUpdateOtpSchema.parse({
+        phone: '+962791234567'
+      })
+    ).not.toThrow();
+  });
+
+  it('rejects empty payload in sendPhoneUpdateOtpSchema', () => {
+    expect(() => sendPhoneUpdateOtpSchema.parse({})).toThrow();
+  });
+
+  it('accepts valid phone and 6-digit code in updatePhoneSchema', () => {
+    expect(() =>
+      updatePhoneSchema.parse({
+        newPhone: '+962781234567',
+        otpCode: '123456'
+      })
+    ).not.toThrow();
+  });
+
+  it('rejects non-numeric OTP in updatePhoneSchema', () => {
+    expect(() =>
+      updatePhoneSchema.parse({
+        newPhone: '+962781234567',
+        otpCode: '12a456'
+      })
+    ).toThrow();
+  });
+});
+
+describe('changePasswordSchema & deleteAccountSchema', () => {
+  it('accepts valid change password payload', () => {
+    expect(() =>
+      changePasswordSchema.parse({
+        currentPassword: 'oldPassword123',
+        newPassword: 'newPassword123'
+      })
+    ).not.toThrow();
+  });
+
+  it('rejects new password shorter than 6 characters', () => {
+    expect(() =>
+      changePasswordSchema.parse({
+        currentPassword: 'oldPassword123',
+        newPassword: '123'
+      })
+    ).toThrow();
+  });
+
+  it('accepts delete account password', () => {
+    expect(() =>
+      deleteAccountSchema.parse({
+        password: 'myPassword123'
+      })
+    ).not.toThrow();
+  });
+});
+
+describe('Admin Schemas', () => {
+  it('validates adminCreateUserSchema correctly', () => {
+    expect(() =>
+      adminCreateUserSchema.parse({
+        first_name: 'أحمد',
+        last_name: 'علي',
+        email: 'ahmad@example.com',
+        phone: '+962791234567',
+        password: 'password123',
+        role: 'specialist',
+        gender: 'male'
+      })
+    ).not.toThrow();
+  });
+
+  it('validates adminUpdateUserStatusSchema enum strictly', () => {
+    expect(() =>
+      adminUpdateUserStatusSchema.parse({ status: 'active' })
+    ).not.toThrow();
+    expect(() =>
+      adminUpdateUserStatusSchema.parse({ status: 'invalid_status' })
+    ).toThrow();
+  });
+
+  it('validates adminCreateSpecialistSchema', () => {
+    expect(() =>
+      adminCreateSpecialistSchema.parse({
+        name: 'د. سارة',
+        title: 'أخصائية نفسية',
+        years_experience: 7,
+        price: 200
+      })
+    ).not.toThrow();
+  });
+
+  it('validates adminUpdateBookingStatusSchema strictly', () => {
+    expect(() =>
+      adminUpdateBookingStatusSchema.parse({ status: 'confirmed' })
+    ).not.toThrow();
+    expect(() =>
+      adminUpdateBookingStatusSchema.parse({ status: 'scheduled' })
+    ).toThrow();
+  });
+
+  it('validates adminCreateServiceSchema', () => {
+    expect(() =>
+      adminCreateServiceSchema.parse({
+        name: 'جلسة استشارية فردية',
+        slug: 'individual-session'
+      })
+    ).not.toThrow();
+  });
+
+  it('validates adminCreateCompanySchema', () => {
+    expect(() =>
+      adminCreateCompanySchema.parse({
+        name: 'شركة الأمل',
+        email: 'info@alamal.com',
+        phone: '+962791234567',
+        employees_count: 100
+      })
+    ).not.toThrow();
+  });
+});
+
+describe('Specialist Portal Schemas', () => {
+  it('validates sendMeetingLinkSchema correctly', () => {
+    expect(() =>
+      sendMeetingLinkSchema.parse({
+        meetingLink: 'https://meet.google.com/abc-defg-hij'
+      })
+    ).not.toThrow();
+    expect(() => sendMeetingLinkSchema.parse({ meetingLink: '' })).toThrow();
+  });
+
+  it('validates publishArticleSchema correctly', () => {
+    expect(() =>
+      publishArticleSchema.parse({
+        title: 'كيف تتغلب على التوتر اليومي',
+        content: 'هذا مقال مفصل حول طرق التعامل مع القلق وضغوط العمل.',
+        category: 'الصحة النفسية'
+      })
+    ).not.toThrow();
+    expect(() =>
+      publishArticleSchema.parse({
+        title: 'hi', // too short
+        content: 'short'
+      })
+    ).toThrow();
+  });
+});
+
 

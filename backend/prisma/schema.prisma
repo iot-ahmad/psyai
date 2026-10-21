@@ -142,6 +142,7 @@ model User {
   
   language           LanguageEnum?       @default(ar)
   status             UserStatusEnum      @default(active)
+  googleId           String?             @unique @map("google_id") @db.VarChar(64)
   
   createdAt          DateTime            @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt          DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
@@ -199,29 +200,32 @@ model SpecialistSchedule {
 }
 
 model Booking {
-  id              String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId          String             @map("user_id") @db.Uuid
-  user            User               @relation(fields: [userId], references: [id], onDelete: Restrict)
-  specialistId    String             @map("specialist_id") @db.Uuid
-  specialist      Specialist         @relation(fields: [specialistId], references: [id], onDelete: Restrict)
-  
-  sessionTime     DateTime           @map("session_time") @db.Timestamp(6)
-  status          BookingStatusEnum  @default(pending)
-  meetingLink     String?            @map("meeting_link") @db.VarChar(500)
-  notes           String?            @db.Text
-  
+  id                   String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId               String             @map("user_id") @db.Uuid
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Restrict)
+  specialistId         String             @map("specialist_id") @db.Uuid
+  specialist           Specialist         @relation(fields: [specialistId], references: [id], onDelete: Restrict)
+
+  sessionTime          DateTime           @map("session_time") @db.Timestamp(6)
+  status               BookingStatusEnum  @default(pending)
+  meetingLink          String?            @map("meeting_link") @db.VarChar(500)
+  notes                String?            @db.Text
+  conditionEncrypted   String?            @map("condition_encrypted") @db.Text
+
   // Rating & Reviews
-  rating          Decimal?           @db.Decimal(2, 1)
-  reviewNotes     String?            @map("review_notes") @db.Text
-  reviewedAt      DateTime?          @map("reviewed_at") @db.Timestamp(6)
-  
-  createdAt       DateTime           @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt       DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+  rating               Decimal?           @db.Decimal(2, 1)
+  reviewNotes          String?            @map("review_notes") @db.Text
+  reviewedAt           DateTime?          @map("reviewed_at") @db.Timestamp(6)
+
+  createdAt            DateTime           @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt            DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
 
   // Relations
-  payment         Payment?
-  reminders       SessionReminder[]
+  payment              Payment?
+  reminders            SessionReminder[]
 
+  // Prevent double-booking: same specialist cannot have two active bookings at the same time
+  @@unique([specialistId, sessionTime], map: "unique_booking_specialist_time")
   @@index([userId, createdAt(sort: Desc)], map: "idx_bookings_user_created")
   @@index([specialistId, sessionTime], map: "idx_bookings_specialist_time")
   @@map("bookings")

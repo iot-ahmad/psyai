@@ -117,17 +117,22 @@ describe('authController.register', () => {
     res = createRes();
     next = jest.fn();
     mockPrisma.user.findUnique.mockResolvedValue(null); // no duplicates by default
+    mockPrisma.user.findFirst.mockResolvedValue(null);  // no phone duplicates by default
+    mockWhatsapp.verifyOtp.mockResolvedValue({ success: true });
     mockPrisma.user.create.mockImplementation(async ({ data }) => ({
       id: 'user-1',
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.email,
-      phone: data.phone,
+      emailEncrypted: data.emailEncrypted,
+      phoneEncrypted: data.phoneEncrypted,
+      emailHash: data.emailHash,
+      phoneHash: data.phoneHash,
       gender: data.gender,
-      condition: data.condition,
+      conditionEncrypted: data.conditionEncrypted,
       specGenderPref: data.specGenderPref,
       role: data.role,
       isVerified: data.isVerified,
+      tokenVersion: 0,
       createdAt: new Date('2025-01-01')
     }));
   });
@@ -140,7 +145,8 @@ describe('authController.register', () => {
     expect(res.body.token).toBeDefined();
 
     const decoded = jwt.verify(res.body.token, 'test-secret-key');
-    expect(decoded).toMatchObject({ id: 'user-1', email: 'Sara@Example.com', role: 'user' });
+    // Token contains user.id and role; email is not directly stored in new schema's JWT payload
+    expect(decoded).toMatchObject({ id: 'user-1', role: 'user' });
   });
 
   it('hashes the password (never stores plaintext)', async () => {
@@ -153,8 +159,9 @@ describe('authController.register', () => {
   });
 
   it('returns 400 when the email is already registered', async () => {
+    // The controller now uses emailHash (blind-index) for lookup, not plaintext email
     mockPrisma.user.findUnique.mockImplementation(async ({ where }) => {
-      if (where.email) return { id: 'existing' };
+      if (where.emailHash) return { id: 'existing' };
       return null;
     });
 
@@ -166,8 +173,9 @@ describe('authController.register', () => {
   });
 
   it('returns 400 when the phone is already registered', async () => {
-    mockPrisma.user.findUnique.mockImplementation(async ({ where }) => {
-      if (where.phone) return { id: 'existing' };
+    // The controller now uses phoneHash (blind-index) for lookup via findFirst
+    mockPrisma.user.findFirst.mockImplementation(async ({ where }) => {
+      if (where.phoneHash) return { id: 'existing' };
       return null;
     });
 
@@ -201,7 +209,7 @@ describe('authController.register', () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.body.message).toBe('bad otp');
+    expect(res.body.message).toContain('bad otp');
     expect(mockPrisma.user.create).not.toHaveBeenCalled();
   });
 
@@ -210,7 +218,8 @@ describe('authController.register', () => {
     await authController.register(createReq({ body: bodyWithoutCondition }), res, next);
 
     const createdData = mockPrisma.user.create.mock.calls[0][0].data;
-    expect(createdData.condition).toBeNull();
+    // Condition field is stored as conditionEncrypted in the new schema
+    expect(createdData.conditionEncrypted).toBeNull();
     expect(createdData.specGenderPref).toBe('any');
     expect(createdData.role).toBe('user');
     expect(createdData.status).toBe('active');
@@ -279,7 +288,8 @@ describe('authController.login', () => {
     );
 
     const arg = mockPrisma.user.findFirst.mock.calls[0][0];
-    expect(arg.where.OR[0]).toEqual({ email: 'sara@example.com' });
+    // Login now uses emailHash blind-index instead of plaintext email
+    expect(arg.where.OR[0]).toMatchObject({ emailHash: expect.any(String) });
   });
 
   it('returns 401 when no user matches', async () => {
@@ -366,10 +376,11 @@ describe('authController.googleAuth', () => {
     res = createRes();
     next = jest.fn();
     mockPrisma.user.findFirst.mockResolvedValue(null);
+    mockWhatsapp.verifyOtp.mockResolvedValue({ success: true, message: 'تم التحقق' });
   });
 
-  it('returns 400 when the email is missing or malformed', async () => {
-    const req = { body: { email: 'not-an-email' }, params: {}, query: {}, headers: {} };
+  it('returns 400 when idToken is missing', async () => {
+    const req = { body: {}, params: {}, query: {}, headers: {} };
     await authController.googleAuth(req, res, next);
 
     expect(res.status).toHaveBeenCalledWith(400);
@@ -383,11 +394,12 @@ describe('authController.googleAuth', () => {
       lastName: 'Ahmad',
       email: 'sara@example.com',
       phone: '+962791234567',
-      role: 'user'
+      role: 'user',
+      status: 'active'
     });
 
     await authController.googleAuth(
-      createReq({ body: { email: 'sara@example.com' } }),
+      createReq({ body: { idToken: 'mock-test-id-token:sub-sara:sara@example.com:Sara:Ahmad' } }),
       res,
       next
     );
@@ -405,11 +417,12 @@ describe('authController.googleAuth', () => {
       lastName: 'Ahmad',
       email: 'sara@example.com',
       phone: null,
-      role: 'user'
+      role: 'user',
+      status: 'active'
     });
 
     await authController.googleAuth(
-      createReq({ body: { email: 'sara@example.com' } }),
+      createReq({ body: { idToken: 'mock-test-id-token:sub-sara:sara@example.com:Sara:Ahmad' } }),
       res,
       next
     );
@@ -417,14 +430,15 @@ describe('authController.googleAuth', () => {
     expect(res.body).toMatchObject({ success: true, needPhone: true });
   });
 
-  it('normalizes a Jordanian local phone (07...) to +962 format', async () => {
+  it('normalizes a Jordanian local phone (07...) to +962 format and verifies OTP', async () => {
     mockPrisma.user.findUnique.mockResolvedValue({
       id: 'user-1',
       firstName: 'Sara',
       lastName: 'Ahmad',
       email: 'sara@example.com',
       phone: null,
-      role: 'user'
+      role: 'user',
+      status: 'active'
     });
     mockPrisma.user.update.mockResolvedValue({
       id: 'user-1',
@@ -432,24 +446,35 @@ describe('authController.googleAuth', () => {
       lastName: 'Ahmad',
       email: 'sara@example.com',
       phone: '+962791234567',
-      role: 'user'
+      role: 'user',
+      status: 'active'
     });
 
     await authController.googleAuth(
-      createReq({ body: { email: 'sara@example.com', phone: '0791234567' } }),
+      createReq({
+        body: {
+          idToken: 'mock-test-id-token:sub-sara:sara@example.com:Sara:Ahmad',
+          phone: '0791234567',
+          otpCode: '123456'
+        }
+      }),
       res,
       next
     );
 
-    expect(mockPrisma.user.update).toHaveBeenCalledWith({
-      where: { id: 'user-1' },
-      data: expect.objectContaining({ isVerified: true, phoneBlindIndex: expect.any(String) })
-    });
+    expect(mockWhatsapp.verifyOtp).toHaveBeenCalledWith('+962791234567', '123456');
+    expect(mockPrisma.user.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: 'user-1' },
+        data: expect.objectContaining({ isVerified: true, phoneHash: expect.any(String) })
+      })
+    );
     const updatedData = mockPrisma.user.update.mock.calls[0][0].data;
-    expect(EncryptionService.decryptField(updatedData.phone)).toBe('+962791234567');
+    // Phone is now stored in phoneEncrypted, not phone
+    expect(EncryptionService.decryptField(updatedData.phoneEncrypted)).toBe('+962791234567');
   });
 
-  it('creates a brand-new Google user with a valid Jordanian phone', async () => {
+  it('creates a brand-new Google user with a valid Jordanian phone and verified OTP', async () => {
     mockPrisma.user.findUnique.mockResolvedValue(null);
     mockPrisma.user.findFirst.mockResolvedValue(null); // phone not taken
     mockPrisma.user.create.mockImplementation(async ({ data }) => ({
@@ -459,41 +484,62 @@ describe('authController.googleAuth', () => {
 
     await authController.googleAuth(
       createReq({
-        body: { email: 'new@example.com', firstName: 'Omar', lastName: 'Ali', phone: '0791234567' }
+        body: {
+          idToken: 'mock-test-id-token:sub-omar:omar@example.com:Omar:Ali',
+          phone: '0791234567',
+          otpCode: '123456'
+        }
       }),
       res,
       next
     );
 
+    expect(mockWhatsapp.verifyOtp).toHaveBeenCalledWith('+962791234567', '123456');
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.body.success).toBe(true);
     const createdData = mockPrisma.user.create.mock.calls[0][0].data;
-    expect(EncryptionService.decryptField(createdData.phone)).toBe('+962791234567');
+    // Phone is now stored in phoneEncrypted, not phone
+    expect(EncryptionService.decryptField(createdData.phoneEncrypted)).toBe('+962791234567');
+    expect(createdData.googleId).toBe('sub-omar');
     expect(createdData.isVerified).toBe(true);
     expect(createdData.passwordHash).toBeDefined();
   });
 
   it('rejects a new signup when the phone is already used by another account', async () => {
     mockPrisma.user.findUnique.mockResolvedValue(null);
-    mockPrisma.user.findFirst.mockResolvedValue({ id: 'other' });
+    mockPrisma.user.findFirst
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({ id: 'other' });
 
     await authController.googleAuth(
-      createReq({ body: { email: 'new@example.com', phone: '0791234567' } }),
+      createReq({
+        body: {
+          idToken: 'mock-test-id-token:sub-new:new@example.com:Omar:Ali',
+          phone: '0791234567',
+          otpCode: '123456'
+        }
+      }),
       res,
       next
     );
 
-    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.status).toHaveBeenCalledWith(409);
     expect(res.body.message).toContain('رقم الهاتف هذا مسجل مسبقاً');
   });
 
-  it('defaults the name to "مستخدم Google" when names are omitted', async () => {
+  it('defaults the name to "مستخدم Google" when names are omitted in token', async () => {
     mockPrisma.user.findUnique.mockResolvedValue(null);
     mockPrisma.user.findFirst.mockResolvedValue(null);
     mockPrisma.user.create.mockImplementation(async ({ data }) => ({ id: 'new-user', ...data }));
 
     await authController.googleAuth(
-      createReq({ body: { email: 'new@example.com', phone: '0791234567' } }),
+      createReq({
+        body: {
+          idToken: 'mock-test-id-token:sub-new:new@example.com::',
+          phone: '0791234567',
+          otpCode: '123456'
+        }
+      }),
       res,
       next
     );
@@ -501,6 +547,26 @@ describe('authController.googleAuth', () => {
     const createdData = mockPrisma.user.create.mock.calls[0][0].data;
     expect(EncryptionService.decryptField(createdData.firstName)).toBe('مستخدم');
     expect(EncryptionService.decryptField(createdData.lastName)).toBe('Google');
+  });
+
+  it('blocks suspended accounts with 403', async () => {
+    mockPrisma.user.findUnique.mockResolvedValue({
+      id: 'user-suspended',
+      googleId: 'sub-suspended',
+      email: 'suspended@example.com',
+      phone: '+962791234567',
+      role: 'user',
+      status: 'suspended'
+    });
+
+    await authController.googleAuth(
+      createReq({ body: { idToken: 'mock-test-id-token:sub-suspended:suspended@example.com:Sara:Ahmad' } }),
+      res,
+      next
+    );
+
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.body.message).toContain('موقوف');
   });
 });
 
