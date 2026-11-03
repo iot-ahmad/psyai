@@ -65,7 +65,7 @@ async function createBooking(req, res, next) {
             },
             include: {
               specialist: {
-                select: { id: true, name: true, title: true, price: true, avatar: true }
+                select: { id: true, name: true, title: true, price: true, avatarUrl: true }
               }
             }
           });
@@ -118,7 +118,7 @@ async function getMyBookings(req, res, next) {
       orderBy: { createdAt: 'desc' },
       include: {
         specialist: {
-          select: { id: true, name: true, title: true, avatar: true, price: true }
+          select: { id: true, name: true, title: true, avatarUrl: true, price: true }
         },
         payment: true
       }
@@ -128,7 +128,7 @@ async function getMyBookings(req, res, next) {
       const decrypted = EncryptionService.decryptBookingFields(b);
       return {
         ...decrypted,
-        sessionLink: decrypted.sessionUrl || `/session.html?id=${decrypted.id}`,
+        sessionLink: decrypted.meetingLink || `/session.html?id=${decrypted.id}`,
         paymentStatus: decrypted.payment ? decrypted.payment.status : (decrypted.status === 'confirmed' ? 'paid' : 'unpaid')
       };
     });

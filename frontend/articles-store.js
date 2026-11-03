@@ -206,7 +206,7 @@ const ArticlesStore = {
 
   async syncWithBackend(apiBase = "") {
     try {
-      const base = apiBase || (window.location.port === "5000" ? "" : "http://localhost:5000");
+      const base = apiBase || (window.PSYAI_API_BASE ?? (window.location.port === "5000" ? "" : "http://localhost:5000"));
       const res = await fetch(`${base}/api/articles?limit=50`);
       if (!res.ok) return;
       const data = await res.json();

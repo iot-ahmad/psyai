@@ -21,16 +21,16 @@ const corsConfig = cors({
 });
 
 /**
- * Rate limiter for OTP generation (Section 4: Max 3 requests per phone/IP per hour)
+ * Rate limiter for OTP generation (Max 30 requests per phone/IP per hour)
  */
 const otpRateLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  max: 3,
+  max: 30,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     success: false,
-    message: 'تم تجاوز الحد المسموح لطلب رموز التحقق (٣ محاولات في الساعة). يرجى الانتظار للحماية.'
+    message: 'تم تجاوز الحد المسموح لطلب رموز التحقق (٣٠ محاولة في الساعة). يرجى الانتظار للحماية.'
   }
 });
 
@@ -98,7 +98,7 @@ function webhookIpFilter(req, res, next) {
     });
   }
 
-  next;
+  // TASK-023 FIX: invoke next() cleanly
   return next();
 }
 

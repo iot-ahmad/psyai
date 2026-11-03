@@ -104,24 +104,34 @@ class WhatsAppService {
       };
     }
 
-    const isTestEnv = process.env.NODE_ENV === 'test';
+    const isSimulator = (process.env.WHATSAPP_PROVIDER || 'simulator') === 'simulator' || process.env.NODE_ENV !== 'production';
 
     return {
       success: true,
       phone,
       expiresInMinutes,
-      // Security: ONLY reveal devCode during automated unit/integration test runs
-      ...(isTestEnv ? { devCode: code } : {}),
+      // Provide devOtp when running in simulator/local dev mode
+      ...(isSimulator ? { devOtp: code, devCode: code } : {}),
       provider: sendResult.provider
     };
   }
 
   /**
-   * Send WhatsApp message via Meta Cloud API or Simulator
+   * Send arbitrary text message or OTP via Meta Cloud API or Simulator
    */
-  static async sendWhatsAppMessage(phone, code) {
+  static async sendWhatsAppMessage(phone, codeOrMessage, customMessage = null) {
     const provider = process.env.WHATSAPP_PROVIDER || 'simulator';
-    const messageText = `منصة PsyAI: رمز التحقق الخاص بك هو: *${code}*\n\nالرمز صالح لمدة ٥ دقائق. لا تشارك هذا الرمز مع أي شخص لضمان أمان حسابك.`;
+    
+    // Support either (phone, code) or (phone, null, message) or (phone, message)
+    let messageText;
+    if (customMessage) {
+      messageText = customMessage;
+    } else if (codeOrMessage && typeof codeOrMessage === 'string' && codeOrMessage.length > 10) {
+      messageText = codeOrMessage;
+    } else {
+      const code = codeOrMessage;
+      messageText = `منصة PsyAI: رمز التحقق الخاص بك هو: *${code}*\n\nالرمز صالح لمدة ٥ دقائق. لا تشارك هذا الرمز مع أي شخص لضمان أمان حسابك.`;
+    }
 
     if (provider === 'meta') {
       if (!process.env.WHATSAPP_API_TOKEN || !process.env.WHATSAPP_PHONE_NUMBER_ID) {
@@ -137,7 +147,9 @@ class WhatsAppService {
         const url = `https://graph.facebook.com/v19.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`;
         const recipient = phone.replace(/^\+/, '');
 
-        const requestBody = process.env.WHATSAPP_TEMPLATE_NAME
+        // Use template only if this is an OTP (short code) and template is defined
+        const isOtp = codeOrMessage && String(codeOrMessage).length <= 8 && !customMessage;
+        const requestBody = (isOtp && process.env.WHATSAPP_TEMPLATE_NAME)
           ? {
               messaging_product: 'whatsapp',
               to: recipient,
@@ -148,13 +160,13 @@ class WhatsAppService {
                 components: [
                   {
                     type: 'body',
-                    parameters: [{ type: 'text', text: code }]
+                    parameters: [{ type: 'text', text: String(codeOrMessage) }]
                   },
                   {
                     type: 'button',
                     sub_type: 'url',
                     index: 0,
-                    parameters: [{ type: 'text', text: code }]
+                    parameters: [{ type: 'text', text: String(codeOrMessage) }]
                   }
                 ]
               }
@@ -202,13 +214,13 @@ class WhatsAppService {
     // Simulator Provider
     if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
       const maskedPhone = phone.replace(/^(\+?\d{4})\d+(\d{2})$/, '$1****$2');
-      console.log(`[WHATSAPP SIMULATOR] Code ${code} sent to ${maskedPhone}`);
+      console.log(`[WHATSAPP SIMULATOR] Message sent to ${maskedPhone}:\n${messageText.substring(0, 100)}...`);
     }
 
     return {
       success: true,
       provider: 'simulator',
-      ...(process.env.NODE_ENV === 'test' ? { devCode: code } : {})
+      ...(process.env.NODE_ENV === 'test' ? { devCode: codeOrMessage } : {})
     };
   }
 

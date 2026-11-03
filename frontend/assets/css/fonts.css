@@ -4,7 +4,7 @@
    Supporting Families: SF Arabic, HT Rakik, AirbnbCereal, FAC, AdobeClean
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+/* Google Fonts are loaded via <link> in each page's <head> (an @import here duplicated the request and blocked rendering). */
 
 :root {
   --font-primary: 'IBM Plex Arabic', 'Open Sans', 'SF Arabic', 'HT Rakik', 'AirbnbCereal', 'AdobeClean-Regular', sans-serif;

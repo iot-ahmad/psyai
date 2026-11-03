@@ -32,16 +32,8 @@ async function getSpecialistForUser(user) {
     }
   }
 
-  // Fallback for demo/dev: if specialist user exists, link to first available specialist
-  if (!spec && user.role === 'specialist') {
-    spec = await prisma.specialist.findFirst();
-    if (spec) {
-      await prisma.specialist.update({
-        where: { id: spec.id },
-        data: { userId: user.id }
-      });
-    }
-  }
+  // TASK-019 FIX: Removed dangerous fallback that linked authenticated user
+  // to a random first specialist — critical security vulnerability (IDOR risk).
 
   return spec;
 }
@@ -96,7 +88,7 @@ async function getMyBookings(req, res, next) {
             id: true,
             amount: true,
             status: true,
-            transactionRef: true
+            transactionId: true
           }
         }
       }

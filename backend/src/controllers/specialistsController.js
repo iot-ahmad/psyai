@@ -8,10 +8,11 @@ async function getSpecialists(req, res, next) {
   try {
     const { category, gender, search } = req.query;
 
-    const where = { status: 'active' };
+    const where = { isAvailable: true };
 
-    if (gender && gender !== 'all' && gender !== 'any') {
-      where.gender = gender;
+    if (gender && gender !== 'all' && gender !== 'any' && gender !== 'الجميع') {
+      const gNorm = (gender === 'ذكر' || gender === 'male') ? 'male' : (gender === 'أنثى' || gender === 'female') ? 'female' : gender;
+      where.gender = gNorm;
     }
 
     if (search) {

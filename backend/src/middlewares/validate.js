@@ -23,7 +23,7 @@ function validate(schema) {
 const registerSchema = z.object({
   firstName: z.string().min(2, 'الاسم الأول يجب أن يتكون من حرفين على الأقل').trim(),
   lastName: z.string().min(2, 'اسم العائلة يجب أن يتكون من حرفين على الأقل').trim(),
-  email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim(),
+  email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim().optional().or(z.literal('')),
   phone: z.string()
     .trim()
     .regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)'),
@@ -34,7 +34,7 @@ const registerSchema = z.object({
 });
 
 const loginSchema = z.object({
-  identifier: z.string().min(3, 'يرجى إدخال اسم المستخدم أو البريد الإلكتروني').trim(),
+  identifier: z.string().min(3, 'يرجى إدخال رقم الهاتف').trim(),
   password: z.string().min(1, 'يرجى إدخال كلمة المرور')
 });
 
@@ -51,7 +51,11 @@ const verifyOtpSchema = z.object({
   phone: z.string()
     .trim()
     .regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)'),
-  code: z.string().length(6, 'رمز التحقق يجب أن يتكون من 6 أرقام').regex(/^\d+$/, 'رمز التحقق يجب أن يحتوي على أرقام فقط')
+  code: z.string().optional(),
+  otpCode: z.string().optional()
+}).refine(data => !!(data.code || data.otpCode), {
+  message: 'رمز التحقق مطلوب',
+  path: ['code']
 });
 
 const sendOtpSchema = z.object({
@@ -61,14 +65,14 @@ const sendOtpSchema = z.object({
 });
 
 const bookingSchema = z.object({
-  specialistId: z.string().uuid('معرّف الأخصائي غير صالح'),
+  specialistId: z.string().min(1, 'معرّف الأخصائي غير صالح'),
   sessionTime: z.string().min(3, 'يرجى تحديد موعد الجلسة'),
   condition: z.string().optional(),
   notes: z.string().optional()
 });
 
 const visaPaymentSchema = z.object({
-  bookingId: z.string().uuid('معرّف الحجز غير صالح'),
+  bookingId: z.string().min(1, 'معرّف الحجز غير صالح'),
   cardNumber: z.string().min(12, 'رقم بطاقة الفيزا غير صالح').max(19).trim(),
   cardHolder: z.string().min(3, 'اسم حامل البطاقة مطلوب').trim(),
   expiry: z.string().regex(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/, 'صيغة تاريخ الانتهاء MM/YY غير صحيحة'),
@@ -100,7 +104,7 @@ const deleteAccountSchema = z.object({
 });
 
 const createPaymentSessionSchema = z.object({
-  bookingId: z.string().uuid('معرّف الحجز غير صالح').optional(),
+  bookingId: z.string().min(1, 'معرّف الحجز غير صالح').optional(),
   orderId: z.string().optional(),
   amount: z.number().positive('المبلغ يجب أن يكون أكبر من صفر').optional(),
   currency: z.string().min(3).max(4).default('SAR').optional()

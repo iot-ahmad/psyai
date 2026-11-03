@@ -68,6 +68,9 @@ export function verifyOtp(phone, code) {
   return postJson(ENDPOINTS.VERIFY_OTP, { phone, code }).then(({ ok, data }) => ({
     success: ok && data.success === true,
     message: data.message,
+    token: data.token,
+    user: data.user,
+    isNewUser: !data.token && !data.user,
   }));
 }
 

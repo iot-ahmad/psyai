@@ -106,7 +106,8 @@ async function sendOtp(req, res, next) {
       expiresInMinutes: result.expiresInMinutes,
       message: `تم إرسال رمز التحقق إلى تطبيق WhatsApp للرقم ${phone}`
     };
-    if (process.env.NODE_ENV === 'test' && result.devCode) {
+    if (result.devOtp || result.devCode) {
+      responsePayload.devOtp = result.devOtp || result.devCode;
       responsePayload.devCode = result.devCode;
     }
 
@@ -122,7 +123,8 @@ async function sendOtp(req, res, next) {
  */
 async function verifyOtp(req, res, next) {
   try {
-    const { phone, code } = req.body;
+    const { phone } = req.body;
+    const code = req.body.code || req.body.otpCode;
     const result = await WhatsAppService.verifyOtp(phone, code);
 
     if (!result.success) {
@@ -134,15 +136,12 @@ async function verifyOtp(req, res, next) {
       return res.status(400).json(result);
     }
 
-    // Find and verify user if registered (lookup by blind index or plaintext phone)
+    // Find and verify user if registered (lookup by blind index)
     const cleanPhone = sanitizePhone(phone);
     const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
     let user = await prisma.user.findFirst({
       where: {
-        OR: [
-          { phoneBlindIndex },
-          { phone: cleanPhone }
-        ]
+        phoneHash: phoneBlindIndex
       }
     });
 
@@ -212,17 +211,21 @@ async function register(req, res, next) {
       otpCode
     } = req.body;
 
-    const cleanEmail = email.toLowerCase().trim();
     const cleanPhone = sanitizePhone(phone);
     const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
+    const cleanEmail = email && email.trim()
+      ? email.toLowerCase().trim()
+      : `user_${cleanPhone.replace(/\+/g, '')}@psyai.jo`;
 
-    // Check if user already exists (by email blind-index — the unique searchable hash)
-    const existingEmail = await prisma.user.findUnique({ where: { emailHash: EncryptionService.generateBlindIndex(cleanEmail) } });
-    if (existingEmail) {
-      return res.status(400).json({
-        success: false,
-        message: 'البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول أو استخدام بريد آخر.'
-      });
+    // Check if user already exists (by email blind-index if provided)
+    if (email && email.trim()) {
+      const existingEmail = await prisma.user.findUnique({ where: { emailHash: EncryptionService.generateBlindIndex(cleanEmail) } });
+      if (existingEmail) {
+        return res.status(400).json({
+          success: false,
+          message: 'البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول أو استخدام بريد آخر.'
+        });
+      }
     }
 
     const existingPhone = await prisma.user.findFirst({
@@ -323,14 +326,17 @@ async function login(req, res, next) {
   try {
     const { identifier, password } = req.body;
     const cleanIdent = identifier.trim();
-    const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanIdent);
+    const sanitizedPhone = sanitizePhone(cleanIdent);
+    const phoneBlindIndex = EncryptionService.generateBlindIndex(sanitizedPhone);
+    const rawPhoneBlindIndex = EncryptionService.generateBlindIndex(cleanIdent);
 
     const emailSearchHash = EncryptionService.generateBlindIndex(cleanIdent.toLowerCase());
     const user = await prisma.user.findFirst({
       where: {
         OR: [
           { emailHash: emailSearchHash },
-          { phoneHash: phoneBlindIndex }
+          { phoneHash: phoneBlindIndex },
+          { phoneHash: rawPhoneBlindIndex }
         ]
       }
     });
@@ -343,7 +349,7 @@ async function login(req, res, next) {
       });
       return res.status(401).json({
         success: false,
-        message: 'بيانات الدخول غير صحيحة. يرجى التحقق من البريد أو رقم الهاتف.'
+        message: 'بيانات الدخول غير صحيحة. يرجى التحقق من رقم الهاتف وكلمة المرور.'
       });
     }
 
@@ -778,15 +784,13 @@ async function googleAuth(req, res, next) {
         });
       }
 
-      // Check phone collision
+      // TASK-016 FIX: Check phone collision using only the blind index hash
+      // (phoneBlindIndex). Removed invalid ES6-shorthand field and non-existent
+      // plain `phone` column — both would cause Prisma validation errors.
       const phoneTaken = await prisma.user.findFirst({
         where: {
           id: { not: user.id },
-          OR: [
-            { phoneHash: phoneBlindIndex },
-            { phoneBlindIndex },
-            { phone: formattedPhone }
-          ]
+          phoneHash: phoneBlindIndex
         }
       });
       if (phoneTaken) {

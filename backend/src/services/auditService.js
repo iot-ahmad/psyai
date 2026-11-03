@@ -40,13 +40,11 @@ class AuditService {
 
       await prisma.auditLog.create({
         data: {
-          actorId: finalActorId,
-          actorRole: finalActorRole,
+          userId: finalActorId,
           action,
-          resourceId: resourceId ? String(resourceId) : null,
-          ipHash,
-          result: result || 'SUCCESS',
-          metadata: sanitizedMetadata
+          entity: finalActorRole || 'anonymous',
+          entityId: resourceId ? String(resourceId) : null,
+          details: sanitizedMetadata
         }
       });
     } catch (err) {

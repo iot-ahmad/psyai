@@ -183,7 +183,11 @@ async function processDueReminders() {
       take: 50  // process max 50 per tick to avoid memory spikes
     });
   } catch (err) {
-    console.error('[REMINDER] Failed to query due reminders:', err.message);
+    if (err.name === 'PrismaClientInitializationError' || err.message?.includes('database server')) {
+      console.warn('[REMINDER] قاعدة البيانات غير متصلة (PostgreSQL غير متاح على منفذ 5432) — تم تخطي فحص التذكيرات.');
+    } else {
+      console.error('[REMINDER] Failed to query due reminders:', err.message);
+    }
     return;
   }
 
