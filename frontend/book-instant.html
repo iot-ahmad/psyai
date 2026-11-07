@@ -842,93 +842,168 @@
     .specs-selection-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 14px;
+      gap: 1.5rem;
       margin-bottom: 1.8rem;
     }
 
     .spec-card-pick {
-      border: 2px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1.2rem 1.1rem;
-      background: #ffffff;
-      cursor: pointer;
-      transition: all 0.22s ease;
+      background: linear-gradient(160deg, #ffffff 80%, #eaf3f4 100%);
+      border-radius: 1.5rem;
+      padding: 2.2rem 1.4rem 1.6rem;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 18px rgba(46, 82, 84, 0.06);
+      border: 1.5px solid rgba(122, 179, 183, 0.22);
+      cursor: pointer;
       position: relative;
     }
 
     .spec-card-pick:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(46, 82, 84, 0.12);
       border-color: var(--teal-light);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-sm);
+      background: #ffffff;
     }
 
     .spec-card-pick.active {
-      border-color: var(--gold);
-      background: var(--teal-surface);
-      box-shadow: 0 4px 16px rgba(212, 168, 67, 0.22);
+      border: 2.5px solid var(--gold);
+      background: linear-gradient(160deg, #ffffff 75%, #fdf9ee 100%);
+      box-shadow: 0 8px 28px rgba(212, 168, 67, 0.25);
+      transform: translateY(-4px);
     }
 
-    .spec-card-pick-head {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 0.75rem;
-    }
-
-    .spec-pick-avatar {
-      width: 58px;
-      height: 58px;
+    .spec-card-pick .specialist-avatar-icon {
+      position: relative;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
-      object-fit: cover;
-      border: 2.5px solid var(--teal-pale);
-      background: #ffffff;
-      flex-shrink: 0;
-    }
-
-    .spec-card-pick.active .spec-pick-avatar {
-      border-color: var(--gold);
-    }
-
-    .spec-pick-name {
-      font-size: 1.02rem;
-      font-weight: 700;
-      color: var(--teal-deep);
-    }
-
-    .spec-pick-title {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-      margin-top: 2px;
-    }
-
-    .spec-pick-badge-row {
+      background: linear-gradient(145deg, #f5f9f9 0%, #ebe7dc 100%);
+      border: 3px solid #ffffff;
+      box-shadow: 0 8px 22px rgba(26, 46, 47, 0.08), 0 2px 6px rgba(212, 168, 67, 0.06);
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-top: auto;
-      padding-top: 0.75rem;
-      border-top: 1px dashed var(--border);
+      justify-content: center;
+      color: var(--teal);
+      margin: 0 auto 1.15rem;
+      transition: transform 0.3s ease;
     }
 
-    .spec-pick-rating {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 0.84rem;
-      font-weight: 700;
+    .spec-card-pick:hover .specialist-avatar-icon {
+      transform: scale(1.06);
       color: var(--gold-dark);
     }
 
-    .spec-pick-status {
-      font-size: 0.75rem;
+    .spec-card-pick.active .specialist-avatar-icon {
+      border-color: var(--gold);
+      box-shadow: 0 8px 22px rgba(212, 168, 67, 0.2);
+    }
+
+    .spec-card-pick .spec-verified-badge {
+      position: absolute;
+      bottom: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--teal-deep);
+      color: #fff;
+      border: 2px solid #ffffff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spec-card-pick.active .spec-verified-badge {
+      background: var(--gold);
+    }
+
+    .spec-card-pick h3 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+      margin-bottom: 0.35rem;
+      text-align: center;
+    }
+
+    .spec-card-pick .specialist-title {
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .spec-card-pick .spec-specialty-pill {
+      display: inline-block;
+      font-size: 0.78rem;
       font-weight: 600;
-      color: #10b981;
+      color: var(--teal);
+      background: rgba(26, 46, 47, 0.06);
+      padding: 0.3rem 0.8rem;
+      border-radius: 9999px;
+      margin-bottom: 0.9rem;
+      text-align: center;
+      max-width: 95%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .spec-card-pick .rating-badge {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 0.35rem;
+      padding: 0.35rem 0.85rem;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      margin-bottom: 1.1rem;
+    }
+
+    .spec-card-pick .star-icon {
+      color: var(--gold);
+    }
+
+    .spec-card-pick .spec-sessions-count {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .spec-card-pick .spec-card-cta-btn {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      border-radius: 9999px;
+      background: #ffffff;
+      border: 1.5px solid rgba(26, 46, 47, 0.16);
+      color: var(--teal-deep);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.22s ease;
+      margin-top: auto;
+    }
+
+    .spec-card-pick:hover .spec-card-cta-btn {
+      background: var(--teal);
+      color: #ffffff;
+      border-color: var(--teal);
+    }
+
+    .spec-card-pick.active .spec-card-cta-btn {
+      background: var(--gold);
+      color: #ffffff;
+      border-color: var(--gold);
+      box-shadow: 0 4px 12px rgba(212, 168, 67, 0.3);
     }
 
     /* ── STEP 4: الدفع والتأكيد ── */
@@ -2358,30 +2433,28 @@
         grid.innerHTML = list.map(spec => {
           const isSelected = bookingData.selectedSpecialist && bookingData.selectedSpecialist.id === spec.id;
           const ratingVal = spec.rating || '4.9';
-          const avatarUrl = spec.avatar || 'assets/images/psyai.png';
 
           return `
             <div class="spec-card-pick ${isSelected ? 'active' : ''}" data-spec-id="${spec.id}" onclick="selectSpecificSpecialist('${spec.id}')">
-              <div class="spec-card-pick-head">
-                <img src="${avatarUrl}" alt="${spec.name}" class="spec-pick-avatar" onerror="this.src='assets/images/psyai.png'" />
-                <div>
-                  <div class="spec-pick-name">${spec.name}</div>
-                  <div class="spec-pick-title">${spec.title || 'أخصائي دعم نفسي معتمد'}</div>
-                </div>
+              <div class="specialist-avatar-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span class="spec-verified-badge" title="أخصائي مرخص ومعتمد">✓</span>
               </div>
-
-              <div style="font-size: 0.78rem; color: #475569; margin-bottom: 0.8rem; line-height: 1.4;">
-                ${spec.specialty || spec.specialization || 'إرشاد نفسي وتعديل سلوك وإدارة ضغوط'}
+              <h3>${spec.name}</h3>
+              <p class="specialist-title">${spec.title || 'أخصائي دعم نفسي معتمد'}</p>
+              <span class="spec-specialty-pill">${spec.specialty || spec.specialization || 'إرشاد نفسي وتعديل سلوك'}</span>
+              <div class="rating-badge">
+                <svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>${ratingVal}</span>
+                <span class="spec-sessions-count">· متاح للحجز 📅</span>
               </div>
-
-              <div class="spec-pick-badge-row">
-                <span class="spec-pick-rating">
-                  ★ ${ratingVal}
-                </span>
-                <span class="spec-pick-status">
-                  <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#10b981;"></span>
-                  متاح للحجز 📅
-                </span>
+              <div class="spec-card-cta-btn">
+                ${isSelected ? 'الأخصائي المختار ✓' : 'اختيار هذا الأخصائي'}
               </div>
             </div>
           `;
@@ -2399,24 +2472,33 @@
           bookingData.selectedSpecialist = currentMatchingSpecialists[0];
         }
 
-        grid.innerHTML = currentMatchingSpecialists.map(spec => `
-          <div class="spec-card-pick ${bookingData.selectedSpecialist && bookingData.selectedSpecialist.id === spec.id ? 'active' : ''}" data-spec-id="${spec.id}" onclick="selectSpecificSpecialist('${spec.id}')">
-            <div class="spec-card-pick-head">
-              <img src="${spec.avatar}" alt="${spec.name}" class="spec-pick-avatar" />
-              <div>
-                <div class="spec-pick-name">${spec.name}</div>
-                <div class="spec-pick-title">${spec.title}</div>
+        grid.innerHTML = currentMatchingSpecialists.map(spec => {
+          const isSelected = bookingData.selectedSpecialist && bookingData.selectedSpecialist.id === spec.id;
+          return `
+            <div class="spec-card-pick ${isSelected ? 'active' : ''}" data-spec-id="${spec.id}" onclick="selectSpecificSpecialist('${spec.id}')">
+              <div class="specialist-avatar-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span class="spec-verified-badge" title="أخصائي مرخص ومعتمد">✓</span>
+              </div>
+              <h3>${spec.name}</h3>
+              <p class="specialist-title">${spec.title || 'أخصائي دعم نفسي معتمد'}</p>
+              <span class="spec-specialty-pill">${spec.specialty || 'إرشاد نفسي وتعديل سلوك'}</span>
+              <div class="rating-badge">
+                <svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>${spec.rating || '4.9'}</span>
+                <span class="spec-sessions-count">· متاح للحجز 📅</span>
+              </div>
+              <div class="spec-card-cta-btn">
+                ${isSelected ? 'الأخصائي المختار ✓' : 'اختيار هذا الأخصائي'}
               </div>
             </div>
-            <div style="font-size: 0.78rem; color: #475569; margin-bottom: 0.8rem;">
-              ${spec.specialty}
-            </div>
-            <div class="spec-pick-badge-row">
-              <span class="spec-pick-rating">★ ${spec.rating}</span>
-              <span class="spec-pick-status">متاح للحجز 📅</span>
-            </div>
-          </div>
-        `).join("");
+          `;
+        }).join("");
       }
     }
 
@@ -2426,7 +2508,12 @@
 
       bookingData.selectedSpecialist = spec;
       document.querySelectorAll(".spec-card-pick").forEach(c => {
-        c.classList.toggle("active", c.getAttribute("data-spec-id") === specId);
+        const isMatch = (c.getAttribute("data-spec-id") === specId);
+        c.classList.toggle("active", isMatch);
+        const cta = c.querySelector(".spec-card-cta-btn");
+        if (cta) {
+          cta.textContent = isMatch ? "الأخصائي المختار ✓" : "اختيار هذا الأخصائي";
+        }
       });
       showToast(`تم اختيار ${spec.name} ✓`);
     }
