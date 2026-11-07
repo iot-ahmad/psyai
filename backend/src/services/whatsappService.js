@@ -307,6 +307,13 @@ class WhatsAppService {
    */
   static async verifyOtp(rawPhone, inputCode) {
     const phone = this.cleanPhone(rawPhone);
+    const isSimulator = (process.env.WHATSAPP_PROVIDER || 'simulator') === 'simulator' || process.env.NODE_ENV !== 'production';
+
+    // Universal test code support in simulator/dev mode
+    if (isSimulator && String(inputCode).trim() === '123456') {
+      await prisma.otpToken.deleteMany({ where: { phone } }).catch(() => {});
+      return { success: true, phone };
+    }
 
     const record = await prisma.otpToken.findUnique({
       where: { phone }

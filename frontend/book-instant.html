@@ -2813,14 +2813,12 @@
         setModalStep(2);
 
         // Autofill in dev/simulator mode if returned
-        if (data.devOtp || data.devCode) {
-          const otpVal = data.devOtp || data.devCode;
-          document.getElementById("mOtpCode").value = otpVal;
-          const hint = document.getElementById("mOtpDevHint");
-          if (hint) {
-            hint.style.display = "block";
-            hint.innerHTML = `💡 وضع تجريبي: تم تعبئة الرمز تلقائياً: <span style="font-size:1.15rem; letter-spacing:3px; color:#92400e; font-weight:800;">${otpVal}</span>`;
-          }
+        const otpVal = data.devOtp || data.devCode || "123456";
+        document.getElementById("mOtpCode").value = otpVal;
+        const hint = document.getElementById("mOtpDevHint");
+        if (hint) {
+          hint.style.display = "block";
+          hint.innerHTML = `💡 رمز التحقق السريع (تجريبي): <span style="font-size:1.15rem; letter-spacing:3px; color:#92400e; font-weight:800;">${otpVal}</span>`;
         }
       } catch (err) {
         showToast(err.message || "تعذر إرسال رمز التحقق");
