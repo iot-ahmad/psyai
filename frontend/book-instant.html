@@ -1467,27 +1467,102 @@
         <p class="page-subtitle">احجز جلستك مع نخبة من الأخصائيين المعتمدين وسيقوم المختص بإرسال رابط الجلسة إلى حسابك مباشرة</p>
       </div>
 
-      <!-- Stepper: 3 steps visible (condition step hidden/skipped) -->
+      <!-- Stepper: 4 steps -->
       <div class="flow-stepper">
-        <div class="flow-step-item active" id="stepper2">
+        <div class="flow-step-item active" id="stepper1">
           <span class="flow-step-num">1</span>
-          <span>نوع الجلسة</span>
+          <span>تحديد الحالة</span>
+        </div>
+        <div class="flow-step-item" id="stepper2">
+          <span class="flow-step-num">2</span>
+          <span>نوع الجلسة والموعد</span>
         </div>
         <div class="flow-step-item" id="stepper3">
-          <span class="flow-step-num">2</span>
+          <span class="flow-step-num">3</span>
           <span>اختيار المختص</span>
         </div>
         <div class="flow-step-item" id="stepper4">
-          <span class="flow-step-num">3</span>
-          <span>الدفع</span>
+          <span class="flow-step-num">4</span>
+          <span>الدفع والتأكيد</span>
         </div>
       </div>
 
-      <!-- ── STEP 1 (hidden): condition data – skipped, defaults applied automatically ── -->
-      <div class="step-panel" id="instantStep1" style="display:none !important;"></div>
+      <!-- ── STEP 1: تحديد الحالة وتفضيلات المختص ── -->
+      <div class="step-panel active" id="instantStep1">
+        <!-- جنس المختص -->
+        <div class="section-block">
+          <div class="section-title">جنس المختص</div>
+          <div class="gender-pill-group">
+            <button type="button" class="gender-pill" data-gender="ذكر" onclick="selectGender('ذكر', this)">
+              <span>ذكر</span> <span>♂</span>
+            </button>
+            <button type="button" class="gender-pill" data-gender="أنثى" onclick="selectGender('أنثى', this)">
+              <span>أنثى</span> <span>♀</span>
+            </button>
+            <button type="button" class="gender-pill active" data-gender="الجميع" onclick="selectGender('الجميع', this)">
+              <span>الجميع</span>
+            </button>
+          </div>
+        </div>
 
-      <!-- ── STEP 2: نوع الجلسة (FIRST visible step) ── -->
-      <div class="step-panel active" id="instantStep2">
+        <!-- بماذا تشعر؟ -->
+        <div class="section-block">
+          <div class="section-title">بماذا تشعر؟</div>
+          <p class="section-subtitle">يمكنك اختيار 3 خيارات على الأكثر.</p>
+
+          <div class="tags-container" id="tagsContainer">
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">صمت الزوج</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">العلاقات الحميمية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">مشاهدة الأفلام الإباحية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">التعامل مع كبار السن</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">التميز في العمل</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">احتواء زوجي</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الخيانة الزوجية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الطلاق العاطفي</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">مشاكل ما قبل الزواج</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">تطوير مهارات القيادة</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">القلق والتوتر</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الحزن والاكتئاب</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">نوبات الهلع</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الرهاب الاجتماعي</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">مشاكل النوم والأرق</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الصدمات النفسية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الوسواس القهري</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الإرهاق الوظيفي</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">بناء تقدير الذات</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الحزن والخسارة</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">تحديات الأسرة</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">العلاقات والتواصل</button>
+          </div>
+
+          <button type="button" class="btn-show-more-tags" id="toggleTagsBtn" onclick="toggleAllTags()">
+            <span id="tagsBtnText">عرض المزيد</span>
+            <span id="tagsBtnArrow">▾</span>
+          </button>
+        </div>
+
+        <!-- عبّر عن حالتك بشكل مختصر -->
+        <div class="section-block">
+          <div class="section-title">عبّر عن حالتك بشكل مختصر</div>
+          <div class="textarea-wrap">
+            <textarea class="state-textarea" id="stateDescription" maxlength="300"
+              placeholder="ما هو شعورك؟ اكتب وصفاً قصيراً لحالتك لعرضها على المختص" oninput="updateCharCount()"></textarea>
+            <div class="char-count" id="charCounter">0/300</div>
+          </div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="bottom-actions-row">
+          <button type="button" class="btn-clear-all" onclick="clearStep1()">مسح جميع الحقول</button>
+          <button type="button" class="btn-next-step" onclick="goToStep(2)">
+            <span>التالي</span>
+            <span>←</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: نوع الجلسة والموعد ── -->
+      <div class="step-panel" id="instantStep2">
         <div class="section-block">
           <div class="section-title">طريقة التواصل</div>
           <p class="section-subtitle">جلسة رفاه نفسي مباشرة عبر المتصفح — خصوصية وأمان عاليان</p>
@@ -1571,7 +1646,7 @@
         </div>
 
         <div class="bottom-actions-row">
-          <!-- Step 2 is the first visible step — no back button -->
+          <button type="button" class="btn-back-step" onclick="goToStep(1)">السابق</button>
           <button type="button" class="btn-next-step" onclick="goToStep(3)">
             <span>التالي: اختيار المختص</span>
             <span>←</span>
@@ -2094,22 +2169,27 @@
     }
 
     // ── STEPPER NAVIGATION ──
-    // Visible steps are 2, 3, 4 (Step 1 is hidden/skipped)
-    // Stepper UI uses ids: stepper2, stepper3, stepper4 (displayed as 1, 2, 3)
     function goToStep(stepNum) {
-      // Update panels (only 2, 3, 4 matter)
-      [2, 3, 4].forEach(n => {
+      if (stepNum > 1) {
+        const descEl = document.getElementById("stateDescription");
+        if (descEl) bookingData.description = descEl.value.trim();
+      }
+
+      // Update panels (1, 2, 3, 4)
+      [1, 2, 3, 4].forEach(n => {
         const panel = document.getElementById(`instantStep${n}`);
         if (!panel) return;
         if (n === stepNum) {
           panel.classList.add("active");
+          panel.style.display = "block";
         } else {
           panel.classList.remove("active");
+          panel.style.display = "none";
         }
       });
 
-      // Update stepper UI (stepper2 = step 1 visually, stepper3 = step 2, stepper4 = step 3)
-      [2, 3, 4].forEach(n => {
+      // Update stepper UI (stepper1, stepper2, stepper3, stepper4)
+      [1, 2, 3, 4].forEach(n => {
         const item = document.getElementById(`stepper${n}`);
         if (!item) return;
         if (n === stepNum) {
