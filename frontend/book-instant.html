@@ -1511,28 +1511,23 @@
           <p class="section-subtitle">يمكنك اختيار 3 خيارات على الأكثر.</p>
 
           <div class="tags-container" id="tagsContainer">
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">صمت الزوج</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">العلاقات الحميمية</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">مشاهدة الأفلام الإباحية</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">التعامل مع كبار السن</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">التميز في العمل</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">احتواء زوجي</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">الخيانة الزوجية</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">الطلاق العاطفي</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">مشاكل ما قبل الزواج</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">تطوير مهارات القيادة</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">القلق والتوتر</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">الحزن والاكتئاب</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">نوبات الهلع</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">الرهاب الاجتماعي</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">مشاكل النوم والأرق</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">الصدمات النفسية</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">الوسواس القهري</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">الإرهاق الوظيفي</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">بناء تقدير الذات</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">الحزن والخسارة</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">تحديات الأسرة</button>
-            <button type="button" class="feel-tag" onclick="toggleTag(this)">العلاقات والتواصل</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">القلق والتوتر المستمر</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الحزن وفقدان الشغف والحماس</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">ضغط العمل والإرهاق المهني</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الاحتراق الوظيفي وضعف الإنتاجية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">مشاكل العلاقات الأسرية والاجتماعية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">إدارة الغضب والتوازن العاطفي</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">تدني الثقة بالنفس وتقدير الذات</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">اضطرابات وجودة النوم</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">التفكير المفرط والتشوش الذهني</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الموازنة بين العمل والمسؤوليات الشخصية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">التسويف وصعوبات التركيز والإنجاز</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">تطوير مهارات التواصل وحل الخلافات</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">ضغوط التربية وبناء الذكاء العاطفي للأبناء</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">بناء المرونة النفسية والتكيف مع التغيرات</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الإجهاد والإنهاك العام بدون سبب واضح</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">مساحة للفضفضة وتفريغ المشاعر</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">أخرى / اكتب ما يصف حالتك</button>
           </div>
 
           <button type="button" class="btn-show-more-tags" id="toggleTagsBtn" onclick="toggleAllTags()">
@@ -2235,6 +2230,13 @@
         }
         bookingData.tags.push(tagText);
         btn.classList.add("active");
+        if (tagText.includes("أخرى") || tagText.includes("اكتب")) {
+          const ta = document.getElementById("stateDescription");
+          if (ta) {
+            ta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            ta.focus();
+          }
+        }
       }
     }
 
