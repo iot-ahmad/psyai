@@ -14,13 +14,18 @@ const IP_SALT = process.env.IP_SALT || 'psyai_ip_hash_salt_2025_wellness';
 class SecurityService {
   /**
    * Hash a password according to Section 3: Argon2id (Memory >= 64MB, Time >= 3, Parallelism = 4)
-   * Falls back to high-cost bcrypt (cost 12) if argon2 native module is not installed.
+   * AUTH-204: Fail-fast in production if Argon2 native module is not present
    * @param {string} password
    * @returns {Promise<string>}
    */
   static async hashPassword(password) {
     if (!password || typeof password !== 'string') {
       throw new Error('Password must be a valid non-empty string');
+    }
+
+    if (process.env.NODE_ENV === 'production' && !argon2) {
+      console.error('[SECURITY FATAL] Argon2id is strictly required in production but native binding is missing.');
+      throw new Error('SEC_ARGON2_REQUIRED_IN_PRODUCTION');
     }
 
     if (argon2) {
@@ -38,6 +43,17 @@ class SecurityService {
 
     const salt = await bcrypt.genSalt(12);
     return await bcrypt.hash(password, salt);
+  }
+
+  /**
+   * Check if a hash needs to be rehashed to Argon2id (AUTH-204)
+   * @param {string} hash
+   * @returns {boolean}
+   */
+  static needsRehash(hash) {
+    if (!hash) return false;
+    // If not hashed with Argon2id, it needs rehash upon successful login
+    return !hash.startsWith('$argon2id');
   }
 
   /**

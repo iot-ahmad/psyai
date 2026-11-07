@@ -20,6 +20,14 @@ function validate(schema) {
 }
 
 // Schemas with .strict() to prevent Mass Assignment (AUTH-106)
+// Password policy updated according to NIST SP 800-63B-4 (AUTH-203)
+const passwordPolicy = z.string()
+  .min(10, 'كلمة المرور يجب أن لا تقل عن 10 خانات لضمان أمان الحساب')
+  .max(128, 'كلمة المرور لا يمكن أن تتجاوز 128 خانة')
+  .refine((val) => !/^(1234567890|password123|admin12345|qwertyuiop)$/i.test(val), {
+    message: 'كلمة المرور شائعة وسهلة التخمين، يرجى اختيار كلمة مرور أكثر أماناً'
+  });
+
 const registerSchema = z.object({
   firstName: z.string().min(2, 'الاسم الأول يجب أن يتكون من حرفين على الأقل').trim(),
   lastName: z.string().min(2, 'اسم العائلة يجب أن يتكون من حرفين على الأقل').trim(),
@@ -28,7 +36,7 @@ const registerSchema = z.object({
     .trim()
     .regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)'),
   gender: z.enum(['male', 'female'], { errorMap: () => ({ message: 'يرجى تحديد الجنس بشكل صحيح' }) }),
-  password: z.string().min(6, 'كلمة المرور يجب أن لا تقل عن 6 أحرف أو أرقام'),
+  password: passwordPolicy,
   otpCode: z.string()
      .length(6, 'رمز التحقق يجب أن يتكون من 6 أرقام')
      .regex(/^\d+$/, 'رمز التحقق يجب أن يحتوي على أرقام فقط')
@@ -48,7 +56,7 @@ const forgotPasswordSchema = z.object({
 
 const resetPasswordSchema = z.object({
   token: z.string().min(10, 'رمز استعادة كلمة المرور غير صالح').trim(),
-  newPassword: z.string().min(10, 'كلمة المرور الجديدة يجب أن لا تقل عن 10 خانات')
+  newPassword: passwordPolicy
 }).strict();
 
 const verifyOtpSchema = z.object({
@@ -96,7 +104,7 @@ const updatePhoneSchema = z.object({
 
 const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, 'يرجى إدخال كلمة المرور الحالية'),
-  newPassword: z.string().min(6, 'كلمة المرور الجديدة يجب أن لا تقل عن 6 أحرف أو أرقام')
+  newPassword: passwordPolicy
 }).strict();
 
 const deleteAccountSchema = z.object({

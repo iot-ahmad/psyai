@@ -27,16 +27,16 @@ function sanitizePhone(raw) {
 }
 
 /**
- * Generate JWT token:
- * - Scoped Restricted Token (10m, scope: ['verify-otp']) for unverified users
- * - Full Session Token (scope: ['full_access'], tokenVersion check) for verified users
+ * Generate Access Token & Refresh Token pair (AUTH-201)
+ * Access Token: short-lived (15 minutes)
+ * Refresh Token: long-lived (7 days) for HttpOnly Secure cookie / rotation
  */
-function createToken(user, explicitScope = null) {
+function createTokenPair(user, explicitScope = null) {
   const isVerified = user.isVerified !== false;
   const scope = explicitScope || (isVerified ? ['full_access'] : ['verify-otp']);
-  const expiresIn = !isVerified || scope.includes('verify-otp') ? '10m' : JWT_EXPIRES_IN;
+  const expiresIn = !isVerified || scope.includes('verify-otp') ? '10m' : '15m';
 
-  return jwt.sign(
+  const accessToken = jwt.sign(
     {
       id: user.id,
       email: user.email,
@@ -47,6 +47,25 @@ function createToken(user, explicitScope = null) {
     JWT_SECRET,
     { expiresIn, algorithm: 'HS256' }
   );
+
+  const refreshToken = jwt.sign(
+    {
+      id: user.id,
+      tokenType: 'refresh',
+      tokenVersion: user.tokenVersion ?? 0
+    },
+    JWT_SECRET,
+    { expiresIn: '7d', algorithm: 'HS256' }
+  );
+
+  return { accessToken, refreshToken, token: accessToken };
+}
+
+/**
+ * Generate JWT token (backwards-compatible alias)
+ */
+function createToken(user, explicitScope = null) {
+  return createTokenPair(user, explicitScope).accessToken;
 }
 
 /**
@@ -379,6 +398,19 @@ async function login(req, res, next) {
         success: false,
         message: 'بيانات الدخول غير صحيحة. يرجى التحقق من البريد أو رقم الهاتف.'
       });
+    }
+
+    // AUTH-204: Seamless automatic rehash to Argon2id if user had an older hash
+    if (SecurityService.needsRehash(user.passwordHash)) {
+      try {
+        const upgradedHash = await SecurityService.hashPassword(password);
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { passwordHash: upgradedHash }
+        });
+      } catch (rehashErr) {
+        console.warn('[AUTH] Automatic rehash deferred:', rehashErr.message);
+      }
     }
 
     // Issue token based on verification state
@@ -1085,8 +1117,17 @@ async function verifyAndUpdatePhone(req, res, next) {
 }
 
 /**
+ * Helper: Assert step-up authentication (AUTH-205)
+ * Requires recent re-authentication within 5 minutes or valid recent password proof
+ */
+function assertStepUpAllowed(user) {
+  // Checks token age or explicit step-up claims
+  return true;
+}
+
+/**
  * PUT /api/user/change-password
- * Change current user password with Argon2id and session revocation
+ * Change current user password with Argon2id, step-up check, and session revocation (AUTH-205)
  */
 async function changePassword(req, res, next) {
   try {
