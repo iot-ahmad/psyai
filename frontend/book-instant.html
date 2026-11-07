@@ -1429,7 +1429,7 @@
       <div class="step-panel active" id="instantStep2">
         <div class="section-block">
           <div class="section-title">طريقة التواصل</div>
-          <p class="section-subtitle">استشارة رقمية مباشرة عبر المتصفح — خصوصية وأمان عاليان</p>
+          <p class="section-subtitle">جلسة رفاه نفسي مباشرة عبر المتصفح — خصوصية وأمان عاليان</p>
 
           <div class="type-cards-grid">
             <!-- مكالمة فيديو -->
@@ -2212,7 +2212,7 @@
         sumSpec.textContent = "الأخصائي المعتمد";
       }
 
-      document.getElementById("sumCommType").textContent = bookingData.commType === "video" ? "مكالمة فيديو 🎥" : "مكالمة صوتية 📞";
+      document.getElementById("sumCommType").textContent = "جلسة فيديو 🎥";
       document.getElementById("sumDuration").textContent = `${bookingData.duration} دقيقة`;
       document.getElementById("sumAppointmentTime").textContent = `${bookingData.bookingDay} (${bookingData.bookingTime})`;
       document.getElementById("sumTags").textContent = bookingData.tags.length > 0 ? bookingData.tags.join("، ") : "استشارة عامة";
@@ -2295,7 +2295,7 @@
           specialistId: specialist.id,
           sessionTime: sessionTime,
           condition: bookingData.tags.join(", ") || "استشارة عامة",
-          notes: `الأخصائي: ${specialist.name} · الموعد: ${bookingData.bookingDay} (${bookingData.bookingTime}) · وسيلة الدفع: ${cliqInfoStr} · طريقة الاستشارة: ${bookingData.commType === 'video' ? 'مكالمة فيديو' : 'مكالمة صوتية'} · تفاصيل: ${bookingData.description || 'لا توجد ملاحظات إضافية'}`
+          notes: `الأخصائي: ${specialist.name} · الموعد: ${bookingData.bookingDay} (${bookingData.bookingTime}) · وسيلة الدفع: ${cliqInfoStr} · طريقة الجلسة: جلسة فيديو · تفاصيل: ${bookingData.description || 'لا توجد ملاحظات إضافية'}`
         };
 
         const res = await fetch(`${API_BASE}/api/bookings`, {
