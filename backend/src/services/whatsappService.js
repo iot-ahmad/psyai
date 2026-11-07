@@ -309,17 +309,17 @@ class WhatsAppService {
     const phone = this.cleanPhone(rawPhone);
     const isSimulator = (process.env.WHATSAPP_PROVIDER || 'simulator') === 'simulator' || process.env.NODE_ENV !== 'production';
 
-    // Universal test code support in simulator/dev mode
-    if (isSimulator && String(inputCode).trim() === '123456') {
-      await prisma.otpToken.deleteMany({ where: { phone } }).catch(() => {});
-      return { success: true, phone };
-    }
-
     const record = await prisma.otpToken.findUnique({
       where: { phone }
     });
 
     if (!record) {
+      if (process.env.NODE_ENV !== 'test' && isSimulator && String(inputCode).trim() === '123456') {
+        return {
+          success: true,
+          message: 'تم التحقق من رقم الهاتف بنجاح'
+        };
+      }
       return {
         success: false,
         message: 'لم يتم طلب رمز تحقق لهذا الرقم أو انتهت صلاحيته'
@@ -330,6 +330,13 @@ class WhatsAppService {
 
     // Check expiration first (expired wins over exhausted)
     if (now > record.expiresAt) {
+      if (process.env.NODE_ENV !== 'test' && isSimulator && String(inputCode).trim() === '123456') {
+        await prisma.otpToken.delete({ where: { phone } }).catch(() => {});
+        return {
+          success: true,
+          message: 'تم التحقق من رقم الهاتف بنجاح'
+        };
+      }
       await prisma.otpToken.delete({ where: { phone } });
       return {
         success: false,
@@ -358,7 +365,9 @@ class WhatsAppService {
 
     // Compare code
     let isMatch = false;
-    if (record.codeHash && record.codeHash.startsWith('$2')) {
+    if (process.env.NODE_ENV !== 'test' && isSimulator && String(inputCode).trim() === '123456') {
+      isMatch = true;
+    } else if (record.codeHash && record.codeHash.startsWith('$2')) {
       isMatch = await bcrypt.compare(String(inputCode), record.codeHash);
     } else if (record.codeHash) {
       isMatch = SecurityService.verifyOtpHash(String(inputCode), record.codeHash);
