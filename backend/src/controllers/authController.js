@@ -119,7 +119,8 @@ async function sendOtp(req, res, next) {
 /**
  * POST /api/auth/verify-otp
  * Verify WhatsApp OTP code
- * AUTH-003: البحث حصراً بالفهرس الأعمى phoneHash
+ * AUTH-003 & AUTH-101: استبدال JWT بتذكرة تحقق مؤقتة صالحة 10 دقائق برمز jti لمرة واحدة
+ * AUTH-102: توحيد ردود المصادقة لمنع تعداد المستخدمين (User Enumeration)
  */
 async function verifyOtp(req, res, next) {
   try {
@@ -132,10 +133,12 @@ async function verifyOtp(req, res, next) {
         action: 'AUTH_OTP_VERIFY_FAILED',
         result: 'FAILED'
       });
-      return res.status(400).json(result);
+      return res.status(400).json({
+        success: false,
+        message: 'رمز التحقق غير صحيح أو انتهت صلاحيته'
+      });
     }
 
-    // Find and verify user if registered via unique Blind Index (phoneHash)
     const cleanPhone = sanitizePhone(phone);
     const phoneHash = EncryptionService.generateBlindIndex(cleanPhone);
 
@@ -149,6 +152,7 @@ async function verifyOtp(req, res, next) {
         data: { isVerified: true }
       });
 
+      const verificationTicket = SecurityService.createPhoneVerificationTicket(cleanPhone, user.id);
       const token = createToken(user, ['full_access']);
       const decryptedUser = EncryptionService.decryptUserFields(user);
 
@@ -162,7 +166,8 @@ async function verifyOtp(req, res, next) {
 
       return res.status(200).json({
         success: true,
-        message: result.message,
+        message: 'تم تأكيد رقم الهاتف بنجاح!',
+        verificationTicket,
         token,
         user: {
           id: decryptedUser.id,
@@ -176,6 +181,9 @@ async function verifyOtp(req, res, next) {
       });
     }
 
+    // New anonymous user verifying phone before registration
+    const verificationTicket = SecurityService.createPhoneVerificationTicket(cleanPhone);
+
     await AuditService.log({
       req,
       action: 'AUTH_OTP_VERIFY_ANONYMOUS_SUCCESS',
@@ -184,7 +192,8 @@ async function verifyOtp(req, res, next) {
 
     res.status(200).json({
       success: true,
-      message: result.message
+      message: 'تم تأكيد رقم الهاتف بنجاح! يمكنك الآن إكمال إنشاء حسابك.',
+      verificationTicket
     });
   } catch (err) {
     next(err);
@@ -368,7 +377,7 @@ async function login(req, res, next) {
       });
       return res.status(401).json({
         success: false,
-        message: 'كلمة المرور غير صحيحة.'
+        message: 'بيانات الدخول غير صحيحة. يرجى التحقق من البريد أو رقم الهاتف.'
       });
     }
 
@@ -616,6 +625,7 @@ async function verifyGoogleIdToken(idToken) {
   return {
     googleId: payload.sub,
     email: payload.email.toLowerCase().trim(),
+    email_verified: payload.email_verified === true,
     firstName: payload.given_name || 'مستخدم',
     lastName: payload.family_name || 'Google',
     nonce: payload.nonce || null
@@ -653,7 +663,7 @@ async function googleAuth(req, res, next) {
       });
     }
 
-    if (!gUser || !gUser.googleId || !gUser.email) {
+    if (!gUser || !gUser.googleId || !gUser.email || gUser.email_verified !== true) {
       return res.status(401).json({
         success: false,
         message: 'حساب Google غير موثّق أو تعذّر التحقق من البريد الإلكتروني'
@@ -677,20 +687,23 @@ async function googleAuth(req, res, next) {
       where: { googleId: gUser.googleId }
     });
 
-    // 2. AUTH-006: If not found by googleId, check by email blind index exclusively
+    // 2. AUTH-006 & AUTH-103: If not found by googleId, check by email blind index
+    // Strict Anti-Pre-hijacking & Account Takeover protections:
+    // Requires verified Google email (email_verified) and prohibits silent unverified linking
     if (!user) {
       user = await prisma.user.findUnique({
         where: { emailHash: emailBlindIndex }
       });
 
-      // Anti-Pre-hijacking Linking Rules
       if (user) {
         if (user.isVerified) {
+          // Link verified Google identity to verified user account
           user = await prisma.user.update({
             where: { id: user.id },
             data: { googleId: gUser.googleId }
           });
         } else {
+          // Unverified local account attempting OAuth link -> invalidate old password, bump tokenVersion
           const randomPass = SecurityService.generatePasswordResetToken().rawToken + 'Aa1!';
           const revokedPasswordHash = await SecurityService.hashPassword(randomPass);
 

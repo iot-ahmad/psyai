@@ -126,6 +126,51 @@ class SecurityService {
   }
 
   /**
+   * Issue a short-lived, single-use phone verification ticket (AUTH-101)
+   * Valid for 10 minutes with unique jti, purpose: 'phone_verified'
+   * @param {string} phone
+   * @param {string} [userId]
+   * @returns {string}
+   */
+  static createPhoneVerificationTicket(phone, userId = null) {
+    const jwt = require('jsonwebtoken');
+    const JWT_SECRET = process.env.JWT_SECRET;
+    const jti = crypto.randomUUID ? crypto.randomUUID() : crypto.randomBytes(16).toString('hex');
+
+    return jwt.sign(
+      {
+        sub: userId || 'anonymous',
+        phone,
+        purpose: 'phone_verified',
+        scope: ['phone_verified'],
+        jti
+      },
+      JWT_SECRET,
+      { expiresIn: '10m', algorithm: 'HS256' }
+    );
+  }
+
+  /**
+   * Verify phone verification ticket (AUTH-101)
+   * @param {string} ticket
+   * @param {string} expectedPhone
+   * @returns {boolean}
+   */
+  static verifyPhoneVerificationTicket(ticket, expectedPhone) {
+    if (!ticket) return false;
+    const jwt = require('jsonwebtoken');
+    const JWT_SECRET = process.env.JWT_SECRET;
+    try {
+      const decoded = jwt.verify(ticket, JWT_SECRET, { algorithms: ['HS256'] });
+      if (decoded.purpose !== 'phone_verified') return false;
+      if (expectedPhone && decoded.phone !== expectedPhone) return false;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
    * Hash an IP address for privacy-compliant audit logging (never stores raw IP)
    * @param {string} ip
    * @returns {string}

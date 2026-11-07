@@ -19,8 +19,7 @@ function validate(schema) {
   };
 }
 
-// Schemas
-// AUTH-005: إضافة otpCode في registerSchema
+// Schemas with .strict() to prevent Mass Assignment (AUTH-106)
 const registerSchema = z.object({
   firstName: z.string().min(2, 'الاسم الأول يجب أن يتكون من حرفين على الأقل').trim(),
   lastName: z.string().min(2, 'اسم العائلة يجب أن يتكون من حرفين على الأقل').trim(),
@@ -36,34 +35,34 @@ const registerSchema = z.object({
      .optional(),
   condition: z.string().optional(),
   specGenderPref: z.enum(['any', 'male', 'female']).optional()
-});
+}).strict();
 
 const loginSchema = z.object({
   identifier: z.string().min(3, 'يرجى إدخال اسم المستخدم أو البريد الإلكتروني').trim(),
   password: z.string().min(1, 'يرجى إدخال كلمة المرور')
-});
+}).strict();
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim()
-});
+}).strict();
 
 const resetPasswordSchema = z.object({
   token: z.string().min(10, 'رمز استعادة كلمة المرور غير صالح').trim(),
   newPassword: z.string().min(10, 'كلمة المرور الجديدة يجب أن لا تقل عن 10 خانات')
-});
+}).strict();
 
 const verifyOtpSchema = z.object({
   phone: z.string()
     .trim()
     .regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)'),
   code: z.string().length(6, 'رمز التحقق يجب أن يتكون من 6 أرقام').regex(/^\d+$/, 'رمز التحقق يجب أن يحتوي على أرقام فقط')
-});
+}).strict();
 
 const sendOtpSchema = z.object({
   phone: z.string()
     .trim()
     .regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)')
-});
+}).strict();
 
 const bookingSchema = z.object({
   specialistId: z.string().min(1, 'معرّف الأخصائي غير صالح'),
@@ -86,23 +85,23 @@ const updateProfileSchema = z.object({
   email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim().optional(),
   condition: z.string().optional().nullable(),
   specGenderPref: z.enum(['any', 'male', 'female']).optional()
-});
+}).strict();
 
 const updatePhoneSchema = z.object({
   newPhone: z.string()
     .trim()
     .regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)'),
   otpCode: z.string().length(6, 'رمز التحقق يجب أن يتكون من 6 أرقام').regex(/^\d+$/, 'رمز التحقق يجب أن يحتوي على أرقام فقط')
-});
+}).strict();
 
 const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, 'يرجى إدخال كلمة المرور الحالية'),
   newPassword: z.string().min(6, 'كلمة المرور الجديدة يجب أن لا تقل عن 6 أحرف أو أرقام')
-});
+}).strict();
 
 const deleteAccountSchema = z.object({
   password: z.string().min(1, 'يرجى إدخال كلمة المرور لتأكيد حذف الحساب')
-});
+}).strict();
 
 const createPaymentSessionSchema = z.object({
   bookingId: z.string().optional(),

@@ -39,6 +39,22 @@ async function getSpecialistForUser(user) {
 }
 
 /**
+ * Helper: Assert that the specialist has a legitimate therapeutic relationship
+ * or active booking with the patient (AUTH-105: BOLA / IDOR protection)
+ */
+async function assertCanAccessPatient(specialistId, patientId) {
+  if (!specialistId || !patientId) return false;
+  const booking = await prisma.booking.findFirst({
+    where: {
+      specialistId,
+      userId: patientId,
+      status: { in: ['pending', 'confirmed', 'completed'] }
+    }
+  });
+  return Boolean(booking);
+}
+
+/**
  * GET /api/specialist/profile
  * Returns the logged-in specialist's profile
  */
@@ -263,7 +279,11 @@ async function getSessionDetails(req, res, next) {
     if (req.user.role === 'specialist') {
       const spec = await getSpecialistForUser(req.user);
       if (spec && booking.specialistId === spec.id) {
-        isAssignedSpecialist = true;
+        // AUTH-105: BOLA Check - verify therapeutic relationship
+        const canAccess = await assertCanAccessPatient(spec.id, booking.userId);
+        if (canAccess) {
+          isAssignedSpecialist = true;
+        }
       }
     }
     const isAdmin = req.user.role === 'admin';

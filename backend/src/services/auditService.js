@@ -23,7 +23,7 @@ class AuditService {
       const ip = req?.headers?.['x-forwarded-for'] || req?.socket?.remoteAddress || req?.ip || '127.0.0.1';
       const ipHash = SecurityService.hashIp(Array.isArray(ip) ? ip[0] : ip.split(',')[0]);
 
-      // Sanitization: Strip any potential sensitive fields before stringifying
+      // AUTH-107: Sanitization - Strip and redact any sensitive data before logging or storing
       let sanitizedMetadata = null;
       if (metadata && typeof metadata === 'object') {
         const copy = { ...metadata };
@@ -31,10 +31,21 @@ class AuditService {
         delete copy.passwordHash;
         delete copy.otp;
         delete copy.otpCode;
+        delete copy.devCode;
+        delete copy.devOtp;
         delete copy.token;
         delete copy.tokenHash;
+        delete copy.verificationTicket;
         delete copy.cardNumber;
         delete copy.cvv;
+        // Mask phone if present
+        if (copy.phone && typeof copy.phone === 'string') {
+          copy.phone = copy.phone.replace(/^(\+?\d{4})\d+(\d{2})$/, '$1****$2');
+        }
+        // Mask email if present
+        if (copy.email && typeof copy.email === 'string') {
+          copy.email = copy.email.replace(/^(.)(.*)(@.*)$/, '$1***$3');
+        }
         sanitizedMetadata = JSON.stringify(copy);
       }
 
