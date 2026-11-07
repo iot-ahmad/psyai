@@ -2843,7 +2843,7 @@
         const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ phone: pendingOtpPhone, code: otpCode, otpCode })
+          body: JSON.stringify({ phone: pendingOtpPhone, code: otpCode })
         });
         const data = await res.json();
 
@@ -2890,6 +2890,7 @@
         const regPayload = {
           firstName,
           lastName,
+          email: `${pendingOtpPhone.replace(/[^0-9]/g, '')}@psyai.me`,
           phone: pendingOtpPhone,
           gender,
           password,

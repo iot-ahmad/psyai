@@ -147,8 +147,9 @@ async function sendOtp(req, res, next) {
  */
 async function verifyOtp(req, res, next) {
   try {
-    const { phone, code } = req.body;
-    const result = await WhatsAppService.verifyOtp(phone, code);
+    const { phone, code, otpCode } = req.body;
+    const finalCode = code || otpCode;
+    const result = await WhatsAppService.verifyOtp(phone, finalCode);
 
     if (!result.success) {
       await AuditService.log({
