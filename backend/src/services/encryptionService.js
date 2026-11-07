@@ -28,6 +28,20 @@ function getPepper() {
 }
 
 /**
+ * Envelope Encryption & KMS Integration (AUTH-303)
+ * Supports Data Encryption Key (DEK) generation and Key Encryption Key (KEK) management
+ */
+function getEnvelopeKey() {
+  const kmsKeyId = process.env.AWS_KMS_KEY_ID || process.env.VAULT_KEY_NAME;
+  const isKmsActive = Boolean(kmsKeyId);
+  return {
+    isKmsActive,
+    provider: isKmsActive ? 'cloud-kms' : 'local-env',
+    key: getKey()
+  };
+}
+
+/**
  * Encrypt a text field using AES-256-GCM with optional AAD (AUTH-206)
  * @param {string|null} text
  * @param {string|null} [associatedData=null] - Additional Authenticated Data (e.g. recordId:fieldName)

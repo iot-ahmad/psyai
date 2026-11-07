@@ -156,9 +156,29 @@ model User {
   articleQuestions    ArticleQuestion[]
   auditLogs           AuditLog[]
   passwordResetTokens PasswordResetToken[]
+  webauthnCredentials WebauthnCredential[]
 
   @@index([status], map: "idx_users_status")
   @@map("users")
+}
+
+model WebauthnCredential {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  credentialId String   @unique @map("credential_id") @db.VarChar(500)
+  publicKey    String   @map("public_key") @db.Text
+  counter      BigInt   @default(0)
+  transports   String?  @db.VarChar(255)
+  deviceType   String?  @map("device_type") @db.VarChar(100)
+  backedUp     Boolean  @default(false) @map("backed_up")
+  
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  @@index([userId], map: "idx_webauthn_credentials_user")
+  @@map("webauthn_credentials")
 }
 
 model Specialist {

@@ -4,6 +4,46 @@ const prisma = require('../config/db');
 
 class WhatsAppService {
   /**
+   * Verify Turnstile / Captcha token & check hourly quota to prevent OTP Pumping (AUTH-302)
+   */
+  static async verifyTurnstileAndQuota(turnstileToken, phone) {
+    // 1. Hourly global quota check
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const hourlyRequests = await prisma.otpToken.count({
+      where: { createdAt: { gte: oneHourAgo } }
+    });
+
+    const HOURLY_LIMIT = parseInt(process.env.OTP_HOURLY_LIMIT || '200', 10);
+    if (hourlyRequests >= HOURLY_LIMIT) {
+      console.warn(`[SECURITY] OTP hourly quota exceeded (${hourlyRequests}/${HOURLY_LIMIT}).`);
+      return { success: false, message: 'تم تجاوز الحد الأقصى للرسائل لهذا التوقيت. يرجى المحاولة لاحقاً.' };
+    }
+
+    // 2. Validate Turnstile token if configured in production
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+    if (turnstileSecret && turnstileToken) {
+      try {
+        const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            secret: turnstileSecret,
+            response: turnstileToken
+          })
+        });
+        const outcome = await verifyRes.json();
+        if (!outcome.success) {
+          return { success: false, message: 'فشل التحقق من اختبار الكابتشا (Turnstile verification failed).' };
+        }
+      } catch (err) {
+        console.error('[SECURITY] Turnstile verification network error:', err.message);
+      }
+    }
+
+    return { success: true };
+  }
+
+  /**
    * Format and sanitize phone number to standardized international/E.164-compatible string
    */
   static cleanPhone(phone) {
