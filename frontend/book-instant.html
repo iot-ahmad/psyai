@@ -1357,7 +1357,7 @@
       <nav class="header-nav">
         <a href="index.html" class="nav-btn">الرئيسية</a>
         <a href="specialists.html" class="nav-btn">المختصين</a>
-        <button type="button" class="nav-btn active" id="navBtnInstant" onclick="switchToTab('instant')">حجز موعد استشارة</button>
+        <button type="button" class="nav-btn active" id="navBtnInstant" onclick="switchToTab('instant')">حجز موعد جلسة</button>
         <button type="button" class="nav-btn" id="navBtnAppointments" onclick="switchToTab('appointments')">مواعيدي</button>
       </nav>
 
@@ -1377,7 +1377,7 @@
           <circle cx="12" cy="12" r="10"></circle>
           <polyline points="12 6 12 12 16 14"></polyline>
         </svg>
-        <span>حجز موعد استشارة</span>
+        <span>حجز موعد جلسة</span>
       </button>
 
       <button type="button" class="view-tab" id="tabAppointmentsBtn" onclick="switchToTab('appointments')">
@@ -1391,7 +1391,7 @@
       </button>
     </div>
 
-    <!-- ── VIEW 1: حجز موعد استشارة ── -->
+    <!-- ── VIEW 1: حجز موعد جلسة رفاه نفسي ── -->
     <div class="card-box" id="viewInstantBooking">
       <div class="page-title-row">
         <h1 class="page-title">
@@ -1401,7 +1401,7 @@
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          حجز موعد استشارة
+          حجز موعد جلسة رفاه نفسي
         </h1>
         <p class="page-subtitle">احجز جلستك مع نخبة من الأخصائيين المعتمدين وسيقوم المختص بإرسال رابط الجلسة إلى حسابك مباشرة</p>
       </div>
@@ -1548,7 +1548,7 @@
               <span class="summary-val" id="sumSpecialist" style="color: var(--teal-deep); font-weight: 800;">لم يتم التحديد</span>
             </div>
             <div class="summary-row">
-              <span class="summary-label">نوع الاستشارة</span>
+              <span class="summary-label">نوع الجلسة</span>
               <span class="summary-val" id="sumCommType">مكالمة فيديو</span>
             </div>
             <div class="summary-row">
@@ -1561,7 +1561,7 @@
             </div>
             <div class="summary-row" style="display:none;">
               <span class="summary-label">الحالات المختارة</span>
-              <span class="summary-val" id="sumTags">استشارة عامة</span>
+              <span class="summary-val" id="sumTags">جلسة رفاه عامة</span>
             </div>
             <div class="summary-row">
               <span class="summary-label">رابط الجلسة</span>
@@ -1682,7 +1682,7 @@
           </svg>
         </div>
         <h3 class="empty-state-title">لا يوجد نتائج</h3>
-        <p class="empty-state-desc">لم تقم بحجز أي جلسات استشارية حتى الآن. ابدأ حجز جلستك الفورية مع مختصك الآن.</p>
+        <p class="empty-state-desc">لم تقم بحجز أي جلسات رفاه نفسي حتى الآن. ابدأ حجز جلستك الفورية مع مختصك الآن.</p>
         <button type="button" class="btn-book-now-pill" onclick="switchToTab('instant')">
           <span>احجز الآن</span>
           <span>&gt;</span>
@@ -2212,10 +2212,10 @@
         sumSpec.textContent = "الأخصائي المعتمد";
       }
 
-      document.getElementById("sumCommType").textContent = "جلسة فيديو 🎥";
+      document.getElementById("sumCommType").textContent = "مكالمة فيديو 🎥";
       document.getElementById("sumDuration").textContent = `${bookingData.duration} دقيقة`;
       document.getElementById("sumAppointmentTime").textContent = `${bookingData.bookingDay} (${bookingData.bookingTime})`;
-      document.getElementById("sumTags").textContent = bookingData.tags.length > 0 ? bookingData.tags.join("، ") : "استشارة عامة";
+      document.getElementById("sumTags").textContent = bookingData.tags.length > 0 ? bookingData.tags.join("، ") : "جلسة رفاه عامة";
       document.getElementById("sumTotalPrice").textContent = `${bookingData.price} د.أ`;
       document.getElementById("btnConfirmAndPay").textContent = `تأكيد الحجز والدفع (${bookingData.price} د.أ) ✓`;
     }
@@ -2294,8 +2294,8 @@
         const bookingPayload = {
           specialistId: specialist.id,
           sessionTime: sessionTime,
-          condition: bookingData.tags.join(", ") || "استشارة عامة",
-          notes: `الأخصائي: ${specialist.name} · الموعد: ${bookingData.bookingDay} (${bookingData.bookingTime}) · وسيلة الدفع: ${cliqInfoStr} · طريقة الجلسة: جلسة فيديو · تفاصيل: ${bookingData.description || 'لا توجد ملاحظات إضافية'}`
+          condition: bookingData.tags.join(", ") || "جلسة رفاه عامة",
+          notes: `الأخصائي: ${specialist.name} · الموعد: ${bookingData.bookingDay} (${bookingData.bookingTime}) · وسيلة الدفع: ${cliqInfoStr} · طريقة التواصل: مكالمة فيديو · تفاصيل: ${bookingData.description || 'لا توجد ملاحظات إضافية'}`
         };
 
         const res = await fetch(`${API_BASE}/api/bookings`, {
@@ -2350,7 +2350,7 @@
 
           const headerHtml = `
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border);">
-              <span style="font-size: 0.92rem; font-weight: 700; color: var(--teal-deep);">لديك (${data.bookings.length}) مواعيد استشارية:</span>
+              <span style="font-size: 0.92rem; font-weight: 700; color: var(--teal-deep);">لديك (${data.bookings.length}) مواعيد جلسات رفاه نفسي:</span>
               <button type="button" onclick="switchToTab('instant')" style="background: var(--teal); color: #fff; border: none; padding: 7px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 0.84rem;">
                 + حجز موعد جديد
               </button>

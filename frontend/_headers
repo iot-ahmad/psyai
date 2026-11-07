@@ -14,3 +14,4 @@
   # Modern Cross-Origin Isolation & resource policies
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Cross-Origin-Resource-Policy: cross-origin
+

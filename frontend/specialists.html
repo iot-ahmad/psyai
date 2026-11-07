@@ -1531,7 +1531,7 @@
       };
 
       // ── Booking wizard state (Labayh-style: type → date/time → confirm) ──
-      const BK_TYPES = { video: "جلسة فيديو" };
+      const BK_TYPES = { video: "مكالمة فيديو", voice: "مكالمة صوتية" };
       const BK_DAY_NAMES = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
       const BK_HOURS = [10, 11, 12, 16, 17, 18, 19, 20, 21];
       const bk = { step: 1, type: "video", duration: 45, dayIdx: null, days: [] };
@@ -1646,7 +1646,7 @@
         const slotDate = new Date(selectedSlotIso);
         const rows = [
           ["المختص", spec.name, null],
-          ["نوع الاستشارة", BK_TYPES[bk.type], 1],
+          ["نوع الجلسة", BK_TYPES[bk.type], 1],
           ["مدة الجلسة", `${bk.duration} دقيقة`, 1],
           ["اليوم", bkFmtDay(slotDate), 2],
           ["الوقت", bkFmtTime(slotDate), 2],
@@ -1900,7 +1900,7 @@
 
             const userNotes = document.getElementById("bkNotes").value.trim();
             const bookingNotes =
-              `نوع الاستشارة: ${BK_TYPES[bk.type]} · المدة: ${bk.duration} دقيقة` +
+              `نوع الجلسة: ${BK_TYPES[bk.type]} · المدة: ${bk.duration} دقيقة` +
               (userNotes ? `\n${userNotes}` : "");
 
             try {
