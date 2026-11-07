@@ -106,8 +106,7 @@ async function sendOtp(req, res, next) {
       expiresInMinutes: result.expiresInMinutes,
       message: `تم إرسال رمز التحقق إلى تطبيق WhatsApp للرقم ${phone}`
     };
-    if (result.devOtp || result.devCode) {
-      responsePayload.devOtp = result.devOtp || result.devCode;
+    if (process.env.NODE_ENV === 'test' && result.devCode) {
       responsePayload.devCode = result.devCode;
     }
 
@@ -120,11 +119,11 @@ async function sendOtp(req, res, next) {
 /**
  * POST /api/auth/verify-otp
  * Verify WhatsApp OTP code
+ * AUTH-003: البحث حصراً بالفهرس الأعمى phoneHash
  */
 async function verifyOtp(req, res, next) {
   try {
-    const { phone } = req.body;
-    const code = req.body.code || req.body.otpCode;
+    const { phone, code } = req.body;
     const result = await WhatsAppService.verifyOtp(phone, code);
 
     if (!result.success) {
@@ -136,13 +135,12 @@ async function verifyOtp(req, res, next) {
       return res.status(400).json(result);
     }
 
-    // Find and verify user if registered (lookup by blind index)
+    // Find and verify user if registered via unique Blind Index (phoneHash)
     const cleanPhone = sanitizePhone(phone);
-    const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
-    let user = await prisma.user.findFirst({
-      where: {
-        phoneHash: phoneBlindIndex
-      }
+    const phoneHash = EncryptionService.generateBlindIndex(cleanPhone);
+
+    let user = await prisma.user.findUnique({
+      where: { phoneHash }
     });
 
     if (user) {
@@ -211,24 +209,21 @@ async function register(req, res, next) {
       otpCode
     } = req.body;
 
+    const cleanEmail = email.toLowerCase().trim();
     const cleanPhone = sanitizePhone(phone);
     const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
-    const cleanEmail = email && email.trim()
-      ? email.toLowerCase().trim()
-      : `user_${cleanPhone.replace(/\+/g, '')}@psyai.jo`;
+    const emailHash = EncryptionService.generateBlindIndex(cleanEmail);
 
-    // Check if user already exists (by email blind-index if provided)
-    if (email && email.trim()) {
-      const existingEmail = await prisma.user.findUnique({ where: { emailHash: EncryptionService.generateBlindIndex(cleanEmail) } });
-      if (existingEmail) {
-        return res.status(400).json({
-          success: false,
-          message: 'البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول أو استخدام بريد آخر.'
-        });
-      }
+    // Check if user already exists (by email blind-index — the unique searchable hash)
+    const existingEmail = await prisma.user.findUnique({ where: { emailHash } });
+    if (existingEmail) {
+      return res.status(400).json({
+        success: false,
+        message: 'البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول أو استخدام بريد آخر.'
+      });
     }
 
-    const existingPhone = await prisma.user.findFirst({
+    const existingPhone = await prisma.user.findUnique({
       where: { phoneHash: phoneBlindIndex }
     });
 
@@ -249,7 +244,7 @@ async function register(req, res, next) {
       isVerified = true;
     }
 
-    // Argon2id / secure password hashing (Section 3)
+    // Argon2id / secure password hashing
     const passwordHash = await SecurityService.hashPassword(password);
 
     // Encrypt sensitive fields with AES-256-GCM
@@ -257,8 +252,6 @@ async function register(req, res, next) {
     const encryptedLastName = EncryptionService.encryptField(lastName);
     const encryptedPhone = EncryptionService.encryptField(cleanPhone);
     const encryptedCondition = EncryptionService.encryptField(condition || null);
-
-    const emailHash = EncryptionService.generateBlindIndex(cleanEmail);
     const encryptedEmail = EncryptionService.encryptField(cleanEmail);
 
     // Create user in DB
@@ -296,7 +289,6 @@ async function register(req, res, next) {
     });
 
     const token = createToken(user);
-    const decryptedUser = EncryptionService.decryptUserFields(user);
 
     await AuditService.log({
       req,
@@ -326,17 +318,14 @@ async function login(req, res, next) {
   try {
     const { identifier, password } = req.body;
     const cleanIdent = identifier.trim();
-    const sanitizedPhone = sanitizePhone(cleanIdent);
-    const phoneBlindIndex = EncryptionService.generateBlindIndex(sanitizedPhone);
-    const rawPhoneBlindIndex = EncryptionService.generateBlindIndex(cleanIdent);
-
+    const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanIdent);
     const emailSearchHash = EncryptionService.generateBlindIndex(cleanIdent.toLowerCase());
+
     const user = await prisma.user.findFirst({
       where: {
         OR: [
           { emailHash: emailSearchHash },
-          { phoneHash: phoneBlindIndex },
-          { phoneHash: rawPhoneBlindIndex }
+          { phoneHash: phoneBlindIndex }
         ]
       }
     });
@@ -349,7 +338,7 @@ async function login(req, res, next) {
       });
       return res.status(401).json({
         success: false,
-        message: 'بيانات الدخول غير صحيحة. يرجى التحقق من رقم الهاتف وكلمة المرور.'
+        message: 'بيانات الدخول غير صحيحة. يرجى التحقق من البريد أو رقم الهاتف.'
       });
     }
 
@@ -408,15 +397,17 @@ async function login(req, res, next) {
 
 /**
  * POST /api/auth/forgot-password
- * Anti-enumeration password reset request (Section 3)
+ * Anti-enumeration password reset request
+ * AUTH-002: البحث بالفهرس الأعمى emailHash
  */
 async function forgotPassword(req, res, next) {
   try {
     const { email } = req.body;
     const cleanEmail = email.toLowerCase().trim();
+    const emailHash = EncryptionService.generateBlindIndex(cleanEmail);
 
     const user = await prisma.user.findUnique({
-      where: { email: cleanEmail }
+      where: { emailHash }
     });
 
     if (user) {
@@ -447,7 +438,7 @@ async function forgotPassword(req, res, next) {
       });
 
       if (process.env.NODE_ENV !== 'production') {
-        console.log(`[PASSWORD RESET DEV TOKEN] User ${user.email}: token=${rawToken}`);
+        console.log(`[PASSWORD RESET DEV TOKEN] User ID: ${user.id}, Token: ${rawToken}`);
       }
     } else {
       await AuditService.log({
@@ -457,7 +448,7 @@ async function forgotPassword(req, res, next) {
       });
     }
 
-    // Generic 200 response to prevent email enumeration (Section 3)
+    // Generic 200 response to prevent email enumeration
     res.status(200).json({
       success: true,
       message: 'إذا كان البريد الإلكتروني مسجلاً لدينا، فستتلقى تعليمات إعادة تعيين كلمة المرور.'
@@ -469,7 +460,7 @@ async function forgotPassword(req, res, next) {
 
 /**
  * POST /api/auth/reset-password
- * Complete password reset with session revocation (Section 3 & 5)
+ * Complete password reset with session revocation
  */
 async function resetPassword(req, res, next) {
   try {
@@ -533,10 +524,6 @@ async function resetPassword(req, res, next) {
 
 /**
  * GET /api/auth/me
- * Get current authenticated user profile
- */
-/**
- * GET /api/auth/me
  * Get current authenticated user profile (decrypted for owner)
  */
 async function getMe(req, res, next) {
@@ -572,8 +559,6 @@ async function getMe(req, res, next) {
       return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
     }
 
-    const user = EncryptionService.decryptUserFields(rawUser);
-
     res.status(200).json({
       success: true,
       user: toPublicUser(rawUser)
@@ -598,12 +583,10 @@ function formatJordanPhone(raw) {
 
 /**
  * Verify Google ID Token using official Google OAuth2 Client
- * Validates cryptographic signature, audience, expiration, and issuer.
  */
 async function verifyGoogleIdToken(idToken) {
   if (!idToken) return null;
 
-  // Support for mock tokens in automated test suite
   if (process.env.NODE_ENV === 'test' && String(idToken).startsWith('mock-test-id-token:')) {
     const parts = idToken.split(':');
     return {
@@ -641,8 +624,7 @@ async function verifyGoogleIdToken(idToken) {
 
 /**
  * POST /api/auth/google
- * Google Auth with strict ID Token validation, anti-pre-hijacking account linking,
- * status checks, and phone verification state machine.
+ * AUTH-006 & AUTH-007: البحث حصراً عبر emailHash و phoneHash
  */
 async function googleAuth(req, res, next) {
   try {
@@ -695,28 +677,20 @@ async function googleAuth(req, res, next) {
       where: { googleId: gUser.googleId }
     });
 
-    // 2. If not found by googleId, check by email blind index
+    // 2. AUTH-006: If not found by googleId, check by email blind index exclusively
     if (!user) {
-      user = await prisma.user.findFirst({
-        where: {
-          OR: [
-            { emailHash: emailBlindIndex },
-            { emailBlindIndex },
-            { email: cleanEmail }
-          ]
-        }
+      user = await prisma.user.findUnique({
+        where: { emailHash: emailBlindIndex }
       });
 
       // Anti-Pre-hijacking Linking Rules
       if (user) {
         if (user.isVerified) {
-          // Case 2a: Existing verified user -> link googleId
           user = await prisma.user.update({
             where: { id: user.id },
             data: { googleId: gUser.googleId }
           });
         } else {
-          // Case 2b: Unverified account with victim email -> Google proves ownership! Invalidate old credentials
           const randomPass = SecurityService.generatePasswordResetToken().rawToken + 'Aa1!';
           const revokedPasswordHash = await SecurityService.hashPassword(randomPass);
 
@@ -784,9 +758,7 @@ async function googleAuth(req, res, next) {
         });
       }
 
-      // TASK-016 FIX: Check phone collision using only the blind index hash
-      // (phoneBlindIndex). Removed invalid ES6-shorthand field and non-existent
-      // plain `phone` column — both would cause Prisma validation errors.
+      // AUTH-007: Check phone collision exclusively with phoneHash
       const phoneTaken = await prisma.user.findFirst({
         where: {
           id: { not: user.id },
@@ -849,8 +821,8 @@ async function googleAuth(req, res, next) {
       });
     }
 
-    // Check phone collision for brand new registration
-    const phoneTaken = await prisma.user.findFirst({
+    // AUTH-007: Check phone collision for brand new registration
+    const phoneTaken = await prisma.user.findUnique({
       where: { phoneHash: phoneBlindIndex }
     });
     if (phoneTaken) {
@@ -924,7 +896,7 @@ async function googleAuth(req, res, next) {
 
 /**
  * PUT /api/user/profile
- * Update user personal details (name, email, condition, specGenderPref) with field encryption
+ * Update user personal details with field encryption
  */
 async function updateProfile(req, res, next) {
   try {
@@ -1007,7 +979,7 @@ async function sendPhoneUpdateOtp(req, res, next) {
 
     const cleanPhone = sanitizePhone(phone);
     const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
-    const existing = await prisma.user.findFirst({
+    const existing = await prisma.user.findUnique({
       where: { phoneHash: phoneBlindIndex }
     });
     if (existing && existing.id !== userId) {

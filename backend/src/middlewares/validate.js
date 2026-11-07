@@ -20,21 +20,26 @@ function validate(schema) {
 }
 
 // Schemas
+// AUTH-005: إضافة otpCode في registerSchema
 const registerSchema = z.object({
   firstName: z.string().min(2, 'الاسم الأول يجب أن يتكون من حرفين على الأقل').trim(),
   lastName: z.string().min(2, 'اسم العائلة يجب أن يتكون من حرفين على الأقل').trim(),
-  email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim().optional().or(z.literal('')),
+  email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim(),
   phone: z.string()
     .trim()
     .regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)'),
   gender: z.enum(['male', 'female'], { errorMap: () => ({ message: 'يرجى تحديد الجنس بشكل صحيح' }) }),
   password: z.string().min(6, 'كلمة المرور يجب أن لا تقل عن 6 أحرف أو أرقام'),
+  otpCode: z.string()
+     .length(6, 'رمز التحقق يجب أن يتكون من 6 أرقام')
+     .regex(/^\d+$/, 'رمز التحقق يجب أن يحتوي على أرقام فقط')
+     .optional(),
   condition: z.string().optional(),
   specGenderPref: z.enum(['any', 'male', 'female']).optional()
 });
 
 const loginSchema = z.object({
-  identifier: z.string().min(3, 'يرجى إدخال رقم الهاتف').trim(),
+  identifier: z.string().min(3, 'يرجى إدخال اسم المستخدم أو البريد الإلكتروني').trim(),
   password: z.string().min(1, 'يرجى إدخال كلمة المرور')
 });
 
@@ -51,11 +56,7 @@ const verifyOtpSchema = z.object({
   phone: z.string()
     .trim()
     .regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)'),
-  code: z.string().optional(),
-  otpCode: z.string().optional()
-}).refine(data => !!(data.code || data.otpCode), {
-  message: 'رمز التحقق مطلوب',
-  path: ['code']
+  code: z.string().length(6, 'رمز التحقق يجب أن يتكون من 6 أرقام').regex(/^\d+$/, 'رمز التحقق يجب أن يحتوي على أرقام فقط')
 });
 
 const sendOtpSchema = z.object({
@@ -104,10 +105,10 @@ const deleteAccountSchema = z.object({
 });
 
 const createPaymentSessionSchema = z.object({
-  bookingId: z.string().min(1, 'معرّف الحجز غير صالح').optional(),
+  bookingId: z.string().optional(),
   orderId: z.string().optional(),
   amount: z.number().positive('المبلغ يجب أن يكون أكبر من صفر').optional(),
-  currency: z.string().min(3).max(4).default('SAR').optional()
+  currency: z.string().min(3).max(4).default('JOD').optional()
 }).refine((data) => data.bookingId || data.orderId, {
   message: 'يرجى تقديم معرّف الحجز bookingId أو معرّف الطلب orderId'
 });
@@ -239,4 +240,3 @@ module.exports = {
   sendMeetingLinkSchema,
   publishArticleSchema
 };
-
