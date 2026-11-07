@@ -722,6 +722,73 @@
       accent-color: var(--teal);
     }
 
+    /* ── Date & Time Custom Picker Controls ── */
+    .date-picker-bar, .time-picker-bar {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 0.9rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .date-picker-bar:focus-within, .time-picker-bar:focus-within {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(46, 82, 84, 0.12);
+    }
+
+    .date-picker-label, .time-picker-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+    }
+
+    .booking-date-input, .booking-time-select {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--teal-deep);
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      outline: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .booking-date-input:focus, .booking-time-select:focus {
+      border-color: var(--teal);
+      background: #ffffff;
+    }
+
+    .chosen-datetime-badge {
+      background: linear-gradient(135deg, rgba(234, 243, 244, 0.95), rgba(253, 250, 243, 0.95));
+      border: 1.5px solid var(--teal-light);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--teal-deep);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 580px) {
+      #quickDaysGrid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
     /* ── STEP 3: اختيار الأخصائي ── */
     .auto-select-banner {
       background: linear-gradient(135deg, rgba(234, 243, 244, 0.7), rgba(253, 250, 243, 0.9));
@@ -1475,29 +1542,65 @@
         <!-- اختيار موعد الجلسة -->
         <div class="section-block">
           <div class="section-title">اختر موعد الجلسة المفضل</div>
-          <p class="section-subtitle">حدد اليوم والوقت الأنسب لك، وسيقوم المختص بتأكيد الموعد وإرسال رابط الجلسة إلى حسابك مباشرة</p>
+          <p class="section-subtitle">حدد اليوم والتاريخ والوقت الأنسب لك، وسيقوم المختص بتأكيد الموعد وإرسال رابط الجلسة إلى حسابك مباشرة</p>
 
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.2rem;">
-            <div class="duration-chip active" id="dayChipToday" onclick="selectBookingDay('اليوم', this)">
+          <!-- 1. اختيار اليوم والتاريخ -->
+          <div style="font-size: 0.88rem; font-weight: 700; color: var(--teal-deep); margin-bottom: 8px;">1. حدد اليوم والتاريخ:</div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 0.9rem;" id="quickDaysGrid">
+            <div class="duration-chip active" id="dayChipToday" onclick="selectQuickDay(0, this)">
               <div class="duration-time">اليوم</div>
               <small style="color: var(--text-muted); font-size: 0.76rem;" id="todayDateStr">الأقرب</small>
             </div>
-            <div class="duration-chip" id="dayChipTomorrow" onclick="selectBookingDay('غداً', this)">
+            <div class="duration-chip" id="dayChipTomorrow" onclick="selectQuickDay(1, this)">
               <div class="duration-time">غداً</div>
               <small style="color: var(--text-muted); font-size: 0.76rem;" id="tomorrowDateStr">متاح</small>
             </div>
-            <div class="duration-chip" id="dayChipAfter" onclick="selectBookingDay('بعد غد', this)">
+            <div class="duration-chip" id="dayChipAfter" onclick="selectQuickDay(2, this)">
               <div class="duration-time">بعد غد</div>
               <small style="color: var(--text-muted); font-size: 0.76rem;" id="afterDateStr">متاح</small>
             </div>
+            <div class="duration-chip" id="dayChipCustom" onclick="focusCustomDate()">
+              <div class="duration-time">📅 تاريخ آخر</div>
+              <small style="color: var(--text-muted); font-size: 0.76rem;">اختر بالتقويم</small>
+            </div>
           </div>
 
-          <div style="font-size: 0.88rem; font-weight: 700; color: var(--teal-deep); margin-bottom: 8px;">الأوقات المتاحة:</div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-bottom: 1.2rem;" id="timeSlotsContainer">
-            <button type="button" class="duration-chip active" style="padding: 10px 6px;" onclick="selectBookingTime('04:00 مساءً', this)">04:00 م</button>
-            <button type="button" class="duration-chip" style="padding: 10px 6px;" onclick="selectBookingTime('05:30 مساءً', this)">05:30 م</button>
-            <button type="button" class="duration-chip" style="padding: 10px 6px;" onclick="selectBookingTime('07:00 مساءً', this)">07:00 م</button>
-            <button type="button" class="duration-chip" style="padding: 10px 6px;" onclick="selectBookingTime('08:30 مساءً', this)">08:30 م</button>
+          <!-- Date Picker Input Bar (Open for choosing any day & month) -->
+          <div class="date-picker-bar">
+            <label for="bookingCustomDate" class="date-picker-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>أو اختر أي تاريخ بالتقويم (اليوم / الشهر / السنة):</span>
+            </label>
+            <input type="date" id="bookingCustomDate" class="booking-date-input" onchange="onCustomDateChange(this.value)" />
+          </div>
+
+          <!-- 2. اختيار وقت الجلسة -->
+          <div style="font-size: 0.88rem; font-weight: 700; color: var(--teal-deep); margin: 1.2rem 0 8px;">2. اختر وقت الجلسة:</div>
+          
+          <!-- Dropdown for Time (قائمة منسدلة للأوقات طوال اليوم) -->
+          <div class="time-picker-bar">
+            <label for="bookingTimeSelect" class="time-picker-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>قائمة الأوقات المتاحة (صباحاً ومساءً):</span>
+            </label>
+            <select id="bookingTimeSelect" class="booking-time-select" onchange="onTimeSelectChange(this.value)">
+              <!-- Options populated dynamically -->
+            </select>
+          </div>
+
+          <!-- Quick Popular Time Chips -->
+          <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin: 0.8rem 0 6px;">أوقات مسائية شائعة:</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 8px; margin-bottom: 1.2rem;" id="timeSlotsContainer">
+            <button type="button" class="duration-chip active" style="padding: 10px 6px;" onclick="selectQuickTime('16:00', '04:00 مساءً', this)">04:00 م</button>
+            <button type="button" class="duration-chip" style="padding: 10px 6px;" onclick="selectQuickTime('17:30', '05:30 مساءً', this)">05:30 م</button>
+            <button type="button" class="duration-chip" style="padding: 10px 6px;" onclick="selectQuickTime('19:00', '07:00 مساءً', this)">07:00 م</button>
+            <button type="button" class="duration-chip" style="padding: 10px 6px;" onclick="selectQuickTime('20:30', '08:30 مساءً', this)">08:30 م</button>
+          </div>
+
+          <!-- Live Selection Banner -->
+          <div class="chosen-datetime-badge" id="chosenDateTimeBadge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span>الموعد المعتمد للجلسة: <strong id="liveDateTimeText" style="color: var(--teal-deep);">...</strong></span>
           </div>
 
           <div style="background: var(--teal-pale); border-radius: var(--radius-md); padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 0.84rem; color: var(--teal-deep);">
@@ -1825,11 +1928,70 @@
       commType: "video",
       duration: 45,
       price: 25,
+      selectedDate: "",
+      selectedTime: "16:00",
       bookingDay: "اليوم",
       bookingTime: "04:00 مساءً",
+      formattedDateStr: "",
       payMethod: "cliq",
       selectedSpecialist: null
     };
+
+    const TIME_SLOTS = [
+      { val: "08:00", label: "08:00 صباحاً" },
+      { val: "08:30", label: "08:30 صباحاً" },
+      { val: "09:00", label: "09:00 صباحاً" },
+      { val: "09:30", label: "09:30 صباحاً" },
+      { val: "10:00", label: "10:00 صباحاً" },
+      { val: "10:30", label: "10:30 صباحاً" },
+      { val: "11:00", label: "11:00 صباحاً" },
+      { val: "11:30", label: "11:30 صباحاً" },
+      { val: "12:00", label: "12:00 ظهراً" },
+      { val: "12:30", label: "12:30 بعد الظهر" },
+      { val: "13:00", label: "01:00 بعد الظهر" },
+      { val: "13:30", label: "01:30 بعد الظهر" },
+      { val: "14:00", label: "02:00 بعد الظهر" },
+      { val: "14:30", label: "02:30 بعد الظهر" },
+      { val: "15:00", label: "03:00 عصراً" },
+      { val: "15:30", label: "03:30 عصراً" },
+      { val: "16:00", label: "04:00 مساءً" },
+      { val: "16:30", label: "04:30 مساءً" },
+      { val: "17:00", label: "05:00 مساءً" },
+      { val: "17:30", label: "05:30 مساءً" },
+      { val: "18:00", label: "06:00 مساءً" },
+      { val: "18:30", label: "06:30 مساءً" },
+      { val: "19:00", label: "07:00 مساءً" },
+      { val: "19:30", label: "07:30 مساءً" },
+      { val: "20:00", label: "08:00 مساءً" },
+      { val: "20:30", label: "08:30 مساءً" },
+      { val: "21:00", label: "09:00 مساءً" },
+      { val: "21:30", label: "09:30 مساءً" },
+      { val: "22:00", label: "10:00 مساءً" },
+      { val: "22:30", label: "10:30 مساءً" },
+      { val: "23:00", label: "11:00 مساءً" },
+      { val: "23:30", label: "11:30 مساءً" }
+    ];
+
+    const AR_DAYS = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+    const AR_MONTHS = [
+      "كانون الثاني (1)", "شباط (2)", "آذار (3)", "نيسان (4)", "أيار (5)", "حزيران (6)",
+      "تموز (7)", "آب (8)", "أيلول (9)", "تشرين الأول (10)", "تشرين الثاني (11)", "كانون الأول (12)"
+    ];
+
+    function toIsoDate(d) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatArabicDate(dateObj) {
+      const dayName = AR_DAYS[dateObj.getDay()];
+      const dayNum = dateObj.getDate();
+      const monthName = AR_MONTHS[dateObj.getMonth()];
+      const year = dateObj.getFullYear();
+      return `${dayName}، ${dayNum} ${monthName} ${year}`;
+    }
 
     // Pre-loaded verified specialists for Jordan
     const fallbackSpecialists = [
@@ -1884,7 +2046,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       checkAuthBadge();
       loadMyAppointments();
-      initDateLabels();
+      initDateTimeSystem();
 
       // Check URL query e.g. ?view=appointments
       const urlParams = new URLSearchParams(window.location.search);
@@ -1893,22 +2055,49 @@
       }
     });
 
-    function initDateLabels() {
+    function initDateTimeSystem() {
       const today = new Date();
+      const todayIso = toIsoDate(today);
+
+      const dateInput = document.getElementById("bookingCustomDate");
+      if (dateInput) {
+        dateInput.min = todayIso;
+        dateInput.value = todayIso;
+      }
+
+      bookingData.selectedDate = todayIso;
+      bookingData.selectedTime = "16:00";
+      bookingData.bookingTime = "04:00 مساءً";
+      bookingData.formattedDateStr = formatArabicDate(today);
+      bookingData.bookingDay = `اليوم (${bookingData.formattedDateStr})`;
+
+      // Populate time select dropdown
+      const timeSelect = document.getElementById("bookingTimeSelect");
+      if (timeSelect) {
+        timeSelect.innerHTML = TIME_SLOTS.map(t => 
+          `<option value="${t.val}" ${t.val === "16:00" ? "selected" : ""}>🕒 ${t.label}</option>`
+        ).join("");
+      }
+
+      // Quick day chips labels
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
-      const afterTomorrow = new Date(today);
-      afterTomorrow.setDate(today.getDate() + 2);
+      const after = new Date(today);
+      after.setDate(today.getDate() + 2);
 
-      const fmt = (d) => d.toLocaleDateString('ar-JO', { month: 'short', day: 'numeric' });
-
+      const fmtShort = (d) => `${d.getDate()} ${AR_MONTHS[d.getMonth()].split(" ")[0]}`;
       const elToday = document.getElementById("todayDateStr");
       const elTom = document.getElementById("tomorrowDateStr");
       const elAfter = document.getElementById("afterDateStr");
+      if (elToday) elToday.textContent = fmtShort(today);
+      if (elTom) elTom.textContent = fmtShort(tomorrow);
+      if (elAfter) elAfter.textContent = fmtShort(after);
 
-      if (elToday) elToday.textContent = fmt(today);
-      if (elTom) elTom.textContent = fmt(tomorrow);
-      if (elAfter) elAfter.textContent = fmt(afterTomorrow);
+      updateLiveDateTimeBanner();
+    }
+
+    function initDateLabels() {
+      initDateTimeSystem();
     }
 
     function checkAuthBadge() {
@@ -2072,18 +2261,119 @@
       chip.classList.add("active");
     }
 
+    function updateLiveDateTimeBanner() {
+      const liveText = document.getElementById("liveDateTimeText");
+      if (liveText) {
+        liveText.textContent = `${bookingData.formattedDateStr || ''} — الساعة ${bookingData.bookingTime || ''}`;
+      }
+    }
+
+    function selectQuickDay(offsetDays, chip) {
+      const d = new Date();
+      d.setDate(d.getDate() + offsetDays);
+      const iso = toIsoDate(d);
+
+      const dateInput = document.getElementById("bookingCustomDate");
+      if (dateInput) dateInput.value = iso;
+
+      bookingData.selectedDate = iso;
+      bookingData.formattedDateStr = formatArabicDate(d);
+      const label = (offsetDays === 0) ? "اليوم" : (offsetDays === 1) ? "غداً" : "بعد غد";
+      bookingData.bookingDay = `${label} (${bookingData.formattedDateStr})`;
+
+      document.querySelectorAll("#quickDaysGrid .duration-chip").forEach(c => c.classList.remove("active"));
+      if (chip) chip.classList.add("active");
+
+      updateLiveDateTimeBanner();
+      if (typeof updateSummary === "function") updateSummary();
+    }
+
+    function focusCustomDate() {
+      const dateInput = document.getElementById("bookingCustomDate");
+      if (dateInput) {
+        dateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        dateInput.focus();
+        if (typeof dateInput.showPicker === 'function') {
+          try { dateInput.showPicker(); } catch (_) { }
+        }
+      }
+      document.querySelectorAll("#quickDaysGrid .duration-chip").forEach(c => c.classList.remove("active"));
+      document.getElementById("dayChipCustom")?.classList.add("active");
+    }
+
+    function onCustomDateChange(val) {
+      if (!val) return;
+      const parts = val.split("-").map(Number);
+      const d = new Date(parts[0], parts[1] - 1, parts[2]);
+
+      bookingData.selectedDate = val;
+      bookingData.formattedDateStr = formatArabicDate(d);
+
+      const today = new Date();
+      const todayIso = toIsoDate(today);
+      const tom = new Date(today);
+      tom.setDate(today.getDate() + 1);
+      const tomIso = toIsoDate(tom);
+      const after = new Date(today);
+      after.setDate(today.getDate() + 2);
+      const afterIso = toIsoDate(after);
+
+      document.querySelectorAll("#quickDaysGrid .duration-chip").forEach(c => c.classList.remove("active"));
+      if (val === todayIso) {
+        document.getElementById("dayChipToday")?.classList.add("active");
+        bookingData.bookingDay = `اليوم (${bookingData.formattedDateStr})`;
+      } else if (val === tomIso) {
+        document.getElementById("dayChipTomorrow")?.classList.add("active");
+        bookingData.bookingDay = `غداً (${bookingData.formattedDateStr})`;
+      } else if (val === afterIso) {
+        document.getElementById("dayChipAfter")?.classList.add("active");
+        bookingData.bookingDay = `بعد غد (${bookingData.formattedDateStr})`;
+      } else {
+        document.getElementById("dayChipCustom")?.classList.add("active");
+        bookingData.bookingDay = bookingData.formattedDateStr;
+      }
+
+      updateLiveDateTimeBanner();
+      if (typeof updateSummary === "function") updateSummary();
+    }
+
+    function selectQuickTime(time24, timeLabel, chip) {
+      bookingData.selectedTime = time24;
+      bookingData.bookingTime = timeLabel;
+
+      const timeSelect = document.getElementById("bookingTimeSelect");
+      if (timeSelect) timeSelect.value = time24;
+
+      document.querySelectorAll("#timeSlotsContainer .duration-chip").forEach(c => c.classList.remove("active"));
+      if (chip) chip.classList.add("active");
+
+      updateLiveDateTimeBanner();
+      if (typeof updateSummary === "function") updateSummary();
+    }
+
+    function onTimeSelectChange(val) {
+      if (!val) return;
+      bookingData.selectedTime = val;
+      const found = TIME_SLOTS.find(t => t.val === val);
+      bookingData.bookingTime = found ? found.label : val;
+
+      document.querySelectorAll("#timeSlotsContainer .duration-chip").forEach(c => {
+        const matches = c.getAttribute("onclick")?.includes(`'${val}'`);
+        c.classList.toggle("active", !!matches);
+      });
+
+      updateLiveDateTimeBanner();
+      if (typeof updateSummary === "function") updateSummary();
+    }
+
     function selectBookingDay(day, chip) {
-      bookingData.bookingDay = day;
-      const parent = chip.parentElement;
-      parent.querySelectorAll(".duration-chip").forEach(c => c.classList.remove("active"));
-      chip.classList.add("active");
+      selectQuickDay(day === "اليوم" ? 0 : day === "غداً" ? 1 : 2, chip);
     }
 
     function selectBookingTime(time, chip) {
-      bookingData.bookingTime = time;
-      const parent = chip.parentElement;
-      parent.querySelectorAll(".duration-chip").forEach(c => c.classList.remove("active"));
-      chip.classList.add("active");
+      const match = TIME_SLOTS.find(t => t.label.includes(time) || time.includes(t.label.split(" ")[0]));
+      const val = match ? match.val : "16:00";
+      selectQuickTime(val, time, chip);
     }
 
     // ── STEP 3: SPECIALISTS FILTERING & SELECTION ──
@@ -2214,7 +2504,7 @@
 
       document.getElementById("sumCommType").textContent = "مكالمة فيديو 🎥";
       document.getElementById("sumDuration").textContent = `${bookingData.duration} دقيقة`;
-      document.getElementById("sumAppointmentTime").textContent = `${bookingData.bookingDay} (${bookingData.bookingTime})`;
+      document.getElementById("sumAppointmentTime").textContent = `${bookingData.formattedDateStr || bookingData.bookingDay} (${bookingData.bookingTime})`;
       document.getElementById("sumTags").textContent = bookingData.tags.length > 0 ? bookingData.tags.join("، ") : "جلسة رفاه عامة";
       document.getElementById("sumTotalPrice").textContent = `${bookingData.price} د.أ`;
       document.getElementById("btnConfirmAndPay").textContent = `تأكيد الحجز والدفع (${bookingData.price} د.أ) ✓`;
@@ -2256,16 +2546,22 @@
           throw new Error("يرجى اختيار الأخصائي لمتابعة الحجز.");
         }
 
-        // Calculate sessionTime
-        const now = new Date();
-        let targetDate = new Date(now);
-        if (bookingData.bookingDay === "غداً") {
-          targetDate.setDate(targetDate.getDate() + 1);
-        } else if (bookingData.bookingDay === "بعد غد") {
-          targetDate.setDate(targetDate.getDate() + 2);
+        // Calculate sessionTime from selected date and time
+        let targetDate;
+        if (bookingData.selectedDate && bookingData.selectedTime) {
+          const [hours, minutes] = bookingData.selectedTime.split(":").map(Number);
+          const [year, month, day] = bookingData.selectedDate.split("-").map(Number);
+          targetDate = new Date(year, month - 1, day, hours, minutes, 0);
         } else {
-          // If today, set at least 2 hours in future or standard time
+          targetDate = new Date();
           targetDate.setHours(targetDate.getHours() + 2);
+        }
+
+        if (targetDate <= new Date()) {
+          showToast("يرجى اختيار موعد في المستقبل (التاريخ أو الوقت المختار قد مضى)");
+          btn.disabled = false;
+          btn.textContent = `تأكيد الحجز والدفع (${bookingData.price} د.أ) ✓`;
+          return;
         }
 
         const sessionTime = targetDate.toISOString();
@@ -2295,7 +2591,7 @@
           specialistId: specialist.id,
           sessionTime: sessionTime,
           condition: bookingData.tags.join(", ") || "جلسة رفاه عامة",
-          notes: `الأخصائي: ${specialist.name} · الموعد: ${bookingData.bookingDay} (${bookingData.bookingTime}) · وسيلة الدفع: ${cliqInfoStr} · طريقة التواصل: مكالمة فيديو · تفاصيل: ${bookingData.description || 'لا توجد ملاحظات إضافية'}`
+          notes: `الأخصائي: ${specialist.name} · الموعد: ${bookingData.formattedDateStr || bookingData.bookingDay} (${bookingData.bookingTime}) · وسيلة الدفع: ${cliqInfoStr} · طريقة التواصل: مكالمة فيديو · تفاصيل: ${bookingData.description || 'لا توجد ملاحظات إضافية'}`
         };
 
         const res = await fetch(`${API_BASE}/api/bookings`, {
