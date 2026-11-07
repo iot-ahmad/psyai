@@ -1,0 +1,16 @@
+/*
+  # Protect against clickjacking
+  X-Frame-Options: SAMEORIGIN
+  # Prevent MIME-sniffing
+  X-Content-Type-Options: nosniff
+  # Control referrer info
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Restrict sensitive browser APIs
+  Permissions-Policy: camera=(self), microphone=(self), geolocation=(), payment=(), interest-cohort=()
+  # Enforce HTTPS
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # Mitigate XSS & malicious script injection
+  Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https: data:; img-src 'self' https: data: blob:; connect-src 'self' https: http:; frame-src 'self' https:; object-src 'none';
+  # Modern Cross-Origin Isolation & resource policies
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  Cross-Origin-Resource-Policy: cross-origin
