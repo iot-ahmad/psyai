@@ -1049,8 +1049,8 @@
     /* Jordanian Payment Methods */
     .pay-methods-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
       margin-bottom: 1.8rem;
     }
 
@@ -1797,12 +1797,6 @@
               <div class="pay-badge-flag">💳</div>
               <div class="pay-title">بطاقة بنكية</div>
               <div class="pay-desc">Visa / MasterCard</div>
-            </div>
-
-            <div class="pay-method-card" onclick="selectPayMethod('applepay', this)">
-              <div class="pay-badge-flag"></div>
-              <div class="pay-title">Apple Pay</div>
-              <div class="pay-desc">دفع آمن وسريع بنقرة واحدة</div>
             </div>
           </div>
 
@@ -2598,7 +2592,7 @@
         const sessionTime = targetDate.toISOString();
 
         // Validate CliQ transfer inputs if CliQ is chosen
-        let cliqInfoStr = "بطاقة بنكية / Apple Pay";
+        let cliqInfoStr = "بطاقة بنكية";
         if (bookingData.payMethod === 'cliq') {
           const cliqSender = document.getElementById("cliqSenderName")?.value?.trim() || "";
           const cliqRef = document.getElementById("cliqRefNumber")?.value?.trim() || "";
