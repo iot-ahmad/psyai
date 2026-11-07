@@ -783,12 +783,6 @@
       margin-bottom: 1rem;
     }
 
-    @media (max-width: 580px) {
-      #quickDaysGrid {
-        grid-template-columns: repeat(2, 1fr) !important;
-      }
-    }
-
     /* ── STEP 3: اختيار الأخصائي ── */
     .auto-select-banner {
       background: linear-gradient(135deg, rgba(234, 243, 244, 0.7), rgba(253, 250, 243, 0.9));
@@ -1544,57 +1538,24 @@
           <div class="section-title">اختر موعد الجلسة المفضل</div>
           <p class="section-subtitle">حدد اليوم والتاريخ والوقت الأنسب لك، وسيقوم المختص بتأكيد الموعد وإرسال رابط الجلسة إلى حسابك مباشرة</p>
 
-          <!-- 1. اختيار اليوم والتاريخ -->
-          <div style="font-size: 0.88rem; font-weight: 700; color: var(--teal-deep); margin-bottom: 8px;">1. حدد اليوم والتاريخ:</div>
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 0.9rem;" id="quickDaysGrid">
-            <div class="duration-chip active" id="dayChipToday" onclick="selectQuickDay(0, this)">
-              <div class="duration-time">اليوم</div>
-              <small style="color: var(--text-muted); font-size: 0.76rem;" id="todayDateStr">الأقرب</small>
-            </div>
-            <div class="duration-chip" id="dayChipTomorrow" onclick="selectQuickDay(1, this)">
-              <div class="duration-time">غداً</div>
-              <small style="color: var(--text-muted); font-size: 0.76rem;" id="tomorrowDateStr">متاح</small>
-            </div>
-            <div class="duration-chip" id="dayChipAfter" onclick="selectQuickDay(2, this)">
-              <div class="duration-time">بعد غد</div>
-              <small style="color: var(--text-muted); font-size: 0.76rem;" id="afterDateStr">متاح</small>
-            </div>
-            <div class="duration-chip" id="dayChipCustom" onclick="focusCustomDate()">
-              <div class="duration-time">📅 تاريخ آخر</div>
-              <small style="color: var(--text-muted); font-size: 0.76rem;">اختر بالتقويم</small>
-            </div>
-          </div>
-
-          <!-- Date Picker Input Bar (Open for choosing any day & month) -->
+          <!-- 1. اختيار اليوم والتاريخ عبر التقويم -->
           <div class="date-picker-bar">
             <label for="bookingCustomDate" class="date-picker-label">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-              <span>أو اختر أي تاريخ بالتقويم (اليوم / الشهر / السنة):</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>اختر تاريخ الجلسة (اليوم / الشهر / السنة):</span>
             </label>
             <input type="date" id="bookingCustomDate" class="booking-date-input" onchange="onCustomDateChange(this.value)" />
           </div>
 
-          <!-- 2. اختيار وقت الجلسة -->
-          <div style="font-size: 0.88rem; font-weight: 700; color: var(--teal-deep); margin: 1.2rem 0 8px;">2. اختر وقت الجلسة:</div>
-          
-          <!-- Dropdown for Time (قائمة منسدلة للأوقات طوال اليوم) -->
+          <!-- 2. اختيار وقت الجلسة عبر القائمة المنسدلة -->
           <div class="time-picker-bar">
             <label for="bookingTimeSelect" class="time-picker-label">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              <span>قائمة الأوقات المتاحة (صباحاً ومساءً):</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>اختر وقت الجلسة (صباحاً ومساءً):</span>
             </label>
             <select id="bookingTimeSelect" class="booking-time-select" onchange="onTimeSelectChange(this.value)">
               <!-- Options populated dynamically -->
             </select>
-          </div>
-
-          <!-- Quick Popular Time Chips -->
-          <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin: 0.8rem 0 6px;">أوقات مسائية شائعة:</div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 8px; margin-bottom: 1.2rem;" id="timeSlotsContainer">
-            <button type="button" class="duration-chip active" style="padding: 10px 6px;" onclick="selectQuickTime('16:00', '04:00 مساءً', this)">04:00 م</button>
-            <button type="button" class="duration-chip" style="padding: 10px 6px;" onclick="selectQuickTime('17:30', '05:30 مساءً', this)">05:30 م</button>
-            <button type="button" class="duration-chip" style="padding: 10px 6px;" onclick="selectQuickTime('19:00', '07:00 مساءً', this)">07:00 م</button>
-            <button type="button" class="duration-chip" style="padding: 10px 6px;" onclick="selectQuickTime('20:30', '08:30 مساءً', this)">08:30 م</button>
           </div>
 
           <!-- Live Selection Banner -->
@@ -2069,7 +2030,7 @@
       bookingData.selectedTime = "16:00";
       bookingData.bookingTime = "04:00 مساءً";
       bookingData.formattedDateStr = formatArabicDate(today);
-      bookingData.bookingDay = `اليوم (${bookingData.formattedDateStr})`;
+      bookingData.bookingDay = bookingData.formattedDateStr;
 
       // Populate time select dropdown
       const timeSelect = document.getElementById("bookingTimeSelect");
@@ -2078,20 +2039,6 @@
           `<option value="${t.val}" ${t.val === "16:00" ? "selected" : ""}>🕒 ${t.label}</option>`
         ).join("");
       }
-
-      // Quick day chips labels
-      const tomorrow = new Date(today);
-      tomorrow.setDate(today.getDate() + 1);
-      const after = new Date(today);
-      after.setDate(today.getDate() + 2);
-
-      const fmtShort = (d) => `${d.getDate()} ${AR_MONTHS[d.getMonth()].split(" ")[0]}`;
-      const elToday = document.getElementById("todayDateStr");
-      const elTom = document.getElementById("tomorrowDateStr");
-      const elAfter = document.getElementById("afterDateStr");
-      if (elToday) elToday.textContent = fmtShort(today);
-      if (elTom) elTom.textContent = fmtShort(tomorrow);
-      if (elAfter) elAfter.textContent = fmtShort(after);
 
       updateLiveDateTimeBanner();
     }
@@ -2268,39 +2215,6 @@
       }
     }
 
-    function selectQuickDay(offsetDays, chip) {
-      const d = new Date();
-      d.setDate(d.getDate() + offsetDays);
-      const iso = toIsoDate(d);
-
-      const dateInput = document.getElementById("bookingCustomDate");
-      if (dateInput) dateInput.value = iso;
-
-      bookingData.selectedDate = iso;
-      bookingData.formattedDateStr = formatArabicDate(d);
-      const label = (offsetDays === 0) ? "اليوم" : (offsetDays === 1) ? "غداً" : "بعد غد";
-      bookingData.bookingDay = `${label} (${bookingData.formattedDateStr})`;
-
-      document.querySelectorAll("#quickDaysGrid .duration-chip").forEach(c => c.classList.remove("active"));
-      if (chip) chip.classList.add("active");
-
-      updateLiveDateTimeBanner();
-      if (typeof updateSummary === "function") updateSummary();
-    }
-
-    function focusCustomDate() {
-      const dateInput = document.getElementById("bookingCustomDate");
-      if (dateInput) {
-        dateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        dateInput.focus();
-        if (typeof dateInput.showPicker === 'function') {
-          try { dateInput.showPicker(); } catch (_) { }
-        }
-      }
-      document.querySelectorAll("#quickDaysGrid .duration-chip").forEach(c => c.classList.remove("active"));
-      document.getElementById("dayChipCustom")?.classList.add("active");
-    }
-
     function onCustomDateChange(val) {
       if (!val) return;
       const parts = val.split("-").map(Number);
@@ -2308,44 +2222,7 @@
 
       bookingData.selectedDate = val;
       bookingData.formattedDateStr = formatArabicDate(d);
-
-      const today = new Date();
-      const todayIso = toIsoDate(today);
-      const tom = new Date(today);
-      tom.setDate(today.getDate() + 1);
-      const tomIso = toIsoDate(tom);
-      const after = new Date(today);
-      after.setDate(today.getDate() + 2);
-      const afterIso = toIsoDate(after);
-
-      document.querySelectorAll("#quickDaysGrid .duration-chip").forEach(c => c.classList.remove("active"));
-      if (val === todayIso) {
-        document.getElementById("dayChipToday")?.classList.add("active");
-        bookingData.bookingDay = `اليوم (${bookingData.formattedDateStr})`;
-      } else if (val === tomIso) {
-        document.getElementById("dayChipTomorrow")?.classList.add("active");
-        bookingData.bookingDay = `غداً (${bookingData.formattedDateStr})`;
-      } else if (val === afterIso) {
-        document.getElementById("dayChipAfter")?.classList.add("active");
-        bookingData.bookingDay = `بعد غد (${bookingData.formattedDateStr})`;
-      } else {
-        document.getElementById("dayChipCustom")?.classList.add("active");
-        bookingData.bookingDay = bookingData.formattedDateStr;
-      }
-
-      updateLiveDateTimeBanner();
-      if (typeof updateSummary === "function") updateSummary();
-    }
-
-    function selectQuickTime(time24, timeLabel, chip) {
-      bookingData.selectedTime = time24;
-      bookingData.bookingTime = timeLabel;
-
-      const timeSelect = document.getElementById("bookingTimeSelect");
-      if (timeSelect) timeSelect.value = time24;
-
-      document.querySelectorAll("#timeSlotsContainer .duration-chip").forEach(c => c.classList.remove("active"));
-      if (chip) chip.classList.add("active");
+      bookingData.bookingDay = bookingData.formattedDateStr;
 
       updateLiveDateTimeBanner();
       if (typeof updateSummary === "function") updateSummary();
@@ -2357,23 +2234,8 @@
       const found = TIME_SLOTS.find(t => t.val === val);
       bookingData.bookingTime = found ? found.label : val;
 
-      document.querySelectorAll("#timeSlotsContainer .duration-chip").forEach(c => {
-        const matches = c.getAttribute("onclick")?.includes(`'${val}'`);
-        c.classList.toggle("active", !!matches);
-      });
-
       updateLiveDateTimeBanner();
       if (typeof updateSummary === "function") updateSummary();
-    }
-
-    function selectBookingDay(day, chip) {
-      selectQuickDay(day === "اليوم" ? 0 : day === "غداً" ? 1 : 2, chip);
-    }
-
-    function selectBookingTime(time, chip) {
-      const match = TIME_SLOTS.find(t => t.label.includes(time) || time.includes(t.label.split(" ")[0]));
-      const val = match ? match.val : "16:00";
-      selectQuickTime(val, time, chip);
     }
 
     // ── STEP 3: SPECIALISTS FILTERING & SELECTION ──
