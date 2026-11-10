@@ -245,8 +245,11 @@ export async function submitRegisterDirect(event) {
   if (digits.startsWith('0')) digits = digits.slice(1);
   const cleanPhone = `+962${digits}`;
 
+  const userEmail = step1.email || `${cleanPhone.replace(/[^0-9]/g, '')}@psyai.me`;
+
   state.pendingRegistration = {
     ...step1,
+    email: userEmail,
     phone: cleanPhone,
     condition: 'استشارة عامة',
     specGenderPref: 'any'
@@ -442,7 +445,13 @@ export async function verifyAndCompleteRegistration() {
 
 /** Finish the standard email/password registration after OTP success. */
 async function completeStandardRegistration(digits) {
-  const payload = { ...state.pendingRegistration, otpCode: digits };
+  const cleanPhone = state.pendingRegistration?.phone || '';
+  const userEmail = state.pendingRegistration?.email || `${cleanPhone.replace(/[^0-9]/g, '')}@psyai.me`;
+  const payload = {
+    ...state.pendingRegistration,
+    email: userEmail,
+    otpCode: digits
+  };
 
   let user;
   let token;

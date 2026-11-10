@@ -242,8 +242,10 @@ async function register(req, res, next) {
       otpCode
     } = req.body;
 
-    const cleanEmail = email.toLowerCase().trim();
     const cleanPhone = sanitizePhone(phone);
+    const cleanEmail = (email && typeof email === 'string' && email.trim())
+      ? email.toLowerCase().trim()
+      : `${cleanPhone.replace(/[^0-9]/g, '')}@psyai.me`;
     const phoneBlindIndex = EncryptionService.generateBlindIndex(cleanPhone);
     const emailHash = EncryptionService.generateBlindIndex(cleanEmail);
 

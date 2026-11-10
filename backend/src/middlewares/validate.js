@@ -31,7 +31,7 @@ const passwordPolicy = z.string()
 const registerSchema = z.object({
   firstName: z.string().min(2, 'الاسم الأول يجب أن يتكون من حرفين على الأقل').trim(),
   lastName: z.string().min(2, 'اسم العائلة يجب أن يتكون من حرفين على الأقل').trim(),
-  email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim(),
+  email: z.string().email('صيغة البريد الإلكتروني غير صحيحة').toLowerCase().trim().optional().or(z.literal('')),
   phone: z.string()
     .trim()
     .regex(/^\+9627[789]\d{7}$/, 'يجب أن يبدأ رقم الهاتف بـ +9627 ويتكون من 11 رقم (مثال: +962791234567)'),
