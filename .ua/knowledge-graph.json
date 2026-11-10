@@ -1,427 +1,731 @@
 {
-  "metadata": {
-    "name": "PsyAI — Mental Wellness & Tele-Health Platform",
-    "description": "منصة الرفاه النفسي والدعم الاستشاري الذكي (PsyAI) المبنية بأحدث تقنيات الويب والأمان والتشفير.",
-    "version": "2.0.0",
-    "generatedAt": "2026-11-10T18:07:51.613Z",
-    "generator": "Understand-Anything v1.0.0 (Egonex-AI)",
-    "stats": {
-      "totalFiles": 42,
-      "totalNodes": 38,
-      "totalEdges": 64,
-      "totalModules": 6,
-      "totalFlows": 4
-    }
+  "version": "1.0.0",
+  "kind": "codebase",
+  "project": {
+    "name": "psyai",
+    "description": "منصة الرفاه النفسي والدعم الاستشاري الذكي (PsyAI) المبنية بأحدث معايير الأمان والتشفير البنكي وحجز الجلسات الفوري.",
+    "languages": [
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "Prisma",
+      "SQL"
+    ],
+    "frameworks": [
+      "Express",
+      "Node.js",
+      "Prisma ORM",
+      "Zod",
+      "Bcrypt",
+      "Argon2"
+    ],
+    "analyzedAt": "2026-11-10T18:57:45.731Z",
+    "gitCommitHash": "cc91c2fd12a5e877889453c8506984345de8a143"
   },
-  "modules": [
+  "layers": [
     {
-      "id": "module:auth-security",
-      "name": "Authentication & Security Domain",
-      "description": "المصادقة برقم الهاتف عبر WhatsApp OTP، التشفير بمستوى البنوك (Argon2id + AES-256-GCM + Blind Indexing)، وتذاكر التحقق المؤقتة.",
-      "color": "#d97706"
+      "id": "layer:frontend",
+      "name": "Frontend & UI Pages",
+      "description": "صفحات واجهات المستخدم المبنية بتصميم Apple Minimalist مع دعم الحجز الفوري والصور الحديثة WebP وتدفق التوكنز.",
+      "nodeIds": [
+        "file:frontend/index.html",
+        "file:frontend/book-instant.html",
+        "file:frontend/specialists.html",
+        "file:frontend/assessment.html",
+        "file:frontend/login.html",
+        "file:frontend/profile.html",
+        "file:frontend/session.html",
+        "file:frontend/assets/js/api.js",
+        "file:frontend/assets/js/auth.js",
+        "file:frontend/assets/js/ui.js"
+      ]
     },
     {
-      "id": "module:booking-scheduling",
-      "name": "Booking & Instant Consultation Engine",
-      "description": "محرك الحجز الفوري للجلسات المباشرة (4 خطوات)، اختيار المواعيد الحرة، وتفادي التعارض الزمني (Double Booking Prevention).",
-      "color": "#0f766e"
+      "id": "layer:api",
+      "name": "API Controllers & Middleware",
+      "description": "طبقة الحماية ومتحكمات الـ Express والتحقق الحازم من المدخلات بواسطة Zod مع معالجة الصلاحيات.",
+      "nodeIds": [
+        "file:backend/src/index.js",
+        "function:backend/src/middlewares/validate.js:validate",
+        "function:backend/src/middlewares/auth.js:authenticateToken",
+        "endpoint:backend/src/controllers/authController.js:sendOtp",
+        "endpoint:backend/src/controllers/authController.js:verifyOtp",
+        "endpoint:backend/src/controllers/authController.js:register",
+        "endpoint:backend/src/controllers/specialistsController.js:getSpecialists",
+        "endpoint:backend/src/controllers/bookingsController.js:createBooking",
+        "endpoint:backend/src/controllers/bookingsController.js:getMyBookings",
+        "endpoint:backend/src/controllers/paymentsController.js:createPaymentSession"
+      ]
     },
     {
-      "id": "module:payment-billing",
-      "name": "Jordanian Payments & Settlement",
-      "description": "بوابة الدفع المتوافقة مع السوق الأردني: شبكة CliQ (كليك) للتحويل الفوري، والبطاقات المصرفية (Visa / MasterCard).",
-      "color": "#2563eb"
+      "id": "layer:services",
+      "name": "Core Services & Workers",
+      "description": "محركات التشفير المتقدم (AES-256-GCM + Blind Indexing)، خدمات الواتساب، ومعالج التذكيرات الآلية.",
+      "nodeIds": [
+        "service:backend/src/services/whatsappService.js:WhatsAppService",
+        "service:backend/src/services/reminderWorker.js:ReminderWorker",
+        "service:backend/src/services/encryptionService.js:EncryptionService",
+        "service:backend/src/services/securityService.js:SecurityService"
+      ]
     },
     {
-      "id": "module:specialists-clinical",
-      "name": "Specialists & Care Network",
-      "description": "دليل الأخصائيين المعتمدين، فلترة التخصص والنوع الاجتماعي، وإدارة غرف الاجتماعات المشفرة.",
-      "color": "#059669"
-    },
-    {
-      "id": "module:assessment-ai",
-      "name": "PsyAI Wellbeing Index & AI Insights",
-      "description": "مقياس الرفاه النفسي الذاتي، توليد التوصيات السريرية، وتدفق الردود الذكية (Token Streaming).",
-      "color": "#7c3aed"
-    },
-    {
-      "id": "module:reminders-worker",
-      "name": "Session Reminders & Async Worker",
-      "description": "جدولة إشعارات WhatsApp التلقائية قبل الموعد بـ 24 ساعة، ساعة واحدة، و 10 دقائق برابط الجلسة.",
-      "color": "#db2777"
+      "id": "layer:database",
+      "name": "Database Models & Persistence",
+      "description": "نماذج Prisma وجداول قاعدة البيانات مع الفهارس المركبة لحماية الأداء وسرعة الاستعلام.",
+      "nodeIds": [
+        "schema:backend/prisma/schema.prisma",
+        "table:backend/prisma/schema.prisma:users",
+        "table:backend/prisma/schema.prisma:specialists",
+        "table:backend/prisma/schema.prisma:bookings",
+        "table:backend/prisma/schema.prisma:payments",
+        "table:backend/prisma/schema.prisma:session_reminders",
+        "table:backend/prisma/schema.prisma:otp_tokens"
+      ]
     }
   ],
-  "flows": [
+  "tour": [
     {
-      "id": "flow:instant-booking",
-      "name": "مسار حجز الجلسة الفورية (Instant Booking Flow)",
-      "description": "من تحديد الحالة النفسية حتى سداد القيمة واستلام رابط الجلسة عبر واتساب.",
-      "steps": [
-        "file:frontend/book-instant.html",
-        "endpoint:specialists:list",
-        "endpoint:auth:send-otp",
-        "endpoint:auth:verify-otp",
-        "endpoint:bookings:create",
-        "service:reminderWorker"
-      ]
+      "order": 1,
+      "title": "نقطة البداية — الصفحة الرئيسية والحجز الفوري",
+      "description": "يصل المستخدم لصفحة المنصة بتصميم Apple Minimalist، وينتقل مباشرة لمحرك الحجز الفوري (4 خطوات) مع بطاقات Skeleton Shimmer لسرعة العرض.",
+      "nodeIds": [
+        "file:frontend/index.html",
+        "file:frontend/book-instant.html"
+      ],
+      "languageLesson": "تم تحسين جميع الصور لصيغ WebP مع التحميل الكسول loading=lazy لتقليل استهلاك البيانات بنسبة تفوق 50%."
     },
     {
-      "id": "flow:phone-whatsapp-auth",
-      "name": "مسار التحقق والدخول برقم الهاتف (Phone-First Auth)",
-      "description": "تسجيل الدخول والتسجيل السريع عبر كود واتساب 6 أرقام بدون اشتراط بريد إلكتروني.",
-      "steps": [
+      "order": 2,
+      "title": "دخول سريع برقم الهاتف (Phone-First Auth)",
+      "description": "المصادقة السريعة عبر رمز WhatsApp من 6 أرقام مع دعم التعبئة التجريبية التلقائية وحماية الحسابات من استنزاف الطلبات.",
+      "nodeIds": [
         "file:frontend/login.html",
-        "endpoint:auth:send-otp",
-        "service:whatsappService",
-        "endpoint:auth:verify-otp",
-        "service:securityService"
-      ]
+        "endpoint:backend/src/controllers/authController.js:sendOtp",
+        "service:backend/src/services/whatsappService.js:WhatsAppService"
+      ],
+      "languageLesson": "استخدام Bcrypt بـ 8 جولات لتخزين تجزئة كود OTP مؤقتاً لمدة 5 دقائق مع الإلغاء الفوري بعد الاستخدام لمنع هجمات Replay."
     },
     {
-      "id": "flow:ai-wellbeing-index",
-      "name": "مسار الفحص النفسي الذاتي (PsyAI Wellbeing Index)",
-      "description": "تقييم مرونة اليوم والضغوط عبر 8 محاور سريرية مع تدفق التوصيات الذكية حياً.",
-      "steps": [
-        "file:frontend/assessment.html",
-        "function:assessment:streamAiTokens",
-        "endpoint:specialists:list"
-      ]
+      "order": 3,
+      "title": "محرك الحجز الفوري والدفع عبر CliQ",
+      "description": "تنفيذ الحجز عبر معاملة متسلسلة (Serializable Transaction) تمنع التضارب الزمني، مع خيارات الدفع الفوري كليك أو البطاقة البنكية.",
+      "nodeIds": [
+        "endpoint:backend/src/controllers/bookingsController.js:createBooking",
+        "table:backend/prisma/schema.prisma:bookings",
+        "table:backend/prisma/schema.prisma:payments"
+      ],
+      "languageLesson": "يتم تشفير شكوى المريض وملاحظات الجلسة لحظياً بمفتاح AES-256-GCM قبل الحفظ في قاعدة البيانات."
     },
     {
-      "id": "flow:automated-reminders",
-      "name": "مسار التذكيرات الآلية (Automated WhatsApp Reminders)",
-      "description": "فحص مواعيد الجلسات بطلب مجمع واحد وإرسال الروابط والتنبيهات للمرضى والأخصائيين.",
-      "steps": [
-        "service:reminderWorker",
-        "table:bookings",
-        "table:session_reminders",
-        "service:whatsappService"
-      ]
+      "order": 4,
+      "title": "عامل التذكيرات المؤتمت وإشعارات الجلسات",
+      "description": "معالج تذكيرات آلي يستعلم بطلب واحد مجمع (Eager Loading) لتفادي استعلامات N+1، ويرسل روابط الغرف عبر الواتساب قبل الموعد.",
+      "nodeIds": [
+        "service:backend/src/services/reminderWorker.js:ReminderWorker",
+        "table:backend/prisma/schema.prisma:session_reminders",
+        "file:frontend/session.html"
+      ],
+      "languageLesson": "تنفيذ الجدولة على 3 نوافذ زمنية: 24 ساعة، ساعة واحدة، و 10 دقائق برابط الغرفة المرئية."
     }
   ],
   "nodes": [
     {
-      "id": "table:users",
-      "label": "users",
-      "type": "table",
-      "path": "backend/prisma/schema.prisma",
-      "summary": "جدول المستخدمين بحقول مشفرة (Blind Indexing للبريد والهاتف)."
-    },
-    {
-      "id": "table:specialists",
-      "label": "specialists",
-      "type": "table",
-      "path": "backend/prisma/schema.prisma",
-      "summary": "جدول الأخصائيين المعتمدين، التقييم، وسنوات الخبرة."
-    },
-    {
-      "id": "table:bookings",
-      "label": "bookings",
-      "type": "table",
-      "path": "backend/prisma/schema.prisma",
-      "summary": "جدول حجوزات الجلسات مع قيود منع التضارب الزمني."
-    },
-    {
-      "id": "table:payments",
-      "label": "payments",
-      "type": "table",
-      "path": "backend/prisma/schema.prisma",
-      "summary": "جدول المدفوعات (CliQ / Visa)."
-    },
-    {
-      "id": "table:session_reminders",
-      "label": "session_reminders",
-      "type": "table",
-      "path": "backend/prisma/schema.prisma",
-      "summary": "جدول إشعارات التذكير المجدولة."
-    },
-    {
-      "id": "table:otp_tokens",
-      "label": "otp_tokens",
-      "type": "table",
-      "path": "backend/prisma/schema.prisma",
-      "summary": "جدول رموز التحقق OTP المشفرة بـ Bcrypt."
-    },
-    {
-      "id": "endpoint:auth:send-otp",
-      "label": "POST /api/auth/send-otp",
-      "type": "endpoint",
-      "path": "backend/src/controllers/authController.js",
-      "summary": "إرسال كود التحقق 6 أرقام للواتساب."
-    },
-    {
-      "id": "endpoint:auth:verify-otp",
-      "label": "POST /api/auth/verify-otp",
-      "type": "endpoint",
-      "path": "backend/src/controllers/authController.js",
-      "summary": "التحقق من كود واتساب وتسجيل الدخول."
-    },
-    {
-      "id": "endpoint:auth:register",
-      "label": "POST /api/auth/register",
-      "type": "endpoint",
-      "path": "backend/src/controllers/authController.js",
-      "summary": "إنشاء حساب جديد بنظام الهاتف أولاً."
-    },
-    {
-      "id": "endpoint:specialists:list",
-      "label": "GET /api/specialists",
-      "type": "endpoint",
-      "path": "backend/src/controllers/specialistsController.js",
-      "summary": "استرجاع قائمة الأخصائيين مع الفلترة والترقيم (Pagination)."
-    },
-    {
-      "id": "endpoint:bookings:create",
-      "label": "POST /api/bookings",
-      "type": "endpoint",
-      "path": "backend/src/controllers/bookingsController.js",
-      "summary": "إنشاء حجز موعد جلسة بمعاملة متسلسلة (Serializable Transaction)."
-    },
-    {
-      "id": "endpoint:bookings:my",
-      "label": "GET /api/bookings/my",
-      "type": "endpoint",
-      "path": "backend/src/controllers/bookingsController.js",
-      "summary": "استعراض جلسات المستخدم مع فك التشفير اللحظي."
-    },
-    {
-      "id": "service:whatsappService",
-      "label": "WhatsAppService",
-      "type": "service",
-      "path": "backend/src/services/whatsappService.js",
-      "summary": "خدمة إرسال رسائل وتنبيهات WhatsApp ومحاكي التطوير."
-    },
-    {
-      "id": "service:reminderWorker",
-      "label": "ReminderWorker",
-      "type": "service",
-      "path": "backend/src/services/reminderWorker.js",
-      "summary": "معالج تذكيرات الجلسات بطلب مجمّع يمنع استعلامات N+1."
-    },
-    {
-      "id": "service:encryptionService",
-      "label": "EncryptionService",
-      "type": "service",
-      "path": "backend/src/services/encryptionService.js",
-      "summary": "تشفير البيانات الحساسة بـ AES-256-GCM والبحث بفهارس عمياء."
-    },
-    {
-      "id": "service:securityService",
-      "label": "SecurityService",
-      "type": "service",
-      "path": "backend/src/services/securityService.js",
-      "summary": "توليد الرموز الآمنة والتشفير بـ Argon2id."
-    },
-    {
-      "id": "middleware:validate",
-      "label": "validateMiddleware",
-      "type": "function",
-      "path": "backend/src/middlewares/validate.js",
-      "summary": "التحقق الحازم من المدخلات بمخططات Zod الصارمة."
-    },
-    {
-      "id": "middleware:auth",
-      "label": "authMiddleware",
-      "type": "function",
-      "path": "backend/src/middlewares/auth.js",
-      "summary": "التحقق من رمز JWT وصلاحيات المستخدمين والأدوار."
-    },
-    {
       "id": "file:frontend/index.html",
-      "label": "index.html",
+      "name": "index.html",
       "type": "file",
-      "path": "frontend/index.html",
-      "summary": "الصفحة الرئيسية بتصميم Apple Minimalist مع صور WebP."
+      "filePath": "frontend/index.html",
+      "summary": "الصفحة الرئيسية لمنصة PsyAI بتصميم Apple Minimalist مع معرض الخدمات والشهادات والصور الحديثة WebP.",
+      "tags": [
+        "frontend",
+        "landing",
+        "ui",
+        "seo"
+      ],
+      "complexity": "moderate"
     },
     {
       "id": "file:frontend/book-instant.html",
-      "label": "book-instant.html",
+      "name": "book-instant.html",
       "type": "file",
-      "path": "frontend/book-instant.html",
-      "summary": "صفحة حجز الجلسات الفورية بـ 4 خطوات وهياكل Skeleton Shimmer."
+      "filePath": "frontend/book-instant.html",
+      "summary": "صفحة حجز الجلسات الفورية بأربع خطوات: تحديد الحالة، الموعد والوقت الحر، اختيار المختص، وتأكيد الدفع عبر كليك.",
+      "tags": [
+        "frontend",
+        "booking",
+        "cliq",
+        "skeleton"
+      ],
+      "complexity": "complex"
     },
     {
       "id": "file:frontend/specialists.html",
-      "label": "specialists.html",
+      "name": "specialists.html",
       "type": "file",
-      "path": "frontend/specialists.html",
-      "summary": "دليل الأخصائيين المعتمدين والبحث المتعدد."
+      "filePath": "frontend/specialists.html",
+      "summary": "دليل الأخصائيين المعتمدين مع الفلترة حسب التخصص والجنس وتوفر المواعيد الفورية.",
+      "tags": [
+        "frontend",
+        "specialists",
+        "directory"
+      ],
+      "complexity": "moderate"
     },
     {
       "id": "file:frontend/assessment.html",
-      "label": "assessment.html",
+      "name": "assessment.html",
       "type": "file",
-      "path": "frontend/assessment.html",
-      "summary": "مقياس مؤشر الرفاه النفسي وتدفق توكنز الذكاء الاصطناعي."
+      "filePath": "frontend/assessment.html",
+      "summary": "مقياس مؤشر الرفاه النفسي الذاتي (PsyAI-WI) وتوليد التوصيات مع ميزة تدفق التوكنز الحية للذكاء الاصطناعي.",
+      "tags": [
+        "frontend",
+        "assessment",
+        "ai",
+        "streaming"
+      ],
+      "complexity": "moderate"
     },
     {
       "id": "file:frontend/login.html",
-      "label": "login.html",
+      "name": "login.html",
       "type": "file",
-      "path": "frontend/login.html",
-      "summary": "نافذة المصادقة السريعة برقم الواتساب."
+      "filePath": "frontend/login.html",
+      "summary": "بوابة الدخول السريع برقم الواتساب الأردني ودعم الدخول عبر حساب Google الموحد.",
+      "tags": [
+        "frontend",
+        "auth",
+        "otp",
+        "whatsapp"
+      ],
+      "complexity": "moderate"
     },
     {
       "id": "file:frontend/profile.html",
-      "label": "profile.html",
+      "name": "profile.html",
       "type": "file",
-      "path": "frontend/profile.html",
-      "summary": "لوحة تحكم المستخدم وإدارة المواعيد والإعدادات."
+      "filePath": "frontend/profile.html",
+      "summary": "لوحة تحكم المستخدم لاستعراض الجلسات المحجوزة والتقارير وتحديث رقم الهاتف وإعدادات الخصوصية.",
+      "tags": [
+        "frontend",
+        "user-profile",
+        "dashboard"
+      ],
+      "complexity": "moderate"
     },
     {
       "id": "file:frontend/session.html",
-      "label": "session.html",
+      "name": "session.html",
       "type": "file",
-      "path": "frontend/session.html",
-      "summary": "غرفة الجلسة المرئية والصوتية المشفرة."
+      "filePath": "frontend/session.html",
+      "summary": "غرفة الجلسة الاستشارية المشفرة للصوت والفيديو عبر المتصفح دون الحاجة لتثبيت برامج خارجية.",
+      "tags": [
+        "frontend",
+        "webrtc",
+        "telehealth",
+        "video"
+      ],
+      "complexity": "complex"
     },
     {
       "id": "file:frontend/assets/js/api.js",
-      "label": "api.js",
+      "name": "api.js",
       "type": "file",
-      "path": "frontend/assets/js/api.js",
-      "summary": "طبقة الاتصال بالباك إند والطلبات الموحدة."
+      "filePath": "frontend/assets/js/api.js",
+      "summary": "طبقة الاتصال بالباك إند والطلبات الشبكية الموحدة مع معالجة الأخطاء والتنبيهات.",
+      "tags": [
+        "frontend",
+        "api",
+        "network"
+      ],
+      "complexity": "simple"
     },
     {
       "id": "file:frontend/assets/js/auth.js",
-      "label": "auth.js",
+      "name": "auth.js",
       "type": "file",
-      "path": "frontend/assets/js/auth.js",
-      "summary": "إدارة جلسات المصادقة والتحقق من كود الواتساب."
+      "filePath": "frontend/assets/js/auth.js",
+      "summary": "وحدة إدارة جلسات المستخدم وحفظ تذاكر التحقق ومعالجة كود الواتساب.",
+      "tags": [
+        "frontend",
+        "auth",
+        "jwt"
+      ],
+      "complexity": "moderate"
     },
     {
       "id": "file:frontend/assets/js/ui.js",
-      "label": "ui.js",
+      "name": "ui.js",
       "type": "file",
-      "path": "frontend/assets/js/ui.js",
-      "summary": "مكتبة واجهة المستخدم والتوست والتحميل اللحظي."
+      "filePath": "frontend/assets/js/ui.js",
+      "summary": "أدوات الواجهة للتحميل اللحظي وعرض إشعارات التوست وجمع أكواد OTP المنفصلة.",
+      "tags": [
+        "frontend",
+        "ui-helper"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/src/index.js",
+      "name": "index.js",
+      "type": "file",
+      "filePath": "backend/src/index.js",
+      "summary": "نقطة انطلاق خادم Express مع تكوينات الأمان المتقدمة: Helmet, CORS, Rate-Limiting, و CSRF Guards.",
+      "tags": [
+        "backend",
+        "express",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/src/middlewares/validate.js:validate",
+      "name": "validateMiddleware",
+      "type": "function",
+      "filePath": "backend/src/middlewares/validate.js",
+      "summary": "وسيط التحقق الصارم من صحة المدخلات بنظام Zod Strict Mode لمنع هجمات Mass Assignment.",
+      "tags": [
+        "backend",
+        "middleware",
+        "zod",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/src/middlewares/auth.js:authenticateToken",
+      "name": "authenticateToken",
+      "type": "function",
+      "filePath": "backend/src/middlewares/auth.js",
+      "summary": "وسيط التحقق من صحة JWT والتأكد من صلاحيات الأدوار (User, Specialist, Admin).",
+      "tags": [
+        "backend",
+        "middleware",
+        "jwt",
+        "rbac"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:backend/src/controllers/authController.js:sendOtp",
+      "name": "POST /api/auth/send-otp",
+      "type": "endpoint",
+      "filePath": "backend/src/controllers/authController.js",
+      "summary": "طلب رمز تحقق OTP جديد لرقم الهاتف الأردني وإرساله عبر الواتساب مع مهلة تبريد 60 ثانية.",
+      "tags": [
+        "api",
+        "auth",
+        "otp",
+        "whatsapp"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:backend/src/controllers/authController.js:verifyOtp",
+      "name": "POST /api/auth/verify-otp",
+      "type": "endpoint",
+      "filePath": "backend/src/controllers/authController.js",
+      "summary": "التحقق من كود الواتساب المدخل وإصدار توكن الجلسة أو تذكرة استكمال التسجيل المؤقتة.",
+      "tags": [
+        "api",
+        "auth",
+        "verify"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:backend/src/controllers/authController.js:register",
+      "name": "POST /api/auth/register",
+      "type": "endpoint",
+      "filePath": "backend/src/controllers/authController.js",
+      "summary": "تسجيل حساب جديد بنظام الهاتف أولاً وتوليد معرّف بديل للبريد الإلكتروني تلقائياً.",
+      "tags": [
+        "api",
+        "auth",
+        "signup"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:backend/src/controllers/specialistsController.js:getSpecialists",
+      "name": "GET /api/specialists",
+      "type": "endpoint",
+      "filePath": "backend/src/controllers/specialistsController.js",
+      "summary": "استرجاع قائمة الأخصائيين المتاحين مع الترقيم بالصفحات واختيار الأعمدة المطلوبة فقط لتخفيف الحمل.",
+      "tags": [
+        "api",
+        "specialists",
+        "pagination"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/src/controllers/bookingsController.js:createBooking",
+      "name": "POST /api/bookings",
+      "type": "endpoint",
+      "filePath": "backend/src/controllers/bookingsController.js",
+      "summary": "حجز موعد جلسة بمعاملة متسلسلة مشددة تمنع التعارض الزمني وتشفير شكوى المريض.",
+      "tags": [
+        "api",
+        "bookings",
+        "transaction"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "endpoint:backend/src/controllers/bookingsController.js:getMyBookings",
+      "name": "GET /api/bookings/my",
+      "type": "endpoint",
+      "filePath": "backend/src/controllers/bookingsController.js",
+      "summary": "استرجاع جلسات المستخدم المسجلة مع فك تشفير الملاحظات السرية لصاحب الحساب فقط.",
+      "tags": [
+        "api",
+        "bookings",
+        "decryption"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:backend/src/controllers/paymentsController.js:createPaymentSession",
+      "name": "POST /api/payments/create-session",
+      "type": "endpoint",
+      "filePath": "backend/src/controllers/paymentsController.js",
+      "summary": "إنشاء جلسة دفع آمنة وتأكيد تفاصيل تحويلات CliQ الفورية المباشرة في الأردن.",
+      "tags": [
+        "api",
+        "payments",
+        "cliq"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:backend/src/services/whatsappService.js:WhatsAppService",
+      "name": "WhatsAppService",
+      "type": "service",
+      "filePath": "backend/src/services/whatsappService.js",
+      "summary": "خدمة إرسال رسائل الواتساب الرسمية ومحاكي بيئة التطوير السريعة وتوليد الأكواد الآمنة.",
+      "tags": [
+        "service",
+        "whatsapp",
+        "simulator"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "service:backend/src/services/reminderWorker.js:ReminderWorker",
+      "name": "ReminderWorker",
+      "type": "service",
+      "filePath": "backend/src/services/reminderWorker.js",
+      "summary": "عامل الجدولة الآلي للتذكيرات بطلب مجمع واحد Eager Loading يمنع إرهاق قاعدة البيانات.",
+      "tags": [
+        "service",
+        "worker",
+        "cron",
+        "optimization"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "service:backend/src/services/encryptionService.js:EncryptionService",
+      "name": "EncryptionService",
+      "type": "service",
+      "filePath": "backend/src/services/encryptionService.js",
+      "summary": "محرك تشفير البيانات الحساسة بـ AES-256-GCM وإنشاء الفهارس العمياء (Blind Indexing) للبحث الآمن.",
+      "tags": [
+        "service",
+        "security",
+        "encryption",
+        "aes"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "service:backend/src/services/securityService.js:SecurityService",
+      "name": "SecurityService",
+      "type": "service",
+      "filePath": "backend/src/services/securityService.js",
+      "summary": "تجزئة كلمات المرور عبر معيار Argon2id وتوليد أرقام التحقق العشوائية المشفرة CSPRNG.",
+      "tags": [
+        "service",
+        "security",
+        "argon2",
+        "csprng"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "schema:backend/prisma/schema.prisma",
+      "name": "schema.prisma",
+      "type": "schema",
+      "filePath": "backend/prisma/schema.prisma",
+      "summary": "مخطط قاعدة بيانات المنصة الذي يحدد النماذج والعلاقات والفهارس المركبة لتحسين الأداء.",
+      "tags": [
+        "database",
+        "prisma",
+        "schema"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "table:backend/prisma/schema.prisma:users",
+      "name": "users",
+      "type": "table",
+      "filePath": "backend/prisma/schema.prisma",
+      "summary": "جدول المستخدمين بحقول مشفرة (Blind Indexing) لحماية بيانات البريد والهاتف من أي تسريب.",
+      "tags": [
+        "database",
+        "table",
+        "users"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "table:backend/prisma/schema.prisma:specialists",
+      "name": "specialists",
+      "type": "table",
+      "filePath": "backend/prisma/schema.prisma",
+      "summary": "جدول الأخصائيين المعتمدين والمفهرس بالحالة وتوفر المواعيد والجنس والتقييم.",
+      "tags": [
+        "database",
+        "table",
+        "specialists"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:backend/prisma/schema.prisma:bookings",
+      "name": "bookings",
+      "type": "table",
+      "filePath": "backend/prisma/schema.prisma",
+      "summary": "جدول مواعيد الجلسات المحمية بقيود منع التضارب الزمني وقفل المعاملات المتزامنة.",
+      "tags": [
+        "database",
+        "table",
+        "bookings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "table:backend/prisma/schema.prisma:payments",
+      "name": "payments",
+      "type": "table",
+      "filePath": "backend/prisma/schema.prisma",
+      "summary": "جدول تسويات الدفع (CliQ / Visa) مع معرّفات عدم التكرار (Idempotency Keys).",
+      "tags": [
+        "database",
+        "table",
+        "payments"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:backend/prisma/schema.prisma:session_reminders",
+      "name": "session_reminders",
+      "type": "table",
+      "filePath": "backend/prisma/schema.prisma",
+      "summary": "جدول التذكيرات المجدولة للتنفيذ الدوري ومتابعة حالة الإرسال.",
+      "tags": [
+        "database",
+        "table",
+        "reminders"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:backend/prisma/schema.prisma:otp_tokens",
+      "name": "otp_tokens",
+      "type": "table",
+      "filePath": "backend/prisma/schema.prisma",
+      "summary": "جدول رموز التحقق OTP المؤقتة وتاريخ انتهائها وقفل المحاولات المتكررة الخاطئة.",
+      "tags": [
+        "database",
+        "table",
+        "otp"
+      ],
+      "complexity": "simple"
     }
   ],
   "edges": [
     {
       "source": "file:frontend/book-instant.html",
-      "target": "endpoint:specialists:list",
+      "target": "endpoint:backend/src/controllers/specialistsController.js:getSpecialists",
       "type": "calls",
+      "direction": "forward",
+      "description": "جلب الأخصائيين المتاحين بحسب الجنس المختار",
       "weight": 0.8
     },
     {
       "source": "file:frontend/book-instant.html",
-      "target": "endpoint:auth:send-otp",
+      "target": "endpoint:backend/src/controllers/authController.js:sendOtp",
       "type": "calls",
+      "direction": "forward",
+      "description": "طلب كود التحقق السريع داخل نافذة الحجز",
       "weight": 0.8
     },
     {
       "source": "file:frontend/book-instant.html",
-      "target": "endpoint:auth:verify-otp",
+      "target": "endpoint:backend/src/controllers/authController.js:verifyOtp",
       "type": "calls",
+      "direction": "forward",
+      "description": "تأكيد كود الواتساب لمتابعة الحجز",
       "weight": 0.8
     },
     {
       "source": "file:frontend/book-instant.html",
-      "target": "endpoint:bookings:create",
+      "target": "endpoint:backend/src/controllers/bookingsController.js:createBooking",
       "type": "calls",
-      "weight": 0.8
+      "direction": "forward",
+      "description": "إنشاء حجز الجلسة الفورية",
+      "weight": 0.9
     },
     {
       "source": "file:frontend/login.html",
       "target": "file:frontend/assets/js/auth.js",
       "type": "imports",
+      "direction": "forward",
+      "description": "استيراد دوال المصادقة وتسجيل الدخول",
       "weight": 0.9
     },
     {
       "source": "file:frontend/assets/js/auth.js",
-      "target": "endpoint:auth:send-otp",
+      "target": "endpoint:backend/src/controllers/authController.js:sendOtp",
       "type": "calls",
+      "direction": "forward",
+      "description": "إرسال كود واتساب لرقم المستخدم",
       "weight": 0.8
     },
     {
       "source": "file:frontend/assets/js/auth.js",
-      "target": "endpoint:auth:verify-otp",
+      "target": "endpoint:backend/src/controllers/authController.js:verifyOtp",
       "type": "calls",
+      "direction": "forward",
+      "description": "التحقق من كود الواتساب واعتماد الدخول",
       "weight": 0.8
     },
     {
       "source": "file:frontend/assets/js/auth.js",
-      "target": "endpoint:auth:register",
+      "target": "endpoint:backend/src/controllers/authController.js:register",
       "type": "calls",
+      "direction": "forward",
+      "description": "إنشاء حساب جديد للمستخدم الجديد",
       "weight": 0.8
     },
     {
-      "source": "endpoint:auth:send-otp",
-      "target": "middleware:validate",
+      "source": "endpoint:backend/src/controllers/authController.js:sendOtp",
+      "target": "function:backend/src/middlewares/validate.js:validate",
       "type": "middleware",
+      "direction": "forward",
+      "description": "التحقق من صحة رقم الهاتف الأردني بمخطط Zod",
       "weight": 0.8
     },
     {
-      "source": "endpoint:auth:send-otp",
-      "target": "service:whatsappService",
+      "source": "endpoint:backend/src/controllers/authController.js:verifyOtp",
+      "target": "function:backend/src/middlewares/validate.js:validate",
+      "type": "middleware",
+      "direction": "forward",
+      "description": "التحقق من صحة كود OTP المكون من 6 أرقام",
+      "weight": 0.8
+    },
+    {
+      "source": "endpoint:backend/src/controllers/bookingsController.js:createBooking",
+      "target": "function:backend/src/middlewares/auth.js:authenticateToken",
+      "type": "middleware",
+      "direction": "forward",
+      "description": "التأكد من تسجيل دخول المستخدم قبل الحجز",
+      "weight": 0.8
+    },
+    {
+      "source": "endpoint:backend/src/controllers/authController.js:sendOtp",
+      "target": "service:backend/src/services/whatsappService.js:WhatsAppService",
       "type": "calls",
+      "direction": "forward",
+      "description": "توليد الرمز وإرساله لتطبيق واتساب",
       "weight": 0.8
     },
     {
-      "source": "endpoint:auth:verify-otp",
-      "target": "service:whatsappService",
+      "source": "endpoint:backend/src/controllers/authController.js:verifyOtp",
+      "target": "service:backend/src/services/whatsappService.js:WhatsAppService",
       "type": "calls",
+      "direction": "forward",
+      "description": "مطابقة كود الواتساب المشفر",
       "weight": 0.8
     },
     {
-      "source": "endpoint:auth:register",
-      "target": "service:encryptionService",
+      "source": "endpoint:backend/src/controllers/authController.js:register",
+      "target": "service:backend/src/services/encryptionService.js:EncryptionService",
       "type": "calls",
+      "direction": "forward",
+      "description": "توليد الفهارس العمياء للهاتف والبريد",
       "weight": 0.8
     },
     {
-      "source": "endpoint:auth:register",
-      "target": "service:securityService",
+      "source": "endpoint:backend/src/controllers/authController.js:register",
+      "target": "service:backend/src/services/securityService.js:SecurityService",
       "type": "calls",
+      "direction": "forward",
+      "description": "تجزئة كلمة المرور بمعيار Argon2id",
       "weight": 0.8
     },
     {
-      "source": "endpoint:bookings:create",
-      "target": "service:encryptionService",
+      "source": "endpoint:backend/src/controllers/bookingsController.js:createBooking",
+      "target": "service:backend/src/services/encryptionService.js:EncryptionService",
       "type": "calls",
+      "direction": "forward",
+      "description": "تشفير الشكوى والملاحظات السرية بـ AES-256-GCM",
       "weight": 0.8
     },
     {
-      "source": "endpoint:bookings:create",
-      "target": "service:reminderWorker",
+      "source": "endpoint:backend/src/controllers/bookingsController.js:createBooking",
+      "target": "service:backend/src/services/reminderWorker.js:ReminderWorker",
       "type": "triggers",
+      "direction": "forward",
+      "description": "جدولة إشعارات التذكير التلقائية للجلسة",
       "weight": 0.7
     },
     {
-      "source": "service:whatsappService",
-      "target": "table:otp_tokens",
+      "source": "service:backend/src/services/whatsappService.js:WhatsAppService",
+      "target": "table:backend/prisma/schema.prisma:otp_tokens",
       "type": "writes_to",
+      "direction": "forward",
+      "description": "حفظ كود التحقق المشفر وتاريخ انتهائه",
       "weight": 0.9
     },
     {
-      "source": "endpoint:bookings:create",
-      "target": "table:bookings",
+      "source": "endpoint:backend/src/controllers/bookingsController.js:createBooking",
+      "target": "table:backend/prisma/schema.prisma:bookings",
       "type": "writes_to",
+      "direction": "forward",
+      "description": "إنشاء سجل حجز الموعد الجديد",
       "weight": 0.9
     },
     {
-      "source": "endpoint:specialists:list",
-      "target": "table:specialists",
+      "source": "endpoint:backend/src/controllers/specialistsController.js:getSpecialists",
+      "target": "table:backend/prisma/schema.prisma:specialists",
       "type": "reads_from",
+      "direction": "forward",
+      "description": "قراءة بيانات الأخصائيين المتاحة",
       "weight": 0.9
     },
     {
-      "source": "service:reminderWorker",
-      "target": "table:session_reminders",
+      "source": "service:backend/src/services/reminderWorker.js:ReminderWorker",
+      "target": "table:backend/prisma/schema.prisma:session_reminders",
       "type": "writes_to",
+      "direction": "forward",
+      "description": "تحديث حالة التذكيرات المجدولة إلى sent أو failed",
       "weight": 0.9
     },
     {
-      "source": "service:reminderWorker",
-      "target": "table:bookings",
+      "source": "service:backend/src/services/reminderWorker.js:ReminderWorker",
+      "target": "table:backend/prisma/schema.prisma:bookings",
       "type": "reads_from",
+      "direction": "forward",
+      "description": "استعلام مجمع للجلسات وتفاصيل المرضى والأخصائيين",
       "weight": 0.9
     },
     {
-      "source": "service:reminderWorker",
-      "target": "service:whatsappService",
+      "source": "service:backend/src/services/reminderWorker.js:ReminderWorker",
+      "target": "service:backend/src/services/whatsappService.js:WhatsAppService",
       "type": "calls",
+      "direction": "forward",
+      "description": "إرسال إشعار التذكير ورابط الجلسة عبر الواتساب",
       "weight": 0.8
     }
   ]
