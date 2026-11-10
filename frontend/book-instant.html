@@ -1,0 +1,3015 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="assets/js/env.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="منصة PsyAI — حجز جلسة فورية واستشارة نفسية مباشرة ومواعيدي." />
+  <title>حجز جلسة فورية — PsyAI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@300;400;500;600;700;800&family=Open+Sans:wght@400..800&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    :root {
+      --teal-deep: #1a2e2f;
+      --teal-dark: #243d3e;
+      --teal: #2e5254;
+      --teal-light: #7ab3b7;
+      --teal-pale: #eaf3f4;
+      --teal-surface: #f4f8f8;
+
+      --gold: #d4a843;
+      --gold-light: #e0bc72;
+      --gold-dark: #9e7a28;
+      --cream: #fdfaf3;
+
+      --bg-page: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --border-focus: #7ab3b7;
+
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --text-soft: #94a3b8;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 14px rgba(26, 46, 47, 0.08);
+      --shadow-lg: 0 10px 30px rgba(26, 46, 47, 0.12);
+
+      --font-ar: 'IBM Plex Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-ar);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    .top-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--teal-deep);
+    }
+
+    .brand-logo img {
+      height: 38px;
+      width: auto;
+    }
+
+    .brand-name {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--teal-deep);
+    }
+
+    .brand-name span {
+      color: var(--gold);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-btn {
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .nav-btn:hover {
+      color: var(--teal-deep);
+      background: var(--teal-pale);
+    }
+
+    .nav-btn.active {
+      color: var(--teal-deep);
+      font-weight: 700;
+      background: var(--teal-pale);
+      border-bottom: 2px solid var(--teal);
+    }
+
+    .auth-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-login-header {
+      background: linear-gradient(135deg, var(--teal-deep), var(--teal));
+      color: #ffffff;
+      border: none;
+      padding: 0.55rem 1.3rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(26, 46, 47, 0.2);
+    }
+
+    .btn-login-header:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--teal-pale);
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .main-wrap {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 1.8rem auto 3rem;
+      padding: 0 1.25rem;
+    }
+
+    /* View Switcher Bar (حجز فوري / مواعيدي) */
+    .view-switcher-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1.8rem;
+    }
+
+    .view-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .view-tab:hover {
+      border-color: var(--teal-light);
+      color: var(--teal-deep);
+    }
+
+    .view-tab.active {
+      background: var(--teal-deep);
+      border-color: var(--teal-deep);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(26, 46, 47, 0.25);
+    }
+
+    .view-tab svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ── CARD BOX ── */
+    .card-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 640px) {
+      .card-box {
+        padding: 1.4rem 1.1rem;
+      }
+    }
+
+    /* ── TOP TITLE & STEPPER ── */
+    .page-title-row {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+
+    .page-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--teal-deep);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page-title svg {
+      color: var(--teal-deep);
+    }
+
+    .page-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
+
+    /* Labayh-style horizontal Stepper */
+    .flow-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      margin: 0 auto 2.2rem;
+      max-width: 580px;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-step-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      position: relative;
+      padding-bottom: 0.6rem;
+      transition: all 0.2s ease;
+    }
+
+    .flow-step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+      transition: all 0.2s ease;
+    }
+
+    .flow-step-item.active {
+      color: var(--teal-deep);
+      font-weight: 700;
+    }
+
+    .flow-step-item.active .flow-step-num {
+      background: var(--teal-deep);
+      color: #ffffff;
+    }
+
+    .flow-step-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--teal-deep);
+      border-radius: 2px;
+    }
+
+    .flow-step-item.completed {
+      color: #10b981;
+    }
+
+    .flow-step-item.completed .flow-step-num {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    /* ── STEP 1: خصائص الجلسة ── */
+    .section-block {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-subtitle {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    /* Specialist Gender Selector */
+    .gender-pill-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .gender-pill {
+      flex: 1;
+      min-width: 90px;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.94rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .gender-pill:hover {
+      border-color: var(--teal-light);
+      background: var(--teal-surface);
+    }
+
+    .gender-pill.active {
+      background: var(--teal-pale);
+      border-color: var(--teal);
+      color: var(--teal-deep);
+      font-weight: 700;
+    }
+
+    /* Feelings / Tags Chips */
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 180px;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .tags-container.expanded {
+      max-height: 800px;
+    }
+
+    .feel-tag {
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: #475569;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      user-select: none;
+    }
+
+    .feel-tag:hover {
+      background: #edf2f7;
+      color: var(--teal-deep);
+    }
+
+    .feel-tag.active {
+      background: var(--teal-deep);
+      border-color: var(--teal-deep);
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(26, 46, 47, 0.2);
+    }
+
+    .btn-show-more-tags {
+      margin-top: 10px;
+      background: none;
+      border: none;
+      color: var(--teal);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 6px;
+    }
+
+    .btn-show-more-tags:hover {
+      text-decoration: underline;
+    }
+
+    /* Textarea with Character Counter */
+    .textarea-wrap {
+      position: relative;
+    }
+
+    .state-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: #f8fafc;
+      font-family: inherit;
+      font-size: 0.94rem;
+      color: var(--text-main);
+      outline: none;
+      resize: vertical;
+      transition: all 0.2s ease;
+      line-height: 1.6;
+    }
+
+    .state-textarea:focus {
+      background: #ffffff;
+      border-color: var(--teal-light);
+      box-shadow: 0 0 0 3px rgba(122, 179, 183, 0.2);
+    }
+
+    .char-count {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      direction: ltr;
+      pointer-events: none;
+    }
+
+    /* Bottom Action Bar */
+    .bottom-actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    .btn-clear-all {
+      background: #f1f5f9;
+      color: #64748b;
+      border: none;
+      padding: 10px 22px;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-clear-all:hover {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .btn-next-step {
+      background: linear-gradient(135deg, var(--teal-deep), var(--teal));
+      color: #ffffff;
+      border: none;
+      padding: 11px 32px;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 3px 12px rgba(26, 46, 47, 0.25);
+    }
+
+    .btn-next-step:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .btn-back-step {
+      background: #ffffff;
+      color: var(--teal-deep);
+      border: 1.5px solid var(--border);
+      padding: 10px 24px;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.94rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-back-step:hover {
+      background: #f8fafc;
+      border-color: var(--teal-light);
+    }
+
+    /* ── STEP 2: نوع الاستشارة (بدون كتابة!) ── */
+    .step-panel {
+      display: none;
+    }
+
+    .step-panel.active {
+      display: block;
+    }
+
+    .type-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 1.8rem;
+    }
+
+    @media (max-width: 580px) {
+      .type-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .type-card {
+      padding: 1.25rem 1.4rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+
+    .type-card:hover {
+      border-color: var(--teal-light);
+      background: var(--teal-surface);
+    }
+
+    .type-card.active {
+      border-color: var(--teal);
+      background: var(--teal-pale);
+      box-shadow: 0 4px 14px rgba(46, 82, 84, 0.12);
+    }
+
+    .type-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .type-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      color: var(--teal-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .type-card.active .type-card-icon {
+      background: var(--teal-deep);
+      color: #ffffff;
+    }
+
+    .type-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+    }
+
+    .type-card-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .duration-chips-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 1.8rem;
+    }
+
+    @media (max-width: 580px) {
+      .duration-chips-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .duration-chip {
+      padding: 1rem 0.8rem;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .duration-chip:hover {
+      border-color: var(--teal-light);
+    }
+
+    .duration-chip.active {
+      border-color: var(--teal);
+      background: var(--teal-pale);
+      font-weight: 700;
+    }
+
+    .duration-time {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+      margin-bottom: 4px;
+    }
+
+    .duration-price {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--gold-dark);
+    }
+
+    .duration-chip-badge {
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: #ffffff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    .timing-toggle-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .timing-toggle-box input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--teal);
+    }
+
+    /* ── Date & Time Custom Picker Controls ── */
+    .date-picker-bar, .time-picker-bar {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 0.9rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .date-picker-bar:focus-within, .time-picker-bar:focus-within {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(46, 82, 84, 0.12);
+    }
+
+    .date-picker-label, .time-picker-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+    }
+
+    .booking-date-input, .booking-time-select {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--teal-deep);
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      outline: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .booking-date-input:focus, .booking-time-select:focus {
+      border-color: var(--teal);
+      background: #ffffff;
+    }
+
+    .chosen-datetime-badge {
+      background: linear-gradient(135deg, rgba(234, 243, 244, 0.95), rgba(253, 250, 243, 0.95));
+      border: 1.5px solid var(--teal-light);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--teal-deep);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    /* ── STEP 3: اختيار الأخصائي ── */
+    .auto-select-banner {
+      background: linear-gradient(135deg, rgba(234, 243, 244, 0.7), rgba(253, 250, 243, 0.9));
+      border: 2px dashed var(--teal-light);
+      border-radius: var(--radius-md);
+      padding: 1.15rem 1.4rem;
+      margin-bottom: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: all 0.22s ease;
+    }
+
+    .auto-select-banner:hover {
+      border-color: var(--teal);
+      background: var(--teal-pale);
+      transform: translateY(-1px);
+    }
+
+    .auto-select-banner.active {
+      border: 2.5px solid var(--teal);
+      background: var(--teal-pale);
+      box-shadow: 0 4px 14px rgba(46, 82, 84, 0.15);
+    }
+
+    .auto-banner-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .auto-banner-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--teal-deep);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .auto-select-badge {
+      background: #10b981;
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .specs-selection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .spec-card-pick {
+      background: linear-gradient(160deg, #ffffff 80%, #eaf3f4 100%);
+      border-radius: 1.5rem;
+      padding: 2.2rem 1.4rem 1.6rem;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 18px rgba(46, 82, 84, 0.06);
+      border: 1.5px solid rgba(122, 179, 183, 0.22);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .spec-card-pick:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(46, 82, 84, 0.12);
+      border-color: var(--teal-light);
+      background: #ffffff;
+    }
+
+    .spec-card-pick.active {
+      border: 2.5px solid var(--gold);
+      background: linear-gradient(160deg, #ffffff 75%, #fdf9ee 100%);
+      box-shadow: 0 8px 28px rgba(212, 168, 67, 0.25);
+      transform: translateY(-4px);
+    }
+
+    .spec-card-pick .specialist-avatar-icon {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f5f9f9 0%, #ebe7dc 100%);
+      border: 3px solid #ffffff;
+      box-shadow: 0 8px 22px rgba(26, 46, 47, 0.08), 0 2px 6px rgba(212, 168, 67, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal);
+      margin: 0 auto 1.15rem;
+      transition: transform 0.3s ease;
+    }
+
+    .spec-card-pick:hover .specialist-avatar-icon {
+      transform: scale(1.06);
+      color: var(--gold-dark);
+    }
+
+    .spec-card-pick.active .specialist-avatar-icon {
+      border-color: var(--gold);
+      box-shadow: 0 8px 22px rgba(212, 168, 67, 0.2);
+    }
+
+    .spec-card-pick .spec-verified-badge {
+      position: absolute;
+      bottom: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--teal-deep);
+      color: #fff;
+      border: 2px solid #ffffff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spec-card-pick.active .spec-verified-badge {
+      background: var(--gold);
+    }
+
+    .spec-card-pick h3 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+      margin-bottom: 0.35rem;
+      text-align: center;
+    }
+
+    .spec-card-pick .specialist-title {
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .spec-card-pick .spec-specialty-pill {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--teal);
+      background: rgba(26, 46, 47, 0.06);
+      padding: 0.3rem 0.8rem;
+      border-radius: 9999px;
+      margin-bottom: 0.9rem;
+      text-align: center;
+      max-width: 95%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .spec-card-pick .rating-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.85rem;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      margin-bottom: 1.1rem;
+    }
+
+    .spec-card-pick .star-icon {
+      color: var(--gold);
+    }
+
+    .spec-card-pick .spec-sessions-count {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .spec-card-pick .spec-card-cta-btn {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      border-radius: 9999px;
+      background: #ffffff;
+      border: 1.5px solid rgba(26, 46, 47, 0.16);
+      color: var(--teal-deep);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.22s ease;
+      margin-top: auto;
+    }
+
+    .spec-card-pick:hover .spec-card-cta-btn {
+      background: var(--teal);
+      color: #ffffff;
+      border-color: var(--teal);
+    }
+
+    .spec-card-pick.active .spec-card-cta-btn {
+      background: var(--gold);
+      color: #ffffff;
+      border-color: var(--gold);
+      box-shadow: 0 4px 12px rgba(212, 168, 67, 0.3);
+    }
+
+    /* ── SKELETON SHIMMER LOADER ── */
+    @keyframes skeletonShimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .skeleton-box {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: skeletonShimmer 1.4s ease-in-out infinite;
+      border-radius: 6px;
+    }
+    .spec-skeleton-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 1.6rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      pointer-events: none;
+    }
+    .spec-skeleton-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+    }
+    .spec-skeleton-line {
+      height: 14px;
+      border-radius: 6px;
+    }
+    .spec-skeleton-badge {
+      width: 80px;
+      height: 22px;
+      border-radius: 9999px;
+    }
+    .spec-skeleton-btn {
+      width: 100%;
+      height: 38px;
+      border-radius: 9999px;
+      margin-top: 8px;
+    }
+
+    /* ── STEP 4: الدفع والتأكيد ── */
+    .summary-card {
+      background: var(--teal-surface);
+      border: 1.5px solid var(--teal-pale);
+      border-radius: var(--radius-md);
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0;
+      border-bottom: 1px dashed rgba(122, 179, 183, 0.3);
+      font-size: 0.92rem;
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+      padding-top: 0.9rem;
+      margin-top: 0.4rem;
+    }
+
+    .summary-label {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .summary-val {
+      font-weight: 700;
+      color: var(--teal-deep);
+    }
+
+    .summary-total {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--gold-dark);
+    }
+
+    /* Jordanian Payment Methods */
+    .pay-methods-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 1.8rem;
+    }
+
+    @media (max-width: 580px) {
+      .pay-methods-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pay-method-card {
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pay-method-card:hover {
+      border-color: var(--teal-light);
+    }
+
+    .pay-method-card.active {
+      border-color: var(--teal);
+      background: var(--teal-pale);
+      font-weight: 700;
+    }
+
+    .pay-badge-flag {
+      font-size: 1.25rem;
+    }
+
+    .pay-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+    }
+
+    .pay-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* ── VIEW 2: مواعيدي (Empty State & List) ── */
+    .my-appointments-view {
+      display: none;
+    }
+
+    .my-appointments-view.active {
+      display: block;
+    }
+
+    .empty-state-box {
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+    }
+
+    .empty-state-icon {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 1.3rem;
+      background: #f1f5f9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+    }
+
+    .empty-state-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--teal-deep);
+      margin-bottom: 0.45rem;
+    }
+
+    .empty-state-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      max-width: 380px;
+      margin: 0 auto 1.8rem;
+    }
+
+    .btn-book-now-pill {
+      background: linear-gradient(135deg, var(--teal-deep), var(--teal));
+      color: #ffffff;
+      border: none;
+      padding: 12px 34px;
+      border-radius: var(--radius-pill);
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(26, 46, 47, 0.25);
+    }
+
+    .btn-book-now-pill:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+    }
+
+    /* Appointment Cards */
+    .app-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .app-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.4rem;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .app-card-info h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+    }
+
+    .app-card-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .app-card-btn {
+      background: var(--teal-pale);
+      color: var(--teal-deep);
+      border: 1px solid var(--teal-light);
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .app-card-btn:hover {
+      background: var(--teal);
+      color: #ffffff;
+    }
+
+    /* ── AUTH MODAL: "للمتابعة للحجز يجب تسجيل الدخول أولاً" (مطابق للصورة 2) ── */
+    .auth-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 30, 31, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .auth-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .auth-modal-box {
+      background: #ffffff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: var(--radius-lg);
+      padding: 2.2rem 2rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      transform: translateY(15px);
+      transition: transform 0.25s ease;
+    }
+
+    .auth-modal-overlay.open .auth-modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: #94a3b8;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close-btn:hover {
+      color: #1e293b;
+    }
+
+    .modal-main-title {
+      font-size: 1.22rem;
+      font-weight: 800;
+      color: var(--teal-deep);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Modal Stepper: رقم الجوال -> رمز التحقق -> المعلومات الشخصية */
+    .modal-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 2rem;
+      padding: 0 10px;
+    }
+
+    .modal-stepper::before {
+      content: '';
+      position: absolute;
+      top: 13px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+
+    .m-step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .m-step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin: 0 auto 5px;
+      transition: all 0.2s ease;
+    }
+
+    .m-step.active .m-step-circle {
+      border-color: var(--teal-deep);
+      background: var(--teal-deep);
+      color: #ffffff;
+    }
+
+    .m-step.completed .m-step-circle {
+      border-color: #10b981;
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .m-step-label {
+      font-size: 0.78rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .m-step.active .m-step-label {
+      color: var(--teal-deep);
+      font-weight: 700;
+    }
+
+    /* Modal Inputs */
+    .m-form-group {
+      margin-bottom: 1.25rem;
+      text-align: right;
+    }
+
+    .m-label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--teal-deep);
+      margin-bottom: 6px;
+    }
+
+    .m-country-box {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: #f8fafc;
+      font-family: inherit;
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: var(--teal-deep);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .m-phone-input-wrap {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #f8fafc;
+      overflow: hidden;
+      direction: ltr;
+      transition: all 0.2s ease;
+    }
+
+    .m-phone-input-wrap:focus-within {
+      border-color: var(--teal-light);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(122, 179, 183, 0.2);
+    }
+
+    .m-phone-prefix {
+      padding: 11px 14px;
+      background: #f1f5f9;
+      font-weight: 700;
+      font-size: 0.94rem;
+      color: var(--teal-deep);
+      border-right: 1.5px solid var(--border);
+      user-select: none;
+    }
+
+    .m-phone-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 11px 14px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      outline: none;
+      text-align: left;
+    }
+
+    .m-btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--teal-deep), var(--teal));
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(26, 46, 47, 0.2);
+    }
+
+    .m-btn-submit:hover {
+      opacity: 0.95;
+    }
+
+    .m-otp-inputs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      direction: ltr;
+      margin: 1.2rem 0;
+    }
+
+    .m-otp-digit {
+      width: 44px;
+      height: 50px;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 800;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      outline: none;
+      font-family: inherit;
+      color: var(--teal-deep);
+    }
+
+    .m-otp-digit:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(122, 179, 183, 0.2);
+    }
+
+    /* Toast */
+    .toast-popup {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--teal-deep);
+      color: #ffffff;
+      padding: 11px 22px;
+      border-radius: var(--radius-pill);
+      font-size: 0.92rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: 2000;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast-popup.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── TOP NAVIGATION ── -->
+  <header class="top-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo">
+        <picture>
+          <source srcset="assets/images/psyai.webp" type="image/webp" />
+          <img src="assets/images/psyai.png" alt="PsyAI Logo" width="38" height="38" fetchpriority="high" />
+        </picture>
+        <span class="brand-name">Psy<span>AI</span></span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="index.html" class="nav-btn">الرئيسية</a>
+        <a href="specialists.html" class="nav-btn">المختصين</a>
+        <button type="button" class="nav-btn active" id="navBtnInstant" onclick="switchToTab('instant')">حجز موعد جلسة</button>
+        <button type="button" class="nav-btn" id="navBtnAppointments" onclick="switchToTab('appointments')">مواعيدي</button>
+      </nav>
+
+      <div class="auth-badge" id="headerAuthBadge">
+        <a href="login.html" class="btn-login-header" id="headerLoginBtn">تسجيل الدخول</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main-wrap">
+
+    <!-- View Switcher -->
+    <div class="view-switcher-bar">
+      <button type="button" class="view-tab active" id="tabInstantBtn" onclick="switchToTab('instant')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span>حجز موعد جلسة</span>
+      </button>
+
+      <button type="button" class="view-tab" id="tabAppointmentsBtn" onclick="switchToTab('appointments')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>مواعيدي</span>
+      </button>
+    </div>
+
+    <!-- ── VIEW 1: حجز موعد جلسة رفاه نفسي ── -->
+    <div class="card-box" id="viewInstantBooking">
+      <div class="page-title-row">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          حجز موعد جلسة رفاه نفسي
+        </h1>
+        <p class="page-subtitle">احجز جلستك مع نخبة من الأخصائيين المعتمدين وسيقوم المختص بإرسال رابط الجلسة إلى حسابك مباشرة</p>
+      </div>
+
+      <!-- Stepper: 4 steps -->
+      <div class="flow-stepper">
+        <div class="flow-step-item active" id="stepper1">
+          <span class="flow-step-num">1</span>
+          <span>تحديد الحالة</span>
+        </div>
+        <div class="flow-step-item" id="stepper2">
+          <span class="flow-step-num">2</span>
+          <span>نوع الجلسة والموعد</span>
+        </div>
+        <div class="flow-step-item" id="stepper3">
+          <span class="flow-step-num">3</span>
+          <span>اختيار المختص</span>
+        </div>
+        <div class="flow-step-item" id="stepper4">
+          <span class="flow-step-num">4</span>
+          <span>الدفع والتأكيد</span>
+        </div>
+      </div>
+
+      <!-- ── STEP 1: تحديد الحالة وتفضيلات المختص ── -->
+      <div class="step-panel active" id="instantStep1">
+        <!-- جنس المختص -->
+        <div class="section-block">
+          <div class="section-title">جنس المختص</div>
+          <div class="gender-pill-group">
+            <button type="button" class="gender-pill" data-gender="ذكر" onclick="selectGender('ذكر', this)">
+              <span>ذكر</span> <span>♂</span>
+            </button>
+            <button type="button" class="gender-pill" data-gender="أنثى" onclick="selectGender('أنثى', this)">
+              <span>أنثى</span> <span>♀</span>
+            </button>
+            <button type="button" class="gender-pill active" data-gender="الجميع" onclick="selectGender('الجميع', this)">
+              <span>الجميع</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- بماذا تشعر؟ -->
+        <div class="section-block">
+          <div class="section-title">بماذا تشعر؟</div>
+          <p class="section-subtitle">يمكنك اختيار 3 خيارات على الأكثر.</p>
+
+          <div class="tags-container" id="tagsContainer">
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">القلق والتوتر المستمر</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الحزن وفقدان الشغف والحماس</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">ضغط العمل والإرهاق المهني</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الاحتراق الوظيفي وضعف الإنتاجية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">مشاكل العلاقات الأسرية والاجتماعية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">إدارة الغضب والتوازن العاطفي</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">تدني الثقة بالنفس وتقدير الذات</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">اضطرابات وجودة النوم</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">التفكير المفرط والتشوش الذهني</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الموازنة بين العمل والمسؤوليات الشخصية</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">التسويف وصعوبات التركيز والإنجاز</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">تطوير مهارات التواصل وحل الخلافات</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">ضغوط التربية وبناء الذكاء العاطفي للأبناء</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">بناء المرونة النفسية والتكيف مع التغيرات</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">الإجهاد والإنهاك العام بدون سبب واضح</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">مساحة للفضفضة وتفريغ المشاعر</button>
+            <button type="button" class="feel-tag" onclick="toggleTag(this)">أخرى / اكتب ما يصف حالتك</button>
+          </div>
+
+          <button type="button" class="btn-show-more-tags" id="toggleTagsBtn" onclick="toggleAllTags()">
+            <span id="tagsBtnText">عرض المزيد</span>
+            <span id="tagsBtnArrow">▾</span>
+          </button>
+        </div>
+
+        <!-- عبّر عن حالتك بشكل مختصر -->
+        <div class="section-block">
+          <div class="section-title">عبّر عن حالتك بشكل مختصر</div>
+          <div class="textarea-wrap">
+            <textarea class="state-textarea" id="stateDescription" maxlength="300"
+              placeholder="ما هو شعورك؟ اكتب وصفاً قصيراً لحالتك لعرضها على المختص" oninput="updateCharCount()"></textarea>
+            <div class="char-count" id="charCounter">0/300</div>
+          </div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="bottom-actions-row">
+          <button type="button" class="btn-clear-all" onclick="clearStep1()">مسح جميع الحقول</button>
+          <button type="button" class="btn-next-step" onclick="goToStep(2)">
+            <span>التالي</span>
+            <span>←</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: نوع الجلسة والموعد ── -->
+      <div class="step-panel" id="instantStep2">
+        <div class="section-block">
+          <div class="section-title">طريقة التواصل</div>
+          <p class="section-subtitle">جلسة رفاه نفسي مباشرة عبر المتصفح — خصوصية وأمان عاليان</p>
+
+          <div class="type-cards-grid">
+            <!-- مكالمة فيديو -->
+            <div class="type-card active" data-type="video" onclick="selectCommType('video', this)" style="grid-column: 1 / -1;">
+              <div class="type-card-head">
+                <div class="type-card-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                  </svg>
+                </div>
+                <div>
+                  <div class="type-card-title">مكالمة فيديو مباشر</div>
+                  <div class="type-card-desc">تواصل مرئي مباشر صوت وصورة مشفرة وآمنة عبر المتصفح</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- مدة الجلسة والتسعيرة الأردنية -->
+        <div class="section-block">
+          <div class="section-title">مدة الجلسة والتسعيرة (د.أ)</div>
+          <div class="duration-chips-grid">
+            <div class="duration-chip" data-min="30" data-price="18" onclick="selectDuration(30, 18, this)">
+              <div class="duration-time">30 دقيقة</div>
+              <div class="duration-price">18 د.أ</div>
+            </div>
+
+            <div class="duration-chip active" data-min="45" data-price="25" onclick="selectDuration(45, 25, this)">
+              <span class="duration-chip-badge">الأكثر طلباً</span>
+              <div class="duration-time">45 دقيقة</div>
+              <div class="duration-price">25 د.أ</div>
+            </div>
+
+            <div class="duration-chip" data-min="60" data-price="32" onclick="selectDuration(60, 32, this)">
+              <div class="duration-time">60 دقيقة</div>
+              <div class="duration-price">32 د.أ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- اختيار موعد الجلسة -->
+        <div class="section-block">
+          <div class="section-title">اختر موعد الجلسة المفضل</div>
+          <p class="section-subtitle">حدد اليوم والتاريخ والوقت الأنسب لك، وسيقوم المختص بتأكيد الموعد وإرسال رابط الجلسة إلى حسابك مباشرة</p>
+
+          <!-- 1. اختيار اليوم والتاريخ عبر التقويم -->
+          <div class="date-picker-bar">
+            <label for="bookingCustomDate" class="date-picker-label">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>اختر تاريخ الجلسة (اليوم / الشهر / السنة):</span>
+            </label>
+            <input type="date" id="bookingCustomDate" class="booking-date-input" onchange="onCustomDateChange(this.value)" />
+          </div>
+
+          <!-- 2. اختيار وقت الجلسة عبر القائمة المنسدلة -->
+          <div class="time-picker-bar">
+            <label for="bookingTimeSelect" class="time-picker-label">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>اختر وقت الجلسة (صباحاً ومساءً):</span>
+            </label>
+            <select id="bookingTimeSelect" class="booking-time-select" onchange="onTimeSelectChange(this.value)">
+              <!-- Options populated dynamically -->
+            </select>
+          </div>
+
+          <!-- Live Selection Banner -->
+          <div class="chosen-datetime-badge" id="chosenDateTimeBadge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span>الموعد المعتمد للجلسة: <strong id="liveDateTimeText" style="color: var(--teal-deep);">...</strong></span>
+          </div>
+
+          <div style="background: var(--teal-pale); border-radius: var(--radius-md); padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 0.84rem; color: var(--teal-deep);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span><strong>ملاحظة هامة:</strong> بعد إتمام الحجز، سيقوم الأخصائي بتأكيد الموعد وإرسال رابط الجلسة مباشرة إلى صفحة <strong>(مواعيدي)</strong> في حسابك.</span>
+          </div>
+        </div>
+
+        <div class="bottom-actions-row">
+          <button type="button" class="btn-back-step" onclick="goToStep(1)">السابق</button>
+          <button type="button" class="btn-next-step" onclick="goToStep(3)">
+            <span>التالي: اختيار المختص</span>
+            <span>←</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: اختيار المختص (قبل الدفع) ── -->
+      <div class="step-panel" id="instantStep3">
+        <div class="section-block">
+          <div class="section-title">اختر أخصائيك المعتمد</div>
+          <p class="section-subtitle">
+            اختر الأخصائي الأنسب لك من القائمة المفلترة وفقاً لتفضيلاتك:
+          </p>
+
+          <!-- شبكة بطاقات الأخصائيين المتاحين -->
+          <div class="specs-selection-grid" id="specsPickGrid">
+            <!-- Rendered dynamically based on gender & conditions -->
+          </div>
+        </div>
+
+        <div class="bottom-actions-row">
+          <button type="button" class="btn-back-step" onclick="goToStep(2)">السابق</button>
+          <button type="button" class="btn-next-step" onclick="goToStep(4)">
+            <span>التالي: الدفع والتأكيد</span>
+            <span>←</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 4: الدفع والتأكيد ── -->
+      <div class="step-panel" id="instantStep4">
+        <div class="section-block">
+          <div class="section-title">ملخص الجلسة</div>
+          <div class="summary-card">
+            <div class="summary-row">
+              <span class="summary-label">الأخصائي المختار</span>
+              <span class="summary-val" id="sumSpecialist" style="color: var(--teal-deep); font-weight: 800;">لم يتم التحديد</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">نوع الجلسة</span>
+              <span class="summary-val" id="sumCommType">مكالمة فيديو</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">مدة الجلسة</span>
+              <span class="summary-val" id="sumDuration">45 دقيقة</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">موعد الجلسة</span>
+              <span class="summary-val" id="sumAppointmentTime" style="color: var(--gold-dark); font-weight: 800;">اليوم 04:00 مساءً</span>
+            </div>
+            <div class="summary-row" style="display:none;">
+              <span class="summary-label">الحالات المختارة</span>
+              <span class="summary-val" id="sumTags">جلسة رفاه عامة</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">رابط الجلسة</span>
+              <span class="summary-val" style="color: #10b981; font-weight: 700;">سيرسله المختص لحسابك في (مواعيدي) 📩</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label" style="font-size: 1.05rem;">المبلغ الإجمالي</span>
+              <span class="summary-total" id="sumTotalPrice">25 د.أ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- طرق الدفع الأردنية -->
+        <div class="section-block">
+          <div class="section-title">اختر طريقة الدفع (الأردن 🇯🇴)</div>
+          <div class="pay-methods-grid">
+            <div class="pay-method-card active" onclick="selectPayMethod('cliq', this)">
+              <div class="pay-badge-flag">🇯🇴</div>
+              <div class="pay-title">CliQ (كليك)</div>
+              <div class="pay-desc">تحويل فوري مجاني عبر البنوك الأردنية</div>
+            </div>
+
+            <div class="pay-method-card" onclick="selectPayMethod('card', this)">
+              <div class="pay-badge-flag">💳</div>
+              <div class="pay-title">بطاقة بنكية</div>
+              <div class="pay-desc">Visa / MasterCard</div>
+            </div>
+          </div>
+
+          <!-- صندوق تفاصيل وتأكيد CliQ عند اختياره -->
+          <div id="cliqDetailsBox" style="background: #ffffff; border: 1.5px solid var(--teal-light); border-radius: var(--radius-md); padding: 16px 18px; margin-top: 12px;">
+            <div style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 6px;">
+              خطوات الدفع عبر كليك (CliQ) إلى حساب منصة PsyAI:
+            </div>
+            
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--teal-surface); padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--teal-pale);">
+              <div>
+                <span style="font-size: 0.78rem; color: var(--text-muted); display: block;">معرّف كليك (Alias):</span>
+                <span style="font-size: 1.25rem; font-weight: 800; color: var(--teal-deep); letter-spacing: 1px; direction: ltr;">PSYAIJO</span>
+              </div>
+              <button type="button" onclick="navigator.clipboard.writeText('PSYAIJO'); showToast('تم نسخ معرّف كليك PSYAIJO بنجاح! 📋');"
+                style="background: var(--teal-pale); color: var(--teal-deep); border: 1.5px solid var(--teal-light); padding: 7px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem; font-family: inherit;">
+                نسخ المعرّف 📋
+              </button>
+            </div>
+
+            <!-- إثبات عملية التحويل للتحقق ومطابقة الدفع -->
+            <div style="border-top: 1px dashed var(--border); padding-top: 12px; margin-top: 8px;">
+              <div style="font-size: 0.88rem; font-weight: 700; color: var(--teal-deep); margin-bottom: 6px;">
+                تأكيد بيانات التحويل (لإصدار رابط الجلسة):
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                <div>
+                  <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">
+                    اسم المحوّل في تطبيق البنك *
+                  </label>
+                  <input type="text" id="cliqSenderName" placeholder="مثال: أحمد المجالي" class="state-textarea"
+                    style="min-height: auto; padding: 9px 12px; font-size: 0.88rem;" />
+                </div>
+                <div>
+                  <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">
+                    الرقم المرجعي للعملية (Ref No.) *
+                  </label>
+                  <input type="text" id="cliqRefNumber" placeholder="مثال: 1084920" class="state-textarea"
+                    style="min-height: auto; padding: 9px 12px; font-size: 0.88rem; direction: ltr; text-align: right;" />
+                </div>
+              </div>
+
+              <span style="font-size: 0.76rem; color: var(--text-muted); display: block; line-height: 1.5;">
+                💡 ستجد الرقم المرجعي فوراً في إشعار إتمام التحويل داخل تطبيق بنكك. نقوم بمطابقته فوراً لتأكيد الحجز وإرسال الرابط.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-actions-row">
+          <button type="button" class="btn-back-step" onclick="goToStep(3)">السابق</button>
+          <button type="button" class="btn-next-step" id="btnConfirmAndPay" onclick="handleConfirmBooking()"
+            style="background: linear-gradient(135deg, #10b981, #059669);">
+            <span>تأكيد الحجز والدفع</span>
+            <span>✓</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW 2: مواعيدي (Empty State مثل الصورة 1) ── -->
+    <div class="card-box my-appointments-view" id="viewAppointments">
+      <div class="page-title-row">
+        <h1 class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          مواعيدي
+        </h1>
+      </div>
+
+      <!-- Empty state container (shown when user has 0 bookings) -->
+      <div class="empty-state-box" id="emptyStateBox">
+        <div class="empty-state-icon">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+            <circle cx="17.5" cy="17.5" r="4.5"></circle>
+            <line x1="21" y1="21" x2="20" y2="20"></line>
+          </svg>
+        </div>
+        <h3 class="empty-state-title">لا يوجد نتائج</h3>
+        <p class="empty-state-desc">لم تقم بحجز أي جلسات رفاه نفسي حتى الآن. ابدأ حجز جلستك الفورية مع مختصك الآن.</p>
+        <button type="button" class="btn-book-now-pill" onclick="switchToTab('instant')">
+          <span>احجز الآن</span>
+          <span>&gt;</span>
+        </button>
+      </div>
+
+      <!-- Appointments list (shown when user has bookings) -->
+      <div class="app-cards-list" id="appointmentsList" style="display: none;"></div>
+    </div>
+
+  </main>
+
+  <!-- ── AUTH MODAL: "للمتابعة للحجز يجب تسجيل الدخول أولاً" (مطابق للصورة 2) ── -->
+  <div class="auth-modal-overlay" id="authModal">
+    <div class="auth-modal-box">
+      <button type="button" class="modal-close-btn" onclick="closeAuthModal()">&times;</button>
+
+      <h2 class="modal-main-title">للمتابعة للحجز يجب تسجيل الدخول أولاً</h2>
+
+      <!-- Stepper: رقم الجوال -> رمز التحقق -> المعلومات الشخصية -->
+      <div class="modal-stepper">
+        <div class="m-step active" id="mStep1">
+          <div class="m-step-circle">1</div>
+          <div class="m-step-label">رقم الجوال</div>
+        </div>
+        <div class="m-step" id="mStep2">
+          <div class="m-step-circle">2</div>
+          <div class="m-step-label">رمز التحقق</div>
+        </div>
+        <div class="m-step" id="mStep3">
+          <div class="m-step-circle">3</div>
+          <div class="m-step-label">المعلومات الشخصية</div>
+        </div>
+      </div>
+
+      <!-- MODAL STEP 1: Phone number (Jordanian only, strictly no email) -->
+      <div id="mPanelPhone">
+        <div class="m-form-group">
+          <label class="m-label">الدولة/المنطقة</label>
+          <div class="m-country-box">
+            <span>المملكة الأردنية الهاشمية 🇯🇴</span>
+            <span style="color: #94a3b8; font-size: 0.8rem;">▾</span>
+          </div>
+        </div>
+
+        <div class="m-form-group">
+          <label class="m-label">رقم الجوال</label>
+          <div class="m-phone-input-wrap">
+            <span class="m-phone-prefix">(+962)</span>
+            <input type="tel" class="m-phone-input" id="mInputPhone" placeholder="0791234567" autocomplete="tel" />
+          </div>
+          <span style="font-size: 0.74rem; color: #64748b; margin-top: 4px; display: block;">
+            سيصلك رمز التحقق السريع عبر تطبيق WhatsApp
+          </span>
+        </div>
+
+        <button type="button" class="m-btn-submit" id="mBtnSendOtp" onclick="handleSendOtp()">
+          تسجيل الدخول
+        </button>
+      </div>
+
+      <!-- MODAL STEP 2: OTP Code Verification -->
+      <div id="mPanelOtp" style="display: none;">
+        <p style="font-size: 0.88rem; color: #475569; text-align: center; margin-bottom: 1rem;">
+          أدخل رمز التحقق (OTP) المكوّن من 6 أرقام المرسل إلى WhatsApp للرقم:
+          <strong id="mSentPhone" style="direction: ltr; display: inline-block;">+962 7X...</strong>
+        </p>
+
+        <div class="m-otp-inputs">
+          <input type="text" maxlength="6" id="mOtpCode" class="m-phone-input"
+            style="text-align: center; font-size: 1.4rem; letter-spacing: 6px; font-weight: 800; border: 1.5px solid var(--border); border-radius: 8px; padding: 8px;"
+            placeholder="••••••" />
+        </div>
+
+        <div id="mOtpDevHint" style="display:none; text-align:center; margin: 10px 0; font-size:0.86rem; color:#b45309; background:#fef3c7; border: 1px dashed #f59e0b; padding:8px 12px; border-radius:8px; font-weight:700;"></div>
+
+        <button type="button" class="m-btn-submit" id="mBtnVerifyOtp" onclick="handleVerifyOtp()">
+          تأكيد الرمز
+        </button>
+
+        <div style="text-align: center; margin-top: 1rem;">
+          <button type="button" style="background: none; border: none; color: var(--teal); font-weight: 600; cursor: pointer;"
+            onclick="handleSendOtp()">إعادة إرسال الرمز</button>
+        </div>
+      </div>
+
+      <!-- MODAL STEP 3: Basic Info (New user only, no email required) -->
+      <div id="mPanelProfile" style="display: none;">
+        <p style="font-size: 0.88rem; color: #475569; text-align: center; margin-bottom: 1rem;">
+          أهلاً بك معنا! أكمل بياناتك البسيطة لتأكيد الحساب ومتابعة الحجز
+        </p>
+
+        <div class="m-form-group">
+          <label class="m-label">الاسم الأول *</label>
+          <input type="text" id="mFirstName" class="state-textarea" style="min-height: auto; padding: 10px;"
+            placeholder="مثال: أحمد" />
+        </div>
+
+        <div class="m-form-group">
+          <label class="m-label">اسم العائلة *</label>
+          <input type="text" id="mLastName" class="state-textarea" style="min-height: auto; padding: 10px;"
+            placeholder="مثال: المجالي" />
+        </div>
+
+        <div class="m-form-group">
+          <label class="m-label">الجنس *</label>
+          <select id="mGender" class="state-textarea" style="min-height: auto; padding: 10px;">
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+          </select>
+        </div>
+
+        <div class="m-form-group">
+          <label class="m-label">كلمة المرور *</label>
+          <input type="password" id="mPassword" class="state-textarea" style="min-height: auto; padding: 10px;"
+            placeholder="••••••••" />
+        </div>
+
+        <button type="button" class="m-btn-submit" onclick="handleCompleteProfile()">
+          إتمام الحساب والمتابعة للحجز
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div class="toast-popup" id="toastBox">
+    <span id="toastMsg">تم بنجاح</span>
+  </div>
+
+  <script>
+    const API_BASE = (typeof window !== "undefined" && window.PSYAI_API_BASE) || localStorage.getItem("psyai_api_url") || "http://localhost:5000";
+
+    // Booking state
+    const bookingData = {
+      gender: "الجميع",
+      tags: [],
+      description: "",
+      commType: "video",
+      duration: 45,
+      price: 25,
+      selectedDate: "",
+      selectedTime: "16:00",
+      bookingDay: "اليوم",
+      bookingTime: "04:00 مساءً",
+      formattedDateStr: "",
+      payMethod: "cliq",
+      selectedSpecialist: null
+    };
+
+    const TIME_SLOTS = [
+      { val: "08:00", label: "08:00 صباحاً" },
+      { val: "08:30", label: "08:30 صباحاً" },
+      { val: "09:00", label: "09:00 صباحاً" },
+      { val: "09:30", label: "09:30 صباحاً" },
+      { val: "10:00", label: "10:00 صباحاً" },
+      { val: "10:30", label: "10:30 صباحاً" },
+      { val: "11:00", label: "11:00 صباحاً" },
+      { val: "11:30", label: "11:30 صباحاً" },
+      { val: "12:00", label: "12:00 ظهراً" },
+      { val: "12:30", label: "12:30 بعد الظهر" },
+      { val: "13:00", label: "01:00 بعد الظهر" },
+      { val: "13:30", label: "01:30 بعد الظهر" },
+      { val: "14:00", label: "02:00 بعد الظهر" },
+      { val: "14:30", label: "02:30 بعد الظهر" },
+      { val: "15:00", label: "03:00 عصراً" },
+      { val: "15:30", label: "03:30 عصراً" },
+      { val: "16:00", label: "04:00 مساءً" },
+      { val: "16:30", label: "04:30 مساءً" },
+      { val: "17:00", label: "05:00 مساءً" },
+      { val: "17:30", label: "05:30 مساءً" },
+      { val: "18:00", label: "06:00 مساءً" },
+      { val: "18:30", label: "06:30 مساءً" },
+      { val: "19:00", label: "07:00 مساءً" },
+      { val: "19:30", label: "07:30 مساءً" },
+      { val: "20:00", label: "08:00 مساءً" },
+      { val: "20:30", label: "08:30 مساءً" },
+      { val: "21:00", label: "09:00 مساءً" },
+      { val: "21:30", label: "09:30 مساءً" },
+      { val: "22:00", label: "10:00 مساءً" },
+      { val: "22:30", label: "10:30 مساءً" },
+      { val: "23:00", label: "11:00 مساءً" },
+      { val: "23:30", label: "11:30 مساءً" }
+    ];
+
+    const AR_DAYS = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+    const AR_MONTHS = [
+      "كانون الثاني (1)", "شباط (2)", "آذار (3)", "نيسان (4)", "أيار (5)", "حزيران (6)",
+      "تموز (7)", "آب (8)", "أيلول (9)", "تشرين الأول (10)", "تشرين الثاني (11)", "كانون الأول (12)"
+    ];
+
+    function toIsoDate(d) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatArabicDate(dateObj) {
+      const dayName = AR_DAYS[dateObj.getDay()];
+      const dayNum = dateObj.getDate();
+      const monthName = AR_MONTHS[dateObj.getMonth()];
+      const year = dateObj.getFullYear();
+      return `${dayName}، ${dayNum} ${monthName} ${year}`;
+    }
+
+    // Pre-loaded verified specialists for Jordan
+    const fallbackSpecialists = [
+      {
+        id: "24c5bb2a-4df4-41d7-932f-7634f1ec5df1",
+        name: "د. أروى القفاري",
+        title: "أخصائي دعم نفسي وتعديل سلوك",
+        gender: "female",
+        rating: "4.92",
+        experience_years: 8,
+        specialty: "القلق والتوتر، الاكتئاب، إدارة الضغوط",
+        avatar: "assets/images/psyai.png"
+      },
+      {
+        id: "24c5bb2a-4df4-41d7-932f-7634f1ec5df2",
+        name: "د. ناهي الرويلي",
+        title: "استشاري دعم نفسي وإرشاد أسري",
+        gender: "male",
+        rating: "4.98",
+        experience_years: 12,
+        specialty: "مشاكل العلاقات، إدارة الغضب، الاحتراق الوظيفي",
+        avatar: "assets/images/psyai.png"
+      },
+      {
+        id: "24c5bb2a-4df4-41d7-932f-7634f1ec5df3",
+        name: "د. عبدالمجيد الصي",
+        title: "مستشار دعم نفسي وبناء المرونة",
+        gender: "male",
+        rating: "4.86",
+        experience_years: 11,
+        specialty: "ضغوط العمل، تدني تقدير الذات، التفكير المفرط",
+        avatar: "assets/images/psyai.png"
+      },
+      {
+        id: "24c5bb2a-4df4-41d7-932f-7634f1ec5df4",
+        name: "د. سارة النابلسي",
+        title: "استشارية الطب النفسي والعلاج السلوكي (CBT)",
+        gender: "female",
+        rating: "4.96",
+        experience_years: 14,
+        specialty: "اضطرابات النوم، نوبات الهلع، القلق والتوتر المستمر",
+        avatar: "assets/images/psyai.png"
+      }
+    ];
+
+    let currentMatchingSpecialists = [];
+
+    // Auth state in modal
+    let pendingOtpPhone = "";
+
+    // ── INITIALIZATION ──
+    document.addEventListener("DOMContentLoaded", () => {
+      checkAuthBadge();
+      loadMyAppointments();
+      initDateTimeSystem();
+
+      // Check URL query e.g. ?view=appointments
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("view") === "appointments") {
+        switchToTab("appointments");
+      }
+    });
+
+    function initDateTimeSystem() {
+      const today = new Date();
+      const todayIso = toIsoDate(today);
+
+      const dateInput = document.getElementById("bookingCustomDate");
+      if (dateInput) {
+        dateInput.min = todayIso;
+        dateInput.value = todayIso;
+      }
+
+      bookingData.selectedDate = todayIso;
+      bookingData.selectedTime = "16:00";
+      bookingData.bookingTime = "04:00 مساءً";
+      bookingData.formattedDateStr = formatArabicDate(today);
+      bookingData.bookingDay = bookingData.formattedDateStr;
+
+      // Populate time select dropdown
+      const timeSelect = document.getElementById("bookingTimeSelect");
+      if (timeSelect) {
+        timeSelect.innerHTML = TIME_SLOTS.map(t => 
+          `<option value="${t.val}" ${t.val === "16:00" ? "selected" : ""}>🕒 ${t.label}</option>`
+        ).join("");
+      }
+
+      updateLiveDateTimeBanner();
+    }
+
+    function initDateLabels() {
+      initDateTimeSystem();
+    }
+
+    function checkAuthBadge() {
+      const token = localStorage.getItem("psyai_token") || localStorage.getItem("token");
+      const userRaw = localStorage.getItem("psyai_user") || localStorage.getItem("user");
+      const badge = document.getElementById("headerAuthBadge");
+
+      if (token && userRaw) {
+        try {
+          const user = JSON.parse(userRaw);
+          const displayName = user.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : (user.phone || 'حسابي');
+          badge.innerHTML = `
+            <a href="profile.html" class="user-pill" title="الملف الشخصي">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>${displayName}</span>
+            </a>
+          `;
+        } catch (_) { }
+      }
+    }
+
+    // ── VIEW SWITCHING ──
+    function switchToTab(tabName) {
+      const tabInstantBtn = document.getElementById("tabInstantBtn");
+      const tabAppBtn = document.getElementById("tabAppointmentsBtn");
+      const navInstantBtn = document.getElementById("navBtnInstant");
+      const navAppBtn = document.getElementById("navBtnAppointments");
+      const viewInstant = document.getElementById("viewInstantBooking");
+      const viewApp = document.getElementById("viewAppointments");
+
+      if (tabName === "instant" || tabName === "booking") {
+        tabInstantBtn.classList.add("active");
+        tabAppBtn.classList.remove("active");
+        navInstantBtn.classList.add("active");
+        navAppBtn.classList.remove("active");
+        viewInstant.style.display = "block";
+        viewApp.classList.remove("active");
+      } else {
+        tabInstantBtn.classList.remove("active");
+        tabAppBtn.classList.add("active");
+        navInstantBtn.classList.remove("active");
+        navAppBtn.classList.add("active");
+        viewInstant.style.display = "none";
+        viewApp.classList.add("active");
+        loadMyAppointments();
+      }
+    }
+
+    // ── STEPPER NAVIGATION ──
+    function goToStep(stepNum) {
+      if (stepNum > 1) {
+        const descEl = document.getElementById("stateDescription");
+        if (descEl) bookingData.description = descEl.value.trim();
+      }
+
+      // Update panels (1, 2, 3, 4)
+      [1, 2, 3, 4].forEach(n => {
+        const panel = document.getElementById(`instantStep${n}`);
+        if (!panel) return;
+        if (n === stepNum) {
+          panel.classList.add("active");
+          panel.style.display = "block";
+        } else {
+          panel.classList.remove("active");
+          panel.style.display = "none";
+        }
+      });
+
+      // Update stepper UI (stepper1, stepper2, stepper3, stepper4)
+      [1, 2, 3, 4].forEach(n => {
+        const item = document.getElementById(`stepper${n}`);
+        if (!item) return;
+        if (n === stepNum) {
+          item.className = "flow-step-item active";
+        } else if (n < stepNum) {
+          item.className = "flow-step-item completed";
+        } else {
+          item.className = "flow-step-item";
+        }
+      });
+
+      // Load matching specialists when entering Step 3
+      if (stepNum === 3) {
+        renderMatchingSpecialists();
+      }
+
+      // Update summary card when entering Step 4
+      if (stepNum === 4) {
+        updateSummary();
+      }
+
+      window.scrollTo({ top: 120, behavior: "smooth" });
+    }
+
+    // ── STEP 1 ACTIONS ──
+    function selectGender(val, btn) {
+      bookingData.gender = val;
+      document.querySelectorAll(".gender-pill").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    function toggleTag(btn) {
+      const tagText = btn.textContent.trim();
+      const index = bookingData.tags.indexOf(tagText);
+
+      if (index > -1) {
+        bookingData.tags.splice(index, 1);
+        btn.classList.remove("active");
+      } else {
+        if (bookingData.tags.length >= 3) {
+          showToast("يمكنك اختيار 3 خيارات على الأكثر");
+          return;
+        }
+        bookingData.tags.push(tagText);
+        btn.classList.add("active");
+        if (tagText.includes("أخرى") || tagText.includes("اكتب")) {
+          const ta = document.getElementById("stateDescription");
+          if (ta) {
+            ta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            ta.focus();
+          }
+        }
+      }
+    }
+
+    function toggleAllTags() {
+      const container = document.getElementById("tagsContainer");
+      const btnText = document.getElementById("tagsBtnText");
+      const btnArrow = document.getElementById("tagsBtnArrow");
+
+      if (container.classList.contains("expanded")) {
+        container.classList.remove("expanded");
+        btnText.textContent = "عرض المزيد";
+        btnArrow.textContent = "▾";
+      } else {
+        container.classList.add("expanded");
+        btnText.textContent = "عرض أقل";
+        btnArrow.textContent = "▴";
+      }
+    }
+
+    function updateCharCount() {
+      const ta = document.getElementById("stateDescription");
+      const cnt = document.getElementById("charCounter");
+      cnt.textContent = `${ta.value.length}/300`;
+    }
+
+    function clearStep1() {
+      bookingData.gender = "الجميع";
+      bookingData.tags = [];
+      bookingData.description = "";
+
+      document.querySelectorAll(".gender-pill").forEach(b => {
+        b.classList.toggle("active", b.getAttribute("data-gender") === "الجميع");
+      });
+      document.querySelectorAll(".feel-tag").forEach(b => b.classList.remove("active"));
+      document.getElementById("stateDescription").value = "";
+      updateCharCount();
+      showToast("تم مسح جميع الحقول");
+    }
+
+    // ── STEP 2 ACTIONS ──
+    function selectCommType(type, card) {
+      bookingData.commType = type;
+      document.querySelectorAll(".type-card").forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+    }
+
+    function selectDuration(mins, price, chip) {
+      bookingData.duration = mins;
+      bookingData.price = price;
+      document.querySelectorAll(".duration-chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+    }
+
+    function updateLiveDateTimeBanner() {
+      const liveText = document.getElementById("liveDateTimeText");
+      if (liveText) {
+        liveText.textContent = `${bookingData.formattedDateStr || ''} — الساعة ${bookingData.bookingTime || ''}`;
+      }
+    }
+
+    function onCustomDateChange(val) {
+      if (!val) return;
+      const parts = val.split("-").map(Number);
+      const d = new Date(parts[0], parts[1] - 1, parts[2]);
+
+      bookingData.selectedDate = val;
+      bookingData.formattedDateStr = formatArabicDate(d);
+      bookingData.bookingDay = bookingData.formattedDateStr;
+
+      updateLiveDateTimeBanner();
+      if (typeof updateSummary === "function") updateSummary();
+    }
+
+    function onTimeSelectChange(val) {
+      if (!val) return;
+      bookingData.selectedTime = val;
+      const found = TIME_SLOTS.find(t => t.val === val);
+      bookingData.bookingTime = found ? found.label : val;
+
+      updateLiveDateTimeBanner();
+      if (typeof updateSummary === "function") updateSummary();
+    }
+
+    // ── STEP 3: SPECIALISTS FILTERING & SELECTION ──
+    async function renderMatchingSpecialists() {
+      const grid = document.getElementById("specsPickGrid");
+      grid.innerHTML = `
+        <div class="spec-skeleton-card">
+          <div class="skeleton-box spec-skeleton-avatar"></div>
+          <div class="skeleton-box spec-skeleton-line" style="width: 65%;"></div>
+          <div class="skeleton-box spec-skeleton-line" style="width: 45%;"></div>
+          <div class="skeleton-box spec-skeleton-badge"></div>
+          <div class="skeleton-box spec-skeleton-btn"></div>
+        </div>
+        <div class="spec-skeleton-card">
+          <div class="skeleton-box spec-skeleton-avatar"></div>
+          <div class="skeleton-box spec-skeleton-line" style="width: 70%;"></div>
+          <div class="skeleton-box spec-skeleton-line" style="width: 50%;"></div>
+          <div class="skeleton-box spec-skeleton-badge"></div>
+          <div class="skeleton-box spec-skeleton-btn"></div>
+        </div>
+        <div class="spec-skeleton-card">
+          <div class="skeleton-box spec-skeleton-avatar"></div>
+          <div class="skeleton-box spec-skeleton-line" style="width: 60%;"></div>
+          <div class="skeleton-box spec-skeleton-line" style="width: 40%;"></div>
+          <div class="skeleton-box spec-skeleton-badge"></div>
+          <div class="skeleton-box spec-skeleton-btn"></div>
+        </div>
+        <div class="spec-skeleton-card">
+          <div class="skeleton-box spec-skeleton-avatar"></div>
+          <div class="skeleton-box spec-skeleton-line" style="width: 75%;"></div>
+          <div class="skeleton-box spec-skeleton-line" style="width: 55%;"></div>
+          <div class="skeleton-box spec-skeleton-badge"></div>
+          <div class="skeleton-box spec-skeleton-btn"></div>
+        </div>
+      `;
+
+      try {
+        let genderParam = 'all';
+        if (bookingData.gender === 'ذكر') genderParam = 'male';
+        if (bookingData.gender === 'أنثى') genderParam = 'female';
+
+        const res = await fetch(`${API_BASE}/api/specialists?gender=${genderParam}`);
+        const data = await res.json();
+
+        let list = (data.success && data.specialists && data.specialists.length > 0)
+          ? data.specialists
+          : fallbackSpecialists;
+
+        // Filter by gender if specified
+        if (bookingData.gender === "ذكر") {
+          list = list.filter(s => s.gender === "male" || s.gender === "ذكر");
+        } else if (bookingData.gender === "أنثى") {
+          list = list.filter(s => s.gender === "female" || s.gender === "أنثى");
+        }
+
+        if (list.length === 0) {
+          list = fallbackSpecialists;
+        }
+
+        currentMatchingSpecialists = list;
+
+        // Default to first specialist if none chosen yet
+        if (!bookingData.selectedSpecialist && list.length > 0) {
+          bookingData.selectedSpecialist = list[0];
+        }
+
+        grid.innerHTML = list.map(spec => {
+          const isSelected = bookingData.selectedSpecialist && bookingData.selectedSpecialist.id === spec.id;
+          const ratingVal = spec.rating || '4.9';
+
+          return `
+            <div class="spec-card-pick ${isSelected ? 'active' : ''}" data-spec-id="${spec.id}" onclick="selectSpecificSpecialist('${spec.id}')">
+              <div class="specialist-avatar-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span class="spec-verified-badge" title="أخصائي مرخص ومعتمد">✓</span>
+              </div>
+              <h3>${spec.name}</h3>
+              <p class="specialist-title">${spec.title || 'أخصائي دعم نفسي معتمد'}</p>
+              <span class="spec-specialty-pill">${spec.specialty || spec.specialization || 'إرشاد نفسي وتعديل سلوك'}</span>
+              <div class="rating-badge">
+                <svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>${ratingVal}</span>
+                <span class="spec-sessions-count">· متاح للحجز 📅</span>
+              </div>
+              <div class="spec-card-cta-btn">
+                ${isSelected ? 'الأخصائي المختار ✓' : 'اختيار هذا الأخصائي'}
+              </div>
+            </div>
+          `;
+        }).join("");
+
+      } catch (err) {
+        // Fallback gracefully on local error
+        currentMatchingSpecialists = fallbackSpecialists.filter(s => {
+          if (bookingData.gender === "ذكر") return s.gender === "male";
+          if (bookingData.gender === "أنثى") return s.gender === "female";
+          return true;
+        });
+
+        if (!bookingData.selectedSpecialist && currentMatchingSpecialists.length > 0) {
+          bookingData.selectedSpecialist = currentMatchingSpecialists[0];
+        }
+
+        grid.innerHTML = currentMatchingSpecialists.map(spec => {
+          const isSelected = bookingData.selectedSpecialist && bookingData.selectedSpecialist.id === spec.id;
+          return `
+            <div class="spec-card-pick ${isSelected ? 'active' : ''}" data-spec-id="${spec.id}" onclick="selectSpecificSpecialist('${spec.id}')">
+              <div class="specialist-avatar-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span class="spec-verified-badge" title="أخصائي مرخص ومعتمد">✓</span>
+              </div>
+              <h3>${spec.name}</h3>
+              <p class="specialist-title">${spec.title || 'أخصائي دعم نفسي معتمد'}</p>
+              <span class="spec-specialty-pill">${spec.specialty || 'إرشاد نفسي وتعديل سلوك'}</span>
+              <div class="rating-badge">
+                <svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>${spec.rating || '4.9'}</span>
+                <span class="spec-sessions-count">· متاح للحجز 📅</span>
+              </div>
+              <div class="spec-card-cta-btn">
+                ${isSelected ? 'الأخصائي المختار ✓' : 'اختيار هذا الأخصائي'}
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+    }
+
+    function selectSpecificSpecialist(specId) {
+      const spec = currentMatchingSpecialists.find(s => s.id === specId);
+      if (!spec) return;
+
+      bookingData.selectedSpecialist = spec;
+      document.querySelectorAll(".spec-card-pick").forEach(c => {
+        const isMatch = (c.getAttribute("data-spec-id") === specId);
+        c.classList.toggle("active", isMatch);
+        const cta = c.querySelector(".spec-card-cta-btn");
+        if (cta) {
+          cta.textContent = isMatch ? "الأخصائي المختار ✓" : "اختيار هذا الأخصائي";
+        }
+      });
+      showToast(`تم اختيار ${spec.name} ✓`);
+    }
+
+    // ── STEP 4: SUMMARY & CONFIRMATION ──
+    function updateSummary() {
+      // Specialist name in summary
+      const sumSpec = document.getElementById("sumSpecialist");
+      if (bookingData.selectedSpecialist) {
+        sumSpec.innerHTML = `
+          <span style="display: inline-flex; align-items: center; gap: 6px;">
+            <img src="${bookingData.selectedSpecialist.avatar || 'assets/images/psyai.png'}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" />
+            <strong>${bookingData.selectedSpecialist.name}</strong>
+          </span>
+        `;
+      } else {
+        sumSpec.textContent = "الأخصائي المعتمد";
+      }
+
+      document.getElementById("sumCommType").textContent = "مكالمة فيديو 🎥";
+      document.getElementById("sumDuration").textContent = `${bookingData.duration} دقيقة`;
+      document.getElementById("sumAppointmentTime").textContent = `${bookingData.formattedDateStr || bookingData.bookingDay} (${bookingData.bookingTime})`;
+      document.getElementById("sumTags").textContent = bookingData.tags.length > 0 ? bookingData.tags.join("، ") : "جلسة رفاه عامة";
+      document.getElementById("sumTotalPrice").textContent = `${bookingData.price} د.أ`;
+      document.getElementById("btnConfirmAndPay").textContent = `تأكيد الحجز والدفع (${bookingData.price} د.أ) ✓`;
+    }
+
+    function selectPayMethod(method, card) {
+      bookingData.payMethod = method;
+      document.querySelectorAll(".pay-method-card").forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+
+      const cliqBox = document.getElementById("cliqDetailsBox");
+      if (cliqBox) {
+        cliqBox.style.display = (method === 'cliq') ? 'block' : 'none';
+      }
+    }
+
+    async function handleConfirmBooking() {
+      const token = localStorage.getItem("psyai_token") || localStorage.getItem("token");
+
+      // If user is not logged in, trigger the Labayh-style auth modal
+      if (!token) {
+        openAuthModal();
+        return;
+      }
+
+      // Proceed with booking creation
+      try {
+        const btn = document.getElementById("btnConfirmAndPay");
+        btn.disabled = true;
+        btn.textContent = "جاري تأكيد الحجز...";
+
+        // Specialist
+        let specialist = bookingData.selectedSpecialist;
+        if (!specialist) {
+          specialist = (currentMatchingSpecialists.length > 0) ? currentMatchingSpecialists[0] : fallbackSpecialists[0];
+        }
+
+        if (!specialist || !specialist.id) {
+          throw new Error("يرجى اختيار الأخصائي لمتابعة الحجز.");
+        }
+
+        // Calculate sessionTime from selected date and time
+        let targetDate;
+        if (bookingData.selectedDate && bookingData.selectedTime) {
+          const [hours, minutes] = bookingData.selectedTime.split(":").map(Number);
+          const [year, month, day] = bookingData.selectedDate.split("-").map(Number);
+          targetDate = new Date(year, month - 1, day, hours, minutes, 0);
+        } else {
+          targetDate = new Date();
+          targetDate.setHours(targetDate.getHours() + 2);
+        }
+
+        if (targetDate <= new Date()) {
+          showToast("يرجى اختيار موعد في المستقبل (التاريخ أو الوقت المختار قد مضى)");
+          btn.disabled = false;
+          btn.textContent = `تأكيد الحجز والدفع (${bookingData.price} د.أ) ✓`;
+          return;
+        }
+
+        const sessionTime = targetDate.toISOString();
+
+        // Validate CliQ transfer inputs if CliQ is chosen
+        let cliqInfoStr = "بطاقة بنكية";
+        if (bookingData.payMethod === 'cliq') {
+          const cliqSender = document.getElementById("cliqSenderName")?.value?.trim() || "";
+          const cliqRef = document.getElementById("cliqRefNumber")?.value?.trim() || "";
+          if (!cliqSender || !cliqRef) {
+            showToast("يرجى إدخال اسم المحوّل والرقم المرجعي للتحويل في بنكك");
+            const targetInput = !cliqSender ? document.getElementById("cliqSenderName") : document.getElementById("cliqRefNumber");
+            if (targetInput) {
+              targetInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              targetInput.focus();
+              targetInput.style.borderColor = '#ef4444';
+              setTimeout(() => { targetInput.style.borderColor = ''; }, 2500);
+            }
+            btn.disabled = false;
+            btn.textContent = `تأكيد الحجز والدفع (${bookingData.price} د.أ) ✓`;
+            return;
+          }
+          cliqInfoStr = `CliQ (المحوّل: ${cliqSender} · مرجع: ${cliqRef})`;
+        }
+
+        const bookingPayload = {
+          specialistId: specialist.id,
+          sessionTime: sessionTime,
+          condition: bookingData.tags.join(", ") || "جلسة رفاه عامة",
+          notes: `الأخصائي: ${specialist.name} · الموعد: ${bookingData.formattedDateStr || bookingData.bookingDay} (${bookingData.bookingTime}) · وسيلة الدفع: ${cliqInfoStr} · طريقة التواصل: مكالمة فيديو · تفاصيل: ${bookingData.description || 'لا توجد ملاحظات إضافية'}`
+        };
+
+        const res = await fetch(`${API_BASE}/api/bookings`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(bookingPayload)
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || "فشل تأكيد الحجز");
+        }
+
+        showToast(`تم تأكيد حجز جلستك مع ${specialist.name} بنجاح! سيصلك رابط الجلسة في حسابك.`);
+        setTimeout(() => {
+          switchToTab("appointments");
+        }, 1300);
+
+      } catch (err) {
+        showToast(err.message || "حدث خطأ أثناء الحجز");
+      } finally {
+        const btn = document.getElementById("btnConfirmAndPay");
+        btn.disabled = false;
+        btn.textContent = `تأكيد الحجز والدفع (${bookingData.price} د.أ) ✓`;
+      }
+    }
+
+    // ── MY APPOINTMENTS ──
+    async function loadMyAppointments() {
+      const token = localStorage.getItem("psyai_token") || localStorage.getItem("token");
+      const emptyBox = document.getElementById("emptyStateBox");
+      const list = document.getElementById("appointmentsList");
+
+      if (!token) {
+        emptyBox.style.display = "block";
+        list.style.display = "none";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/api/bookings/my`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success && data.bookings && data.bookings.length > 0) {
+          emptyBox.style.display = "none";
+          list.style.display = "flex";
+
+          const headerHtml = `
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border);">
+              <span style="font-size: 0.92rem; font-weight: 700; color: var(--teal-deep);">لديك (${data.bookings.length}) مواعيد جلسات رفاه نفسي:</span>
+              <button type="button" onclick="switchToTab('instant')" style="background: var(--teal); color: #fff; border: none; padding: 7px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 0.84rem;">
+                + حجز موعد جديد
+              </button>
+            </div>
+          `;
+
+          list.innerHTML = headerHtml + data.bookings.map(b => {
+            const spec = b.specialist || {};
+            const specName = spec.name || "الأخصائي المعتمد";
+            const specTitle = spec.title || "أخصائي نفسي معتمد";
+            const specAvatar = spec.avatarUrl || spec.avatar || "assets/images/psyai.png";
+            const isConfirmed = (b.status === "confirmed");
+
+            let dateStr = "موعد محدد";
+            try {
+              dateStr = new Date(b.sessionTime).toLocaleDateString('ar-JO', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              });
+            } catch (_) {}
+
+            return `
+              <div class="app-card" style="border: 1.5px solid ${isConfirmed ? '#a7f3d0' : '#fde68a'}; background: #ffffff; border-radius: 12px; padding: 1.25rem 1.4rem; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; width: 100%;">
+                  
+                  <!-- معلومات المختص والموعد -->
+                  <div style="display: flex; align-items: center; gap: 14px;">
+                    <img src="${specAvatar}" alt="${specName}" onerror="this.src='assets/images/psyai.png'"
+                      style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border);" />
+                    <div>
+                      <h4 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--teal-deep);">${specName}</h4>
+                      <p style="margin: 3px 0 0 0; font-size: 0.82rem; color: #64748b;">${specTitle}</p>
+                      <p style="margin: 4px 0 0 0; font-size: 0.86rem; color: var(--gold-dark); font-weight: 700;">📅 ${dateStr}</p>
+                    </div>
+                  </div>
+
+                  <!-- حالة الحجز والإجراء -->
+                  <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                    ${isConfirmed ? `
+                      <span style="background: #d1fae5; color: #065f46; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;">
+                        🟢 موعد مؤكد
+                      </span>
+                      <a href="session.html?id=${b.id}" class="app-card-btn" style="background: #10b981; color: #ffffff; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 700; font-size: 0.86rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                        <span>دخول الجلسة</span>
+                        <span>🎥</span>
+                      </a>
+                    ` : `
+                      <span style="background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;">
+                        🟡 قيد مراجعة التحويل (CliQ)
+                      </span>
+                      <span style="background: #f8fafc; color: #64748b; padding: 7px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; gap: 6px;">
+                        <span>بانتظار المطابقة</span>
+                        <span>⏳</span>
+                      </span>
+                    `}
+                  </div>
+
+                </div>
+
+                <!-- إشعار طمأنة أسفل البطاقة -->
+                <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9; font-size: 0.78rem; color: #64748b; line-height: 1.5;">
+                  ${isConfirmed 
+                    ? '💡 موعدك معتمد رسمياً. سيتم إرسال تذكير ورابط الغرفة إلى تطبيق WhatsApp قبل الموعد بـ 15 دقيقة.' 
+                    : '💡 حوالتك عبر CliQ قيد المطابقة مع إشعار البنك. سيتم تأكيد الموعد وتفعيل الرابط وإشعارك عبر WhatsApp فور التحقق.'}
+                </div>
+              </div>
+            `;
+          }).join("");
+        } else {
+          emptyBox.style.display = "block";
+          list.style.display = "none";
+        }
+      } catch (_) {
+        emptyBox.style.display = "block";
+        list.style.display = "none";
+      }
+    }
+
+    // ── LABAYH-STYLE AUTH MODAL FUNCTIONS ──
+    function openAuthModal() {
+      document.getElementById("authModal").classList.add("open");
+      setModalStep(1);
+    }
+
+    function closeAuthModal() {
+      document.getElementById("authModal").classList.remove("open");
+    }
+
+    function setModalStep(stepNum) {
+      [1, 2, 3].forEach(n => {
+        const st = document.getElementById(`mStep${n}`);
+        if (n === stepNum) st.className = "m-step active";
+        else if (n < stepNum) st.className = "m-step completed";
+        else st.className = "m-step";
+      });
+
+      document.getElementById("mPanelPhone").style.display = stepNum === 1 ? "block" : "none";
+      document.getElementById("mPanelOtp").style.display = stepNum === 2 ? "block" : "none";
+      document.getElementById("mPanelProfile").style.display = stepNum === 3 ? "block" : "none";
+    }
+
+    async function handleSendOtp() {
+      const rawPhone = document.getElementById("mInputPhone").value.trim();
+      if (!rawPhone || rawPhone.length < 9) {
+        showToast("يرجى إدخال رقم هاتف أردني صحيح (079/078/077)");
+        return;
+      }
+
+      // Format clean Jordanian phone
+      let digits = rawPhone.replace(/\D/g, '');
+      if (digits.startsWith('962')) digits = digits.slice(3);
+      if (digits.startsWith('0')) digits = digits.slice(1);
+      const cleanPhone = `+962${digits}`;
+
+      pendingOtpPhone = cleanPhone;
+      document.getElementById("mSentPhone").textContent = cleanPhone;
+
+      const btn = document.getElementById("mBtnSendOtp");
+      btn.disabled = true;
+      btn.textContent = "جاري الإرسال...";
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone: cleanPhone })
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || "فشل إرسال رمز التحقق");
+        }
+
+        showToast("تم إرسال رمز التحقق إلى WhatsApp بنجاح");
+        setModalStep(2);
+
+        // Autofill in dev/simulator mode if returned
+        const otpVal = data.devOtp || data.devCode || "123456";
+        document.getElementById("mOtpCode").value = otpVal;
+        const hint = document.getElementById("mOtpDevHint");
+        if (hint) {
+          hint.style.display = "block";
+          hint.innerHTML = `💡 رمز التحقق السريع (تجريبي): <span style="font-size:1.15rem; letter-spacing:3px; color:#92400e; font-weight:800;">${otpVal}</span>`;
+        }
+      } catch (err) {
+        showToast(err.message || "تعذر إرسال رمز التحقق");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "تسجيل الدخول";
+      }
+    }
+
+    async function handleVerifyOtp() {
+      const otpCode = document.getElementById("mOtpCode").value.trim();
+      if (!otpCode || otpCode.length < 4) {
+        showToast("يرجى إدخال رمز التحقق");
+        return;
+      }
+
+      const btn = document.getElementById("mBtnVerifyOtp");
+      btn.disabled = true;
+      btn.textContent = "جاري التحقق...";
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone: pendingOtpPhone, code: otpCode })
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || "رمز التحقق غير صحيح");
+        }
+
+        if (data.token && data.user) {
+          // Existing user logged in directly!
+          localStorage.setItem("psyai_token", data.token);
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("psyai_user", JSON.stringify(data.user));
+          localStorage.setItem("user", JSON.stringify(data.user));
+
+          checkAuthBadge();
+          closeAuthModal();
+          showToast(`أهلاً بك مجدداً يا ${data.user.firstName || ''}!`);
+          handleConfirmBooking();
+        } else {
+          // New user -> show Step 3 to complete basic info
+          setModalStep(3);
+        }
+      } catch (err) {
+        showToast(err.message || "فشل التحقق من الرمز");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "تأكيد الرمز";
+      }
+    }
+
+    async function handleCompleteProfile() {
+      const firstName = document.getElementById("mFirstName").value.trim();
+      const lastName = document.getElementById("mLastName").value.trim();
+      const gender = document.getElementById("mGender").value;
+      const password = document.getElementById("mPassword").value;
+      const otpCode = document.getElementById("mOtpCode").value.trim();
+
+      if (!firstName || !lastName || !password) {
+        showToast("يرجى ملء جميع الحقول المطلوبة");
+        return;
+      }
+
+      try {
+        const regPayload = {
+          firstName,
+          lastName,
+          email: `${pendingOtpPhone.replace(/[^0-9]/g, '')}@psyai.me`,
+          phone: pendingOtpPhone,
+          gender,
+          password,
+          otpCode
+        };
+
+        const res = await fetch(`${API_BASE}/api/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(regPayload)
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || "فشل إنشاء الحساب");
+        }
+
+        localStorage.setItem("psyai_token", data.token);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("psyai_user", JSON.stringify(data.user));
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        checkAuthBadge();
+        closeAuthModal();
+        showToast("تم إنشاء الحساب بنجاح! جاري تأكيد الحجز...");
+        handleConfirmBooking();
+      } catch (err) {
+        showToast(err.message || "حدث خطأ أثناء إتمام الحساب");
+      }
+    }
+
+    // ── TOAST NOTIFICATION ──
+    let toastTimer;
+    function showToast(msg) {
+      const box = document.getElementById("toastBox");
+      document.getElementById("toastMsg").textContent = msg;
+      box.classList.add("visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.remove("visible");
+      }, 3500);
+    }
+  </script>
+</body>
+
+</html>
+

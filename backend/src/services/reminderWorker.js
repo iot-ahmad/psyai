@@ -74,8 +74,8 @@ function buildMessage(type, patientName, specialistName, sessionTime, meetingLin
  */
 async function processReminder(reminder) {
   try {
-    // Fetch full booking data with user + specialist
-    const booking = await prisma.booking.findUnique({
+    // Use eager-loaded booking from batch query if available, otherwise fetch
+    const booking = reminder.booking || await prisma.booking.findUnique({
       where: { id: reminder.bookingId },
       include: {
         user: {
@@ -179,11 +179,40 @@ async function processDueReminders() {
         status: 'pending',
         scheduledAt: { lte: now }
       },
+      include: {
+        booking: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                phoneEncrypted: true,
+                phoneHash: true
+              }
+            },
+            specialist: {
+              select: {
+                name: true,
+                user: {
+                  select: {
+                    firstName: true,
+                    phoneEncrypted: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       orderBy: { scheduledAt: 'asc' },
       take: 50  // process max 50 per tick to avoid memory spikes
     });
   } catch (err) {
-    console.error('[REMINDER] Failed to query due reminders:', err.message);
+    if (err.name === 'PrismaClientInitializationError' || err.message?.includes('database server')) {
+      console.warn('[REMINDER] قاعدة البيانات غير متصلة (PostgreSQL غير متاح على منفذ 5432) — تم تخطي فحص التذكيرات.');
+    } else {
+      console.error('[REMINDER] Failed to query due reminders:', err.message);
+    }
     return;
   }
 

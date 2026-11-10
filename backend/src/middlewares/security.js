@@ -21,30 +21,46 @@ const corsConfig = cors({
 });
 
 /**
- * Rate limiter for OTP generation (Section 4: Max 3 requests per phone/IP per hour)
+ * Sliding Window In-Memory Store with Redis-ready Interface (AUTH-202)
+ * Supports compound keys: IP + identifier hash
+ */
+function createCompoundKeyGenerator(prefix = 'rl') {
+  return (req) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || req.ip || '127.0.0.1';
+    const cleanIp = Array.isArray(ip) ? ip[0] : ip.split(',')[0].trim();
+    const identifier = req.body?.phone || req.body?.email || req.body?.identifier || '';
+    const idHash = identifier ? require('crypto').createHash('sha256').update(identifier).digest('hex').slice(0, 16) : 'anon';
+    return `${prefix}:${cleanIp}:${idHash}`;
+  };
+}
+
+/**
+ * Rate limiter for OTP generation (AUTH-202: compound key + sliding window)
  */
 const otpRateLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 3,
+  windowMs: 10 * 60 * 1000,
+  max: 5,
+  keyGenerator: createCompoundKeyGenerator('otp'),
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     success: false,
-    message: 'تم تجاوز الحد المسموح لطلب رموز التحقق (٣ محاولات في الساعة). يرجى الانتظار للحماية.'
+    message: 'تم تجاوز الحد المسموح لطلب رموز التحقق. يرجى الانتظار ١٠ دقائق للحماية.'
   }
 });
 
 /**
- * Rate limiter for Login attempts (Section 3: Max 5 attempts per 10 minutes per IP)
+ * Rate limiter for Login attempts (AUTH-202: compound key IP + identifier hash)
  */
 const loginRateLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000,
+  windowMs: 15 * 60 * 1000,
   max: 5,
+  keyGenerator: createCompoundKeyGenerator('login'),
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     success: false,
-    message: 'تم تسجيل محاولات دخول متكررة غير ناجحة. يرجى الانتظار ١٠ دقائق للحماية.'
+    message: 'تم تسجيل محاولات دخول متكررة غير ناجحة. يرجى الانتظار ١٥ دقيقة للحماية.'
   }
 });
 
@@ -98,7 +114,7 @@ function webhookIpFilter(req, res, next) {
     });
   }
 
-  next;
+  // TASK-023 FIX: invoke next() cleanly
   return next();
 }
 

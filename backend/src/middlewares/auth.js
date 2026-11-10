@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const prisma = require('../config/db');
+const EncryptionService = require('../services/encryptionService');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'psyai_super_secret_jwt_key_2025_wellness_platform_987654';
 
@@ -7,6 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'psyai_super_secret_jwt_key_2025_we
  * Verify JWT Token from Authorization Header, Cookie or custom header
  * Section 2: Enforces Restricted Token isolation (scope: ['verify-otp'] cannot access protected endpoints)
  * Section 5: Enforces immediate session revocation via tokenVersion
+ * AUTH-004: جلب الحقول المشفرة ثم فك تشفيرها قبل الحقن في req.user
  */
 async function protect(req, res, next) {
   let token;
@@ -32,7 +34,6 @@ async function protect(req, res, next) {
     // Section 2: Scoped Restricted Token enforcement
     if (decoded.scope && Array.isArray(decoded.scope)) {
       if (decoded.scope.includes('verify-otp') && !decoded.scope.includes('full_access')) {
-        // Restricted Token is strictly forbidden from accessing full endpoints
         return res.status(403).json({
           success: false,
           code: 'RESTRICTED_TOKEN_UNAUTHORIZED',
@@ -47,8 +48,8 @@ async function protect(req, res, next) {
         id: true,
         firstName: true,
         lastName: true,
-        email: true,
-        phone: true,
+        emailEncrypted: true,
+        phoneEncrypted: true,
         gender: true,
         role: true,
         status: true,
@@ -74,7 +75,7 @@ async function protect(req, res, next) {
       });
     }
 
-    req.user = user;
+    req.user = EncryptionService.decryptUserFields(user);
     next();
   } catch (err) {
     return res.status(401).json({

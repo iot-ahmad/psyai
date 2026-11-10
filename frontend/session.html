@@ -1,14 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <script src="assets/js/env.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="منصة PsyAI — غرفة الدخول الآمن للجلسة الاستشارية." />
   <title>غرفة الاستشارة النفسية — PsyAI</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@300;400;500;600;700&family=Open+Sans:wght@400..800&display=swap" rel="stylesheet" />
 
   <style>
     :root {
@@ -345,7 +346,7 @@
   </div>
 
   <script>
-    const API_BASE = localStorage.getItem('psyai_api_url') || 'http://localhost:5000';
+    const API_BASE = (typeof window !== 'undefined' && window.PSYAI_API_BASE) || localStorage.getItem('psyai_api_url') || 'http://localhost:5000';
 
     document.addEventListener('DOMContentLoaded', async () => {
       const params = new URLSearchParams(window.location.search);

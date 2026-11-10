@@ -14,8 +14,15 @@ function getSavedApiBase() {
   }
 }
 
-/** Base URL of the backend API. Overridable at runtime for staging/production. */
-export const API_BASE = getSavedApiBase() || 'http://localhost:5000';
+/**
+ * Base URL of the backend API. Resolved centrally by assets/js/env.js
+ * (meta tag → localStorage override → local dev → production constant).
+ * The fallback below only applies when env.js is not loaded (e.g. unit tests).
+ */
+export const API_BASE =
+  (typeof window !== 'undefined' && typeof window.PSYAI_API_BASE === 'string')
+    ? window.PSYAI_API_BASE
+    : (getSavedApiBase() || 'http://localhost:5000');
 
 /** localStorage keys used to persist the session. */
 export const STORAGE_KEYS = Object.freeze({
@@ -48,8 +55,6 @@ export const SPECIALISTS_PAGE = 'specialists.html';
 export const OTP = Object.freeze({
   LENGTH: 6,
   RESEND_SECONDS: 60,
-  /** Fallback code used when the backend is unreachable (offline demo mode). */
-  OFFLINE_CODE: '123456',
 });
 
 /** Simulated network latency before redirecting, in ms. */

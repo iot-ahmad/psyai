@@ -6,12 +6,17 @@ const prisma = require('../config/db');
  */
 async function getSpecialists(req, res, next) {
   try {
-    const { category, gender, search } = req.query;
+    const { category, gender, search, page: rawPage, limit: rawLimit } = req.query;
 
-    const where = { status: 'active' };
+    const where = { isAvailable: true };
 
-    if (gender && gender !== 'all' && gender !== 'any') {
-      where.gender = gender;
+    if (gender && gender !== 'all' && gender !== 'any' && gender !== 'الجميع') {
+      const gNorm = (gender === 'ذكر' || gender === 'male') ? 'male' : (gender === 'أنثى' || gender === 'female') ? 'female' : gender;
+      where.gender = gNorm;
+    }
+
+    if (category) {
+      where.specialty = { contains: category };
     }
 
     if (search) {
@@ -22,10 +27,35 @@ async function getSpecialists(req, res, next) {
       ];
     }
 
-    const specialists = await prisma.specialist.findMany({
-      where,
-      orderBy: { rating: 'desc' }
-    });
+    const page = rawPage ? Math.max(1, parseInt(rawPage, 10) || 1) : null;
+    const limit = rawLimit ? Math.min(100, Math.max(1, parseInt(rawLimit, 10) || 20)) : null;
+    const skip = (page && limit) ? (page - 1) * limit : undefined;
+    const take = limit || undefined;
+
+    // Parallel execution for total count and selective column projection
+    const [total, specialists] = await Promise.all([
+      prisma.specialist.count({ where }),
+      prisma.specialist.findMany({
+        where,
+        select: {
+          id: true,
+          name: true,
+          title: true,
+          specialty: true,
+          avatar: true,
+          avatarUrl: true,
+          price: true,
+          rating: true,
+          isFeatured: true,
+          gender: true,
+          expYears: true,
+          isAvailable: true
+        },
+        orderBy: { rating: 'desc' },
+        skip,
+        take
+      })
+    ]);
 
     // Provide default time slots for frontend booking
     const defaultSlots = [
@@ -43,7 +73,10 @@ async function getSpecialists(req, res, next) {
 
     res.status(200).json({
       success: true,
+      total,
       count: mapped.length,
+      page: page || 1,
+      totalPages: limit ? Math.ceil(total / limit) : 1,
       specialists: mapped
     });
   } catch (err) {

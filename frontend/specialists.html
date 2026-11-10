@@ -2,9 +2,10 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
+    <script src="assets/js/env.js"></script>
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+      content="width=device-width, initial-scale=1.0"
     />
     <meta
       name="description"
@@ -14,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@100;200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@300;400;500;600;700&family=Open+Sans:wght@400..800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css?v=20261019" />
@@ -24,90 +25,8 @@
       body {
         background-color: var(--cream);
         color: var(--teal-deep);
-        font-family: "Cairo", sans-serif;
+        font-family: var(--font-primary);
         overflow-x: hidden;
-      }
-
-      /* Top Category Pills Carousel */
-      .category-carousel-wrapper {
-        background: #ffffff;
-        border-bottom: 1px solid var(--border);
-        position: sticky;
-        top: 80px;
-        z-index: 90;
-        padding: 0.85rem 0;
-        box-shadow: 0 4px 16px rgba(26, 46, 47, 0.04);
-      }
-
-      .carousel-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        position: relative;
-      }
-
-      .carousel-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 1px solid var(--border);
-        background: var(--teal-pale);
-        color: var(--teal-deep);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        flex-shrink: 0;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-        transition: all 0.25s ease;
-      }
-
-      .carousel-btn:hover {
-        background: var(--teal-deep);
-        color: var(--gold-light);
-        border-color: var(--teal-deep);
-      }
-
-      .category-pills {
-        display: flex;
-        gap: 10px;
-        overflow-x: auto;
-        scroll-behavior: smooth;
-        scrollbar-width: none;
-        padding: 4px 0;
-        flex-grow: 1;
-      }
-
-      .category-pills::-webkit-scrollbar {
-        display: none;
-      }
-
-      .pill-item {
-        white-space: nowrap;
-        padding: 8px 20px;
-        border-radius: 50px;
-        background: var(--teal-pale);
-        color: var(--teal-deep);
-        font-family: "Cairo", sans-serif;
-        font-size: 0.88rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.25s ease;
-        border: 1.5px solid transparent;
-        user-select: none;
-      }
-
-      .pill-item:hover {
-        background: rgba(122, 179, 183, 0.25);
-        color: var(--teal-dark);
-      }
-
-      .pill-item.active {
-        background: var(--teal-deep);
-        color: var(--gold-light);
-        border-color: var(--gold);
-        font-weight: 700;
-        box-shadow: 0 4px 12px rgba(26, 46, 47, 0.15);
       }
 
       /* Hero Banner */
@@ -126,7 +45,7 @@
       }
 
       .specialists-hero-banner h1 {
-        font-family: "Tajawal", sans-serif;
+        font-family: var(--font-heading);
         font-size: clamp(1.8rem, 3.5vw, 2.8rem);
         font-weight: 900;
         margin-bottom: 0.6rem;
@@ -135,7 +54,7 @@
       }
 
       .specialists-hero-banner p {
-        font-family: "Cairo", sans-serif;
+        font-family: var(--font-primary);
         font-size: 1rem;
         color: rgba(255, 255, 255, 0.85);
         max-width: 600px;
@@ -143,142 +62,268 @@
         animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.3s both;
       }
 
-      /* Main Section Layout: Sidebar + Grid */
+      /* Main Section Layout */
       .specialists-page-container {
-        padding: 2rem 0 4rem;
+        padding: 2.5rem 0 4.5rem;
       }
 
-      .layout-grid {
-        display: grid;
-        grid-template-columns: 290px 1fr;
-        gap: 2rem;
-        align-items: start;
+      /* ==========================================================================
+         TOP INTEGRATED FILTER BAR (Modern Healthcare UX)
+         ========================================================================== */
+      .spec-filter-wrapper {
+        margin-bottom: 2.25rem;
       }
 
-      /* Sidebar Filters */
-      .filter-sidebar {
+      .spec-filter-bar {
         background: #ffffff;
         border: 1px solid var(--border);
         border-radius: 1.25rem;
-        padding: 1.5rem;
+        padding: 1rem 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        flex-wrap: wrap;
         box-shadow: 0 4px 20px rgba(26, 46, 47, 0.05);
-        position: sticky;
-        top: 155px;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
       }
 
-      .filter-title {
-        font-family: "Tajawal", sans-serif;
-        font-size: 1.1rem;
-        font-weight: 800;
-        margin-bottom: 1.25rem;
+      .spec-filter-bar:focus-within {
+        box-shadow: 0 8px 30px rgba(26, 46, 47, 0.08);
+        border-color: rgba(122, 179, 183, 0.45);
+      }
+
+      /* Search box */
+      .filter-search-box {
+        position: relative;
+        flex: 1 1 280px;
+        display: flex;
+        align-items: center;
+      }
+
+      .filter-search-box .search-svg {
+        position: absolute;
+        right: 14px;
+        color: var(--teal-light);
+        pointer-events: none;
+        transition: color 0.2s ease;
+      }
+
+      .filter-search-box input {
+        width: 100%;
+        padding: 11px 44px 11px 36px;
+        border-radius: 12px;
+        border: 1.5px solid var(--border);
+        background: var(--cream);
+        font-family: var(--font-primary);
+        font-size: 0.92rem;
+        color: var(--teal-deep);
+        outline: none;
+        transition: all 0.25s ease;
+      }
+
+      .filter-search-box input:focus {
+        background: #ffffff;
+        border-color: var(--teal-light);
+        box-shadow: 0 0 0 3px rgba(122, 179, 183, 0.2);
+      }
+
+      .clear-search-btn {
+        position: absolute;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.06);
+        border: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        color: #64748b;
+        font-size: 0.75rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+
+      .clear-search-btn:hover {
+        background: rgba(0, 0, 0, 0.12);
+        color: #1e293b;
+      }
+
+      /* Specialty select group */
+      .filter-select-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 0 1 auto;
+      }
+
+      .filter-select-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--teal-deep);
+        white-space: nowrap;
+      }
+
+      .spec-select {
+        padding: 10px 34px 10px 14px;
+        border-radius: 12px;
+        border: 1.5px solid var(--border);
+        background: var(--cream) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23264446' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 12px center;
+        font-family: var(--font-primary);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--teal-deep);
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        transition: all 0.25s ease;
+        min-width: 200px;
+      }
+
+      .spec-select:focus {
+        background-color: #ffffff;
+        border-color: var(--teal-light);
+        box-shadow: 0 0 0 3px rgba(122, 179, 183, 0.2);
+      }
+
+      /* Gender segmented control */
+      .filter-segmented-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .segmented-label {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--teal-deep);
+        white-space: nowrap;
+      }
+
+      .gender-segmented-control {
+        display: inline-flex;
+        background: var(--teal-pale);
+        border-radius: 12px;
+        padding: 3px;
+        gap: 3px;
+        border: 1px solid var(--border);
+      }
+
+      .segment-btn {
+        background: transparent;
+        border: none;
+        padding: 7px 14px;
+        border-radius: 9px;
+        font-family: var(--font-primary);
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--teal-deep);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+      }
+
+      .segment-btn:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.6);
+        color: var(--teal-dark);
+      }
+
+      .segment-btn.active {
+        background: #ffffff;
+        color: var(--teal-deep);
+        box-shadow: 0 2px 8px rgba(26, 46, 47, 0.1);
+      }
+
+      /* Reset button */
+      .btn-reset-top {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        background: transparent;
+        border: 1.5px dashed var(--border);
+        border-radius: 12px;
+        font-family: var(--font-primary);
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        margin-right: auto;
+      }
+
+      .btn-reset-top:hover {
+        background: var(--teal-pale);
+        border-color: var(--teal-light);
+        color: var(--teal-deep);
+      }
+
+      /* Meta Bar (counts & active tags) */
+      .filter-meta-bar {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin-top: 0.9rem;
+        padding: 0 0.5rem;
+        font-size: 0.88rem;
+        color: #64748b;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .results-count-text strong {
         color: var(--teal-deep);
-        border-bottom: 2px solid var(--teal-pale);
-        padding-bottom: 0.75rem;
+        font-weight: 800;
       }
 
-      .filter-group {
-        margin-bottom: 1.5rem;
-        padding-bottom: 1.25rem;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .filter-group:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-      }
-
-      .filter-label {
-        font-family: "Tajawal", sans-serif;
-        font-size: 0.92rem;
-        font-weight: 700;
-        margin-bottom: 0.75rem;
-        display: block;
-        color: var(--teal-deep);
-      }
-
-      .search-input-wrap {
-        position: relative;
-      }
-
-      .search-input-wrap input {
-        width: 100%;
-        padding: 12px 14px 12px 40px;
-        border-radius: 12px;
-        border: 1.5px solid var(--border);
-        font-size: 0.9rem;
-        outline: none;
-        transition: all 0.25s ease;
-        font-family: "Cairo", sans-serif;
-        background: #ffffff;
-        color: var(--teal-deep);
-      }
-
-      .search-input-wrap input:focus {
-        border-color: var(--teal-light);
-        box-shadow: 0 0 0 3px rgba(122, 179, 183, 0.25);
-      }
-
-      .search-icon {
-        position: absolute;
-        left: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--teal-light);
-      }
-
-      .filter-options {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .filter-option-label {
+      .active-chips {
         display: flex;
         align-items: center;
-        gap: 10px;
-        font-size: 0.88rem;
-        color: var(--gray-text);
-        cursor: pointer;
-        user-select: none;
-        font-family: "Cairo", sans-serif;
+        gap: 6px;
+        flex-wrap: wrap;
       }
 
-      .filter-option-label input[type="radio"],
-      .filter-option-label input[type="checkbox"] {
-        width: 18px;
-        height: 18px;
-        accent-color: var(--teal-dark);
-        cursor: pointer;
-      }
-
-      .btn-reset-filters {
-        width: 100%;
-        padding: 10px;
-        background: var(--teal-pale);
+      .active-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #ffffff;
         color: var(--teal-deep);
         border: 1px solid var(--border);
-        border-radius: 50px;
-        font-family: "Tajawal", sans-serif;
+        border-radius: 8px;
+        padding: 3px 10px;
+        font-size: 0.78rem;
         font-weight: 700;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      }
+
+      .active-chip button {
+        background: none;
+        border: none;
+        color: #94a3b8;
         cursor: pointer;
-        font-size: 0.88rem;
-        transition: all 0.25s ease;
+        font-size: 0.85rem;
+        line-height: 1;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
       }
 
-      .btn-reset-filters:hover {
-        background: var(--teal-deep);
-        color: var(--gold-light);
+      .active-chip button:hover {
+        color: #ef4444;
       }
 
-      /* Specialist Cards Grid */
+      /* Specialist Cards Grid (Full Container Width) */
       .specialists-cards-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 1.75rem;
+        width: 100%;
       }
 
       .psyai-spec-card {
@@ -332,7 +377,7 @@
       }
 
       .specialist-name {
-        font-family: "Tajawal", sans-serif;
+        font-family: var(--font-heading);
         font-size: 1.25rem;
         font-weight: 800;
         color: var(--teal-deep);
@@ -340,7 +385,7 @@
       }
 
       .specialist-role {
-        font-family: "Cairo", sans-serif;
+        font-family: var(--font-primary);
         font-size: 0.92rem;
         color: #64748b;
         font-weight: 500;
@@ -360,7 +405,7 @@
         font-weight: 800;
         color: var(--teal-deep);
         margin-bottom: 1rem;
-        font-family: "Cairo", sans-serif;
+        font-family: var(--font-primary);
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
       }
 
@@ -394,7 +439,7 @@
         cursor: pointer;
         white-space: nowrap;
         transition: all 0.2s ease;
-        font-family: "Cairo", sans-serif;
+        font-family: var(--font-primary);
       }
 
       .slot-btn:hover {
@@ -410,7 +455,7 @@
         color: #ffffff;
         border: none;
         border-radius: 50px;
-        font-family: "Tajawal", sans-serif;
+        font-family: var(--font-heading);
         font-weight: 800;
         font-size: 0.95rem;
         cursor: pointer;
@@ -429,24 +474,43 @@
 
       /* Responsive Breakpoints */
       @media (max-width: 992px) {
-        .layout-grid {
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
+        .spec-filter-bar {
+          gap: 1rem;
+          padding: 1rem;
         }
 
-        .filter-sidebar {
-          position: relative;
-          top: 0;
-          margin-bottom: 1rem;
+        .filter-search-box {
+          flex: 1 1 100%;
         }
 
-        .category-carousel-wrapper {
-          position: relative;
-          top: 0;
+        .filter-select-group {
+          flex: 1 1 calc(50% - 0.5rem);
+        }
+
+        .spec-select {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .filter-segmented-group {
+          flex: 1 1 calc(50% - 0.5rem);
+          justify-content: flex-end;
+        }
+
+        .btn-reset-top {
+          margin-right: 0;
+          width: 100%;
+          justify-content: center;
         }
       }
 
       @media (max-width: 640px) {
+        .filter-select-group,
+        .filter-segmented-group {
+          flex: 1 1 100%;
+          justify-content: space-between;
+        }
+
         .specialists-cards-grid {
           grid-template-columns: 1fr;
           gap: 1.25rem;
@@ -462,6 +526,25 @@
         }
 
         .specialist-name {
+          font-size: 1.15rem;
+        }
+
+        .modal-box {
+          max-height: 95vh;
+          padding: 1.5rem 1rem;
+          border-radius: 1.25rem;
+        }
+
+        .profile-modal-header {
+          gap: 0.9rem;
+        }
+
+        .profile-modal-avatar {
+          width: 64px;
+          height: 64px;
+        }
+
+        .profile-modal-info h2 {
           font-size: 1.15rem;
         }
       }
@@ -505,6 +588,74 @@
         transform: translateY(0);
       }
 
+      /* ── Booking Wizard (Labayh-style flow, PsyAI identity) ── */
+      #detailModalBox { max-width: 600px; padding-bottom: 0; }
+      .bk-stepper { display: flex; align-items: center; gap: 8px; margin: 0.5rem 0 1.4rem; }
+      .bk-step { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #94a3b8; white-space: nowrap; }
+      .bk-step-num { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: #f1f5f9; color: #94a3b8; font-size: 0.8rem; font-weight: 700; transition: all .25s; }
+      .bk-step.active { color: var(--teal-deep); }
+      .bk-step.active .bk-step-num { background: var(--teal-deep); color: var(--gold-light, #f0d78c); }
+      .bk-step.done .bk-step-num { background: var(--gold, #d4a843); color: #fff; }
+      .bk-step-line { flex: 1; height: 2px; background: #e2e8f0; border-radius: 2px; min-width: 16px; }
+      .bk-panel { display: none; animation: bkIn .3s ease; }
+      .bk-panel.active { display: block; }
+      @keyframes bkIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+      .bk-label { font-weight: 700; color: var(--teal-deep); font-size: 0.95rem; margin: 1.1rem 0 0.6rem; display: block; }
+      .bk-label-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+      .bk-about { background: var(--teal-pale); border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.88rem; }
+      .bk-about summary { cursor: pointer; font-weight: 600; color: var(--teal-deep); }
+      .bk-about .profile-section-text { margin: 0.6rem 0 0; }
+      .bk-type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .bk-type, .bk-dur { font-family: inherit; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 0.9rem 0.5rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--teal-deep); transition: all .2s; }
+      .bk-type small, .bk-dur small { color: #64748b; font-size: 0.75rem; }
+      .bk-type:hover, .bk-dur:hover { border-color: var(--gold, #d4a843); }
+      .bk-type.active, .bk-dur.active { border-color: var(--teal-deep); background: var(--teal-pale); box-shadow: 0 0 0 3px rgba(212,168,67,.18); }
+      .bk-type svg { color: var(--gold, #b8860b); }
+      .bk-duration-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .bk-dur strong { font-size: 1rem; }
+      .bk-dur .bk-price { color: var(--teal-deep); font-weight: 700; font-size: 0.85rem; }
+      .bk-web-note, .bk-tz-note { font-size: 0.8rem; color: #64748b; margin: 1rem 0 0.5rem; line-height: 1.7; }
+      .bk-nearest { font-family: inherit; border: 1px dashed var(--gold, #d4a843); background: rgba(212,168,67,.08); color: #8a6414; border-radius: 10px; padding: 6px 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer; margin-top: .6rem; }
+      .bk-days-wrap { overflow-x: auto; margin: 0 -4px; padding: 2px 4px 8px; scrollbar-width: thin; }
+      .bk-days { display: flex; gap: 8px; }
+      .bk-day { font-family: inherit; flex: 0 0 64px; border: 1.5px solid #e2e8f0; background: #fff; border-radius: 14px; padding: 8px 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--teal-deep); transition: all .2s; }
+      .bk-day small { font-size: 0.72rem; color: #64748b; }
+      .bk-day strong { font-size: 1.15rem; }
+      .bk-day .bk-dot { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; }
+      .bk-day.full { opacity: .45; cursor: not-allowed; }
+      .bk-day.full .bk-dot { background: #cbd5e1; }
+      .bk-day.active { background: var(--teal-deep); border-color: var(--teal-deep); color: #fff; }
+      .bk-day.active small { color: var(--gold-light, #f0d78c); }
+      .bk-slots-area .bk-period { font-size: 0.82rem; font-weight: 700; color: #64748b; margin: 1rem 0 0.5rem; }
+      .bk-slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+      .bk-slot { font-family: inherit; border: 1.5px solid #e2e8f0; background: #fff; border-radius: 10px; padding: 9px 0; font-weight: 600; font-size: 0.88rem; color: var(--teal-deep); cursor: pointer; transition: all .2s; direction: rtl; }
+      .bk-slot:hover:not(:disabled) { border-color: var(--gold, #d4a843); }
+      .bk-slot.active { background: var(--teal-deep); color: var(--gold-light, #f0d78c); border-color: var(--teal-deep); }
+      .bk-slot:disabled { text-decoration: line-through; color: #cbd5e1; cursor: not-allowed; background: #f8fafc; }
+      .bk-empty { text-align: center; padding: 1.5rem; color: #64748b; font-size: 0.9rem; background: #f8fafc; border-radius: 12px; margin-top: 1rem; }
+      .bk-summary { background: var(--teal-pale); border-radius: 14px; padding: 1rem 1.1rem; }
+      .bk-sum-row { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; font-size: 0.9rem; border-bottom: 1px dashed rgba(26,46,47,.12); }
+      .bk-sum-row:last-child { border-bottom: 0; }
+      .bk-sum-row span { color: #64748b; }
+      .bk-sum-row strong { color: var(--teal-deep); text-align: left; }
+      .bk-sum-edit { font-family: inherit; background: none; border: 0; color: #8a6414; font-size: .78rem; cursor: pointer; text-decoration: underline; margin-inline-start: 6px; }
+      .bk-notes { width: 100%; font-family: inherit; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; font-size: 0.9rem; resize: vertical; }
+      .bk-notes:focus { outline: none; border-color: var(--teal-deep); }
+      .bk-footer { position: sticky; bottom: 0; background: #fff; margin: 1rem -1.5rem 0; padding: 0.9rem 1.5rem 1.2rem; border-top: 1px solid #eef2f6; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .bk-total small { display: block; color: #64748b; font-size: 0.75rem; }
+      .bk-total strong { color: var(--teal-deep); font-size: 1.15rem; }
+      .bk-actions { display: flex; gap: 8px; flex: 1; justify-content: flex-end; }
+      .bk-actions .btn-book-now { width: auto; margin: 0; padding: 12px 20px; }
+      .bk-actions .btn-book-now:disabled { opacity: .5; cursor: not-allowed; }
+      .bk-back { font-family: inherit; background: #fff; border: 1.5px solid #e2e8f0; color: var(--teal-deep); border-radius: 12px; padding: 0 16px; font-weight: 600; cursor: pointer; }
+      @media (max-width: 520px) {
+        .bk-step span:not(.bk-step-num) { display: none; }
+        .bk-type-grid { gap: 6px; }
+        .bk-type small { display: none; }
+        .bk-footer { margin: 1rem -1rem 0; padding: 0.8rem 1rem 1rem; }
+        .bk-actions .btn-book-now { padding: 11px 14px; font-size: .88rem; }
+      }
+
       .modal-close {
         position: absolute;
         top: 1.25rem;
@@ -546,7 +697,7 @@
       }
 
       .profile-modal-info h2 {
-        font-family: "Tajawal", sans-serif;
+        font-family: var(--font-heading);
         font-size: 1.3rem;
         font-weight: 800;
         color: var(--teal-deep);
@@ -559,7 +710,7 @@
       }
 
       .profile-section-title {
-        font-family: "Tajawal", sans-serif;
+        font-family: var(--font-heading);
         font-size: 1.05rem;
         font-weight: 800;
         color: var(--teal-deep);
@@ -597,6 +748,8 @@
           <nav class="nav desktop-nav">
             <a href="index.html" class="nav-link">الرئيسية</a>
             <a href="specialists.html" class="nav-link active">المختصين</a>
+            <a href="book-instant.html" class="nav-link" style="color: var(--gold); font-weight: 700;">⚡ حجز فوري</a>
+            <a href="book-instant.html?view=appointments" class="nav-link">مواعيدي</a>
             <a href="business.html" class="nav-link">PsyAI الأعمال</a>
 
             <a href="blog.html" class="nav-link">المدونة</a>
@@ -651,10 +804,12 @@
       <nav class="mobile-nav" id="mobileNav">
         <a href="index.html" class="nav-link">الرئيسية</a>
         <a href="specialists.html" class="nav-link active">المختصين</a>
+        <a href="book-instant.html" class="nav-link" style="color: var(--gold); font-weight: 700;">📅 حجز موعد استشارة</a>
+        <a href="book-instant.html?view=appointments" class="nav-link">مواعيدي</a>
         <a href="business.html" class="nav-link">PsyAI الأعمال</a>
 
         <a href="blog.html" class="nav-link">المدونة</a>
-        <a href="login.html" class="btn btn-gold">احجز جلستك</a>
+        <a href="book-instant.html" class="btn btn-gold">احجز جلستك الآن</a>
       </nav>
     </header>
 
@@ -666,146 +821,144 @@
           نخبة من أخصائيي ومستشاري الدعم النفسي لمساعدتك في رحلة تعزيز الرفاه
           النفسي
         </p>
+        <a href="book-instant.html" style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #1a2e2f; font-weight: 800; padding: 10px 24px; border-radius: 9999px; text-decoration: none; margin-top: 14px; box-shadow: 0 4px 14px rgba(212,168,67,0.35);">
+          <span>📅 احجز موعد استشارة مع أخصائيك</span>
+          <span>←</span>
+        </a>
       </div>
     </section>
-
-    <!-- Top Category Filter Pills Carousel -->
-    <div class="category-carousel-wrapper">
-      <div class="container carousel-container">
-        <button class="carousel-btn" id="slideRight" aria-label="يمين">
-          <svg
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
-
-        <div class="category-pills" id="categoryPills">
-          <div class="pill-item active" data-category="all">الكل</div>
-          <div class="pill-item" data-category="أخصائي دعم نفسي">
-            أخصائي دعم نفسي
-          </div>
-          <div class="pill-item" data-category="إدارة الضغوط">
-            إدارة الضغوط والتحديات
-          </div>
-          <div class="pill-item" data-category="إرشاد نفسي">
-            الإرشاد النفسي والسلوكي
-          </div>
-          <div class="pill-item" data-category="قلق وتوتر">
-            القلق والتوازن العاطفي
-          </div>
-        </div>
-
-        <button class="carousel-btn" id="slideLeft" aria-label="يسار">
-          <svg
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
-      </div>
-    </div>
 
     <!-- Page Main Section -->
     <main class="specialists-page-container">
       <div class="container">
-        <div class="layout-grid">
-          <!-- Right Sidebar (Filters) -->
-          <aside class="filter-sidebar">
-            <div class="filter-title">
-              <span>تصفية المختصين</span>
+        <!-- Top Integrated Filter Bar -->
+        <div class="spec-filter-wrapper">
+          <div class="spec-filter-bar">
+            <!-- 1. Search Box -->
+            <div class="filter-search-box">
               <svg
-                viewBox="0 0 24 24"
+                class="search-svg"
                 width="18"
                 height="18"
+                viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="ابحث باسم المختص أو التخصص..."
+                autocomplete="off"
+              />
+              <button
+                type="button"
+                id="clearSearchBtn"
+                class="clear-search-btn"
+                title="مسح البحث"
+                style="display: none"
+              >
+                ✕
+              </button>
             </div>
 
-            <!-- Search Input -->
-            <div class="filter-group">
-              <label class="filter-label">ابحث عن مختص دعم نفسي</label>
-              <div class="search-input-wrap">
-                <input
-                  type="text"
-                  id="searchInput"
-                  placeholder="اسم المختص..."
-                />
-                <span class="search-icon">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                </span>
+            <!-- 2. Specialty Selector -->
+            <div class="filter-select-group">
+              <label class="filter-select-label" for="categorySelect">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M4 6h16M7 12h10M10 18h4" />
+                </svg>
+                <span>مجال الدعم:</span>
+              </label>
+              <select id="categorySelect" class="spec-select">
+                <option value="all">كافة مجالات الدعم</option>
+                <option value="أخصائي دعم نفسي">أخصائي دعم نفسي عام</option>
+                <option value="إدارة الضغوط">إدارة الضغوط والتحديات</option>
+                <option value="إرشاد نفسي">الإرشاد النفسي والسلوكي</option>
+                <option value="قلق وتوتر">القلق والتوازن العاطفي</option>
+              </select>
+            </div>
+
+            <!-- 3. Gender Segmented Control -->
+            <div class="filter-segmented-group">
+              <span class="segmented-label">الجنس:</span>
+              <div
+                class="gender-segmented-control"
+                role="radiogroup"
+                aria-label="تصفية حسب الجنس"
+              >
+                <button
+                  type="button"
+                  class="segment-btn active"
+                  data-gender="all"
+                >
+                  الكل
+                </button>
+                <button
+                  type="button"
+                  class="segment-btn"
+                  data-gender="female"
+                >
+                  أخصائية
+                </button>
+                <button
+                  type="button"
+                  class="segment-btn"
+                  data-gender="male"
+                >
+                  أخصائي
+                </button>
               </div>
             </div>
 
-            <!-- Gender Filter -->
-            <div class="filter-group">
-              <label class="filter-label">الجنس</label>
-              <div class="filter-options">
-                <label class="filter-option-label">
-                  <input type="radio" name="genderFilter" value="all" checked />
-                  <span>الكل</span>
-                </label>
-                <label class="filter-option-label">
-                  <input type="radio" name="genderFilter" value="male" />
-                  <span>ذكر</span>
-                </label>
-                <label class="filter-option-label">
-                  <input type="radio" name="genderFilter" value="female" />
-                  <span>أنثى</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Specialty Filter -->
-            <div class="filter-group">
-              <label class="filter-label">مجال الدعم</label>
-              <div class="filter-options">
-                <label class="filter-option-label">
-                  <input
-                    type="checkbox"
-                    class="specialty-check"
-                    value="أخصائي دعم نفسي"
-                    checked
-                  />
-                  <span>أخصائي دعم نفسي</span>
-                </label>
-                <label class="filter-option-label">
-                  <input
-                    type="checkbox"
-                    class="specialty-check"
-                    value="إرشاد سلوكي"
-                    checked
-                  />
-                  <span>إرشاد سلوكي ونفسي</span>
-                </label>
-              </div>
-            </div>
-
-            <button class="btn-reset-filters" id="resetFiltersBtn">
-              إعادة ضبط الفلاتر
+            <!-- 4. Reset Button -->
+            <button
+              type="button"
+              class="btn-reset-top"
+              id="resetFiltersBtn"
+              title="إعادة ضبط الفلاتر"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+              <span>إعادة ضبط</span>
             </button>
-          </aside>
+          </div>
 
-          <!-- Left Content Area (Grid) -->
-          <section>
-            <div class="specialists-cards-grid" id="specialistsGrid">
-              <!-- Dynamic Cards for the 4 Target Support Specialists -->
+          <!-- Meta Bar (Counts & Active Chips) -->
+          <div class="filter-meta-bar">
+            <div class="results-count-text">
+              يتم عرض <strong id="resultsCount">4</strong> من الأخصائيين المعتمدين
             </div>
-          </section>
+            <div class="active-chips" id="activeChips"></div>
+          </div>
+        </div>
+
+        <!-- Full-Width Specialists Cards Grid -->
+        <div class="specialists-cards-grid" id="specialistsGrid">
+          <!-- Dynamic Cards for Support Specialists -->
         </div>
       </div>
     </main>
@@ -829,39 +982,58 @@
           </div>
         </div>
 
-        <div class="profile-section-title">
-          نبذة عن المختص ومسار الدعم النفسي
+        <!-- Booking Stepper -->
+        <div class="bk-stepper" id="bkStepper">
+          <div class="bk-step active" data-step="1"><span class="bk-step-num">1</span><span>نوع الاستشارة</span></div>
+          <div class="bk-step-line"></div>
+          <div class="bk-step" data-step="2"><span class="bk-step-num">2</span><span>الموعد</span></div>
+          <div class="bk-step-line"></div>
+          <div class="bk-step" data-step="3"><span class="bk-step-num">3</span><span>التأكيد</span></div>
         </div>
-        <div class="profile-section-text" id="detailBio">-</div>
 
-        <div class="profile-section-title">معلومات الجلسة والاستشارات</div>
-        <div
-          style="
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            font-size: 0.88rem;
-            background: var(--teal-pale);
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1.2rem;
-          "
-        >
-          <div>
-            <strong>سنوات الخبرة:</strong> <span id="detailExp">-</span>
+        <!-- STEP 1: Consultation type & duration -->
+        <div class="bk-panel active" id="bkPanel1">
+          <details class="bk-about">
+            <summary>نبذة عن المختص · <span id="detailExp">-</span> خبرة</summary>
+            <div class="profile-section-text" id="detailBio">-</div>
+          </details>
+
+          <div class="bk-label">طريقة الاستشارة</div>
+          <div class="bk-type-grid" id="bkTypeGrid" style="grid-template-columns: 1fr;">
+            <button type="button" class="bk-type active" data-type="video">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+              <strong>مكالمة فيديو مباشر</strong><small>تواصل مرئي وصوتي مشفر وآمن</small>
+            </button>
           </div>
-          <div><strong>طبيعة الجلسات:</strong> جلسات استشارية ودعم نفسي</div>
-          <div><strong>المدة:</strong> 45 دقيقة</div>
-          <div><strong>اللغات:</strong> العربية، الإنجليزية</div>
+
+          <div class="bk-label">مدة الجلسة</div>
+          <div class="bk-duration-row" id="bkDurationRow"></div>
+
+          <p class="bk-web-note">
+            🔒 الجلسة تتم بالكامل عبر المتصفح من جوالك أو حاسوبك — لا حاجة لتحميل أي تطبيق.
+          </p>
         </div>
 
-        <div class="profile-section-title">المواعيد المتاحة للحجز المباشر</div>
-        <div
-          class="slots-buttons-row"
-          id="detailSlotsRow"
-          style="margin-bottom: 1.5rem; justify-content: flex-start"
-        >
-          <!-- Rendered dynamically -->
+        <!-- STEP 2: Date & time -->
+        <div class="bk-panel" id="bkPanel2">
+          <div class="bk-label-row">
+            <div class="bk-label" id="bkMonthLabel">اختر اليوم</div>
+            <button type="button" class="bk-nearest" id="bkNearestBtn">⚡ أقرب موعد متاح</button>
+          </div>
+          <div class="bk-days-wrap">
+            <div class="bk-days" id="bkDays"></div>
+          </div>
+
+          <div id="detailSlotsRow" class="bk-slots-area"></div>
+          <p class="bk-tz-note">جميع الأوقات معروضة حسب توقيتك المحلي.</p>
+        </div>
+
+        <!-- STEP 3: Summary -->
+        <div class="bk-panel" id="bkPanel3">
+          <div class="bk-summary" id="bkSummary"></div>
+          <label class="bk-label" for="bkNotes">ملاحظات للمختص (اختياري)</label>
+          <textarea id="bkNotes" class="bk-notes" rows="3" maxlength="500" placeholder="اكتب باختصار ما تودّ مناقشته في الجلسة..."></textarea>
+          <p class="bk-web-note">سيصلك رابط الجلسة وتذكير قبل الموعد بـ 24 ساعة وساعة واحدة. يمكنك إلغاء الموعد أو تعديله قبل 24 ساعة مجاناً.</p>
         </div>
 
         <div
@@ -875,10 +1047,23 @@
           "
         ></div>
 
-        <button class="btn-book-now" id="confirmBookingBtn">
-          <span>تأكيد حجز الجلسة الآن</span>
-          <span style="font-size: 1.1rem">←</span>
-        </button>
+        <!-- Footer actions -->
+        <div class="bk-footer">
+          <div class="bk-total">
+            <small>الإجمالي</small>
+            <strong id="bkTotal">-</strong>
+          </div>
+          <div class="bk-actions">
+            <button type="button" class="bk-back" id="bkBackBtn" style="display:none">السابق</button>
+            <button type="button" class="btn-book-now bk-next" id="bkNextBtn">
+              <span>التالي: اختيار الموعد</span><span style="font-size: 1.1rem">←</span>
+            </button>
+            <button class="btn-book-now" id="confirmBookingBtn" style="display:none">
+              <span>تأكيد الحجز والدفع</span>
+              <span style="font-size: 1.1rem">←</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -916,12 +1101,27 @@
 
     <script src="script.js"></script>
     <script>
-      const API = "http://localhost:5000/api";
+      const API_BASE = (typeof window !== "undefined" && window.PSYAI_API_BASE) || localStorage.getItem("psyai_api_url") || "http://localhost:5000";
+      const API = API_BASE + "/api";
+
+      function buildFutureSlots() {
+        const now = new Date();
+        const d1 = new Date(now.getTime() + 24 * 3600 * 1000);
+        d1.setHours(17, 0, 0, 0);
+
+        const d2 = new Date(now.getTime() + 48 * 3600 * 1000);
+        d2.setHours(19, 0, 0, 0);
+
+        return [
+          { id: "s1", time: "غداً 05:00 م", iso: d1.toISOString(), status: "available" },
+          { id: "s2", time: "بعد غد 07:00 م", iso: d2.toISOString(), status: "available" }
+        ];
+      }
 
       // STRICTLY the 4 Support Specialists
       const targetFourSpecialists = [
         {
-          id: "spec-arwa",
+          id: "24c5bb2a-4df4-41d7-932f-7634f1ec5df1",
           name: "د. أروى القفاري",
           title: "أخصائي دعم نفسي",
           gender: "female",
@@ -931,13 +1131,11 @@
           experience_years: 8,
           bio: "متخصصة في إرشاد الصحة النفسية وتعديل السلوك وإدارة ضغوط الحياة وتطوير الذات والرفاه النفسي.",
           avatar: "assets/images/psyai.png",
-          slots: [
-            { id: "sa1", time: "اليوم 05:00 م", status: "available" },
-            { id: "sa2", time: "غداً 06:30 م", status: "available" },
-          ],
+          price: 25,
+          slots: buildFutureSlots(),
         },
         {
-          id: "spec-nahi",
+          id: "24c5bb2a-4df4-41d7-932f-7634f1ec5df2",
           name: "د. ناهي الرويلي",
           title: "أخصائي دعم نفسي",
           gender: "male",
@@ -947,13 +1145,11 @@
           experience_years: 12,
           bio: "استشاري دعم نفسي متقدّم لمساعدة الأفراد في التعامل مع التوتر والقلق اليومي وبناء الاستقرار العاطفي.",
           avatar: "assets/images/psyai.png",
-          slots: [
-            { id: "sn1", time: "اليوم 05:00 م", status: "available" },
-            { id: "sn2", time: "غداً 07:00 م", status: "available" },
-          ],
+          price: 25,
+          slots: buildFutureSlots(),
         },
         {
-          id: "spec-abdulmajeed",
+          id: "24c5bb2a-4df4-41d7-932f-7634f1ec5df3",
           name: "د. عبدالمجيد الصي",
           title: "أخصائي دعم نفسي",
           gender: "male",
@@ -963,13 +1159,11 @@
           experience_years: 11,
           bio: "مستشار دعم نفسي متخصص في إدارة ضغوط العمل والتحديات النفسية وبناء المرونة العاطفية.",
           avatar: "assets/images/psyai.png",
-          slots: [
-            { id: "sm1", time: "اليوم 06:30 م", status: "available" },
-            { id: "sm2", time: "الخميس 05:00 م", status: "available" },
-          ],
+          price: 25,
+          slots: buildFutureSlots(),
         },
         {
-          id: "spec-saad",
+          id: "24c5bb2a-4df4-41d7-932f-7634f1ec5df4",
           name: "د. سعد العنزي",
           title: "أخصائي دعم نفسي",
           gender: "male",
@@ -979,25 +1173,26 @@
           experience_years: 12,
           bio: "مستشار دعم نفسي وإرشاد سلوكي يركز على مساندة الأفراد وتطوير جودة الحياة والصحة النفسية.",
           avatar: "assets/images/psyai.png",
-          slots: [
-            { id: "ss1", time: "اليوم 05:00 م", status: "available" },
-            { id: "ss2", time: "غداً 08:00 م", status: "available" },
-          ],
+          price: 25,
+          slots: buildFutureSlots(),
         },
       ];
 
       let loadedSpecialists = [];
       let selectedCategory = "all";
+      let currentGender = "all";
       let activeSelectedSpecialist = null;
       let selectedSlotTime = null;
+      let selectedSlotIso = null;
 
       document.addEventListener("DOMContentLoaded", async () => {
-        setupCarouselControls();
         setupFilterListeners();
         setupModalEvents();
+        setupBookingWizard();
         await fetchSpecialistsData();
         // ── Auto-apply filters from login step 2 (URL params) ──
         applyUrlFilters();
+        bkResumePending();
       });
 
       function applyUrlFilters() {
@@ -1074,51 +1269,25 @@
 
         // Apply gender filter
         if (specGender && specGender !== 'any') {
-          const gVal = specGender === 'all' ? 'all' : specGender;
-          const radio = document.querySelector(`input[name="genderFilter"][value="${gVal}"]`);
-          if (radio) { radio.checked = true; }
+          currentGender = specGender === 'all' ? 'all' : specGender;
+          document.querySelectorAll('.gender-segmented-control .segment-btn').forEach(b => {
+            b.classList.toggle('active', b.getAttribute('data-gender') === currentGender);
+          });
         }
 
-        // Apply category pill filter
+        // Apply category filter
         if (condition && conditionMap[condition]) {
           const cat = conditionMap[condition];
-          if (cat !== 'all') {
-            document.querySelectorAll('.pill-item').forEach(p => p.classList.remove('active'));
-            const targetPill = document.querySelector(`.pill-item[data-category="${cat}"]`);
-            if (targetPill) {
-              targetPill.classList.add('active');
-              selectedCategory = cat;
-              targetPill.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
-            }
+          selectedCategory = cat;
+          const catSelect = document.getElementById("categorySelect");
+          if (catSelect) {
+            catSelect.value = cat;
           }
         }
 
         // Re-render with new filters applied
         renderCards();
       }
-
-      function setupCarouselControls() {
-        const container = document.getElementById("categoryPills");
-        document.getElementById("slideRight").addEventListener("click", () => {
-          container.scrollBy({ left: -200, behavior: "smooth" });
-        });
-        document.getElementById("slideLeft").addEventListener("click", () => {
-          container.scrollBy({ left: 200, behavior: "smooth" });
-        });
-
-        document.querySelectorAll(".pill-item").forEach((pill) => {
-          pill.addEventListener("click", (e) => {
-            document
-              .querySelectorAll(".pill-item")
-              .forEach((p) => p.classList.remove("active"));
-            e.target.classList.add("active");
-            selectedCategory = e.target.getAttribute("data-category");
-            renderCards();
-          });
-        });
-      }
-
-      const API_BASE = localStorage.getItem("psyai_api_url") || "http://localhost:5000";
 
       async function fetchSpecialistsData() {
         try {
@@ -1136,11 +1305,15 @@
               experience_years: s.experience_years || s.expYears || 10,
               bio: s.bio || "نخبة من أخصائيي الدعم النفسي المرخصين لمساعدتك في تعزيز الاستقرار النفسي.",
               avatar: s.avatar || "assets/images/psyai.png",
-              price: s.price || 250,
-              slots: s.slots || [
-                { id: `slot-${s.id}-1`, time: "اليوم 05:00 م", status: "available" },
-                { id: `slot-${s.id}-2`, time: "غداً 07:00 م", status: "available" }
-              ]
+              price: s.price || 25,
+              slots: (Array.isArray(s.slots) && s.slots.length > 0)
+                ? s.slots.map((sl, idx) => ({
+                    id: sl.id || `slot-${s.id}-${idx}`,
+                    time: sl.time || (idx === 0 ? "غداً 05:00 م" : "بعد غد 07:00 م"),
+                    iso: sl.iso || (idx === 0 ? new Date(Date.now() + 86400000).toISOString() : new Date(Date.now() + 172800000).toISOString()),
+                    status: sl.status || "available"
+                  }))
+                : buildFutureSlots()
             }));
           } else {
             loadedSpecialists = targetFourSpecialists;
@@ -1154,23 +1327,18 @@
 
       function renderCards() {
         const grid = document.getElementById("specialistsGrid");
-        const searchVal = document
-          .getElementById("searchInput")
-          .value.trim()
-          .toLowerCase();
-        const genderVal = document.querySelector(
-          'input[name="genderFilter"]:checked',
-        ).value;
+        const searchInput = document.getElementById("searchInput");
+        const searchVal = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
         const filtered = loadedSpecialists.filter((item) => {
           const specText = (
-            item.specialization +
+            (item.specialization || "") +
             " " +
-            item.title +
+            (item.title || "") +
             " " +
-            item.category +
+            (item.category || "") +
             " " +
-            item.bio
+            (item.bio || "")
           ).toLowerCase();
 
           if (selectedCategory !== "all") {
@@ -1191,20 +1359,31 @@
             return false;
           }
 
-          if (genderVal !== "all" && item.gender !== genderVal) {
+          if (currentGender !== "all" && item.gender !== currentGender) {
             return false;
           }
 
           return true;
         });
 
+        // Update Results Count
+        const countEl = document.getElementById("resultsCount");
+        if (countEl) countEl.textContent = filtered.length;
+
+        // Update Active Chips
+        updateActiveFilterChips(searchVal);
+
         if (filtered.length === 0) {
           grid.innerHTML = `
-                    <div class="empty-state">
-                        <h3>لم نجد نتائج مطابقة لمحددات البحث</h3>
-                        <p>يرجى تجربة تصفية مختلفة أو إعادة ضبط الفلاتر</p>
-                    </div>
-                `;
+            <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1.5rem; background: #ffffff; border-radius: 1.5rem; border: 1px dashed var(--border);">
+              <div style="font-size: 2.8rem; margin-bottom: 0.8rem;">🔍</div>
+              <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--teal-deep); margin-bottom: 0.5rem;">لم نجد نتائج مطابقة لبحثك</h3>
+              <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1.5rem;">جرب تغيير مجال الدعم أو مسح كلمات البحث للوصول لكافة المختصين</p>
+              <button type="button" class="btn-book-now" onclick="resetAllFilters()" style="display: inline-flex; width: auto; padding: 10px 24px; margin: 0 auto;">
+                <span>إعادة ضبط كافة الفلاتر</span>
+              </button>
+            </div>
+          `;
           return;
         }
 
@@ -1231,7 +1410,7 @@
                             ${(spec.slots || [])
                               .map(
                                 (slot) => `
-                                <button class="slot-btn" onclick="openSpecialistDetailWithSlot('${spec.id}', '${slot.time}')">
+                                <button class="slot-btn" onclick="openSpecialistDetailWithSlot('${spec.id}', '${slot.time}', '${slot.iso || ""}')">
                                     ${slot.time}
                                 </button>
                             `,
@@ -1250,55 +1429,301 @@
           .join("");
       }
 
-      function setupFilterListeners() {
-        document
-          .getElementById("searchInput")
-          .addEventListener("input", renderCards);
-        document
-          .querySelectorAll('input[name="genderFilter"]')
-          .forEach((r) => r.addEventListener("change", renderCards));
-        document
-          .querySelectorAll(".specialty-check")
-          .forEach((c) => (c.checked = true));
-        document
-          .querySelectorAll(".specialty-check")
-          .forEach((c) => c.addEventListener("change", renderCards));
+      function updateActiveFilterChips(searchVal) {
+        const chipsWrap = document.getElementById("activeChips");
+        if (!chipsWrap) return;
 
-        document
-          .getElementById("resetFiltersBtn")
-          .addEventListener("click", () => {
-            document.getElementById("searchInput").value = "";
-            document.querySelector(
-              'input[name="genderFilter"][value="all"]',
-            ).checked = true;
-            document
-              .querySelectorAll(".specialty-check")
-              .forEach((c) => (c.checked = true));
-            document
-              .querySelectorAll(".pill-item")
-              .forEach((p) => p.classList.remove("active"));
-            document
-              .querySelector('.pill-item[data-category="all"]')
-              .classList.add("active");
-            selectedCategory = "all";
+        const chips = [];
+        if (searchVal) {
+          chips.push(`
+            <span class="active-chip">
+              <span>بحث: "${searchVal}"</span>
+              <button type="button" onclick="document.getElementById('searchInput').value=''; document.getElementById('clearSearchBtn').style.display='none'; renderCards();">✕</button>
+            </span>
+          `);
+        }
+        if (selectedCategory !== "all") {
+          chips.push(`
+            <span class="active-chip">
+              <span>مجال: ${selectedCategory}</span>
+              <button type="button" onclick="document.getElementById('categorySelect').value='all'; selectedCategory='all'; renderCards();">✕</button>
+            </span>
+          `);
+        }
+        if (currentGender !== "all") {
+          const gLabel = currentGender === "female" ? "أخصائية" : "أخصائي";
+          chips.push(`
+            <span class="active-chip">
+              <span>الجنس: ${gLabel}</span>
+              <button type="button" onclick="currentGender='all'; document.querySelectorAll('.gender-segmented-control .segment-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-gender')==='all')); renderCards();">✕</button>
+            </span>
+          `);
+        }
+
+        chipsWrap.innerHTML = chips.join("");
+      }
+
+      function setupFilterListeners() {
+        const searchInput = document.getElementById("searchInput");
+        const clearSearchBtn = document.getElementById("clearSearchBtn");
+        const catSelect = document.getElementById("categorySelect");
+        const resetBtn = document.getElementById("resetFiltersBtn");
+
+        if (searchInput) {
+          searchInput.addEventListener("input", () => {
+            if (clearSearchBtn) {
+              clearSearchBtn.style.display = searchInput.value.trim() ? "inline-flex" : "none";
+            }
             renderCards();
           });
+        }
+
+        if (clearSearchBtn) {
+          clearSearchBtn.addEventListener("click", () => {
+            searchInput.value = "";
+            clearSearchBtn.style.display = "none";
+            searchInput.focus();
+            renderCards();
+          });
+        }
+
+        if (catSelect) {
+          catSelect.addEventListener("change", (e) => {
+            selectedCategory = e.target.value;
+            renderCards();
+          });
+        }
+
+        document.querySelectorAll(".gender-segmented-control .segment-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".gender-segmented-control .segment-btn").forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentGender = btn.getAttribute("data-gender") || "all";
+            renderCards();
+          });
+        });
+
+        if (resetBtn) {
+          resetBtn.addEventListener("click", resetAllFilters);
+        }
+      }
+
+      function resetAllFilters() {
+        const searchInput = document.getElementById("searchInput");
+        const clearSearchBtn = document.getElementById("clearSearchBtn");
+        const catSelect = document.getElementById("categorySelect");
+
+        if (searchInput) searchInput.value = "";
+        if (clearSearchBtn) clearSearchBtn.style.display = "none";
+        if (catSelect) catSelect.value = "all";
+        selectedCategory = "all";
+
+        currentGender = "all";
+        document.querySelectorAll(".gender-segmented-control .segment-btn").forEach((b) => {
+          b.classList.toggle("active", b.getAttribute("data-gender") === "all");
+        });
+
+        renderCards();
       }
 
       window.openSpecialistDetail = function (specId) {
-        openSpecialistDetailWithSlot(specId, null);
+        openSpecialistDetailWithSlot(specId, null, null);
       };
 
-      window.openSpecialistDetailWithSlot = function (specId, slotTime) {
+      // ── Booking wizard state (Labayh-style: type → date/time → confirm) ──
+      const BK_TYPES = { video: "مكالمة فيديو", voice: "مكالمة صوتية" };
+      const BK_DAY_NAMES = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+      const BK_HOURS = [10, 11, 12, 16, 17, 18, 19, 20, 21];
+      const bk = { step: 1, type: "video", duration: 45, dayIdx: null, days: [] };
+
+      function bkDurations(spec) {
+        const base = Number(spec.price) || 25;
+        return [
+          { min: 30, price: Math.round(base * 0.65) },
+          { min: 45, price: base },
+          { min: 60, price: Math.round(base * 1.3) },
+        ];
+      }
+      function bkPrice() {
+        const d = bkDurations(activeSelectedSpecialist).find((x) => x.min === bk.duration);
+        return d ? d.price : activeSelectedSpecialist.price || 25;
+      }
+      function bkHash(str) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
+        return Math.abs(h);
+      }
+      function bkFmtTime(date) {
+        let h = date.getHours();
+        const m = String(date.getMinutes()).padStart(2, "0");
+        const suffix = h >= 12 ? "م" : "ص";
+        h = h % 12 || 12;
+        return `${String(h).padStart(2, "0")}:${m} ${suffix}`;
+      }
+      function bkFmtDay(date) {
+        return `${BK_DAY_NAMES[date.getDay()]} ${date.getDate()} ${date.toLocaleDateString("ar", { month: "long" })}`;
+      }
+
+      // Build 14 days of availability for the specialist (merging API slots when present)
+      function bkBuildDays(spec) {
+        const now = new Date();
+        const minTime = now.getTime() + 2 * 3600 * 1000;
+        const apiIsos = new Set((spec.slots || []).map((s) => s.iso).filter(Boolean));
+        const days = [];
+        for (let i = 0; i < 14; i++) {
+          const day = new Date(now);
+          day.setHours(0, 0, 0, 0);
+          day.setDate(day.getDate() + i);
+          const slots = BK_HOURS.map((h) => {
+            const t = new Date(day);
+            t.setHours(h, 0, 0, 0);
+            const booked = bkHash(spec.id + t.toDateString() + h) % 3 === 0;
+            return { date: t, iso: t.toISOString(), time: bkFmtTime(t), available: t.getTime() > minTime && !booked };
+          });
+          apiIsos.forEach((iso) => {
+            const t = new Date(iso);
+            if (t.toDateString() !== day.toDateString()) return;
+            const existing = slots.find((s) => s.date.getHours() === t.getHours());
+            if (existing) { existing.available = true; existing.iso = iso; }
+            else slots.push({ date: t, iso, time: bkFmtTime(t), available: true });
+          });
+          slots.sort((a, b) => a.date - b.date);
+          days.push({ date: day, slots });
+        }
+        return days;
+      }
+
+      function bkRenderDurations() {
+        document.getElementById("bkDurationRow").innerHTML = bkDurations(activeSelectedSpecialist)
+          .map((d) => `
+            <button type="button" class="bk-dur ${d.min === bk.duration ? "active" : ""}" data-min="${d.min}">
+              <strong>${d.min} دقيقة</strong>
+              <span class="bk-price">${d.price} د.أ</span>
+            </button>`)
+          .join("");
+      }
+
+      function bkRenderDays() {
+        const wrap = document.getElementById("bkDays");
+        wrap.innerHTML = bk.days
+          .map((d, i) => {
+            const free = d.slots.some((s) => s.available);
+            const label = i === 0 ? "اليوم" : i === 1 ? "غداً" : BK_DAY_NAMES[d.date.getDay()];
+            return `
+              <button type="button" class="bk-day ${i === bk.dayIdx ? "active" : ""} ${free ? "" : "full"}" data-idx="${i}" ${free ? "" : "disabled"}>
+                <small>${label}</small>
+                <strong>${d.date.getDate()}</strong>
+                <span class="bk-dot"></span>
+              </button>`;
+          })
+          .join("");
+        const ref = bk.days[bk.dayIdx ?? 0].date;
+        document.getElementById("bkMonthLabel").textContent =
+          "اختر اليوم · " + ref.toLocaleDateString("ar", { month: "long", year: "numeric" });
+      }
+
+      function bkRenderSlots() {
+        const area = document.getElementById("detailSlotsRow");
+        if (bk.dayIdx === null) {
+          area.innerHTML = `<div class="bk-empty">اختر يوماً لعرض الأوقات المتاحة</div>`;
+          return;
+        }
+        const slots = bk.days[bk.dayIdx].slots;
+        const group = (list) =>
+          `<div class="bk-slot-grid">${list
+            .map((s) => `<button type="button" class="bk-slot ${s.iso === selectedSlotIso ? "active" : ""}" data-iso="${s.iso}" ${s.available ? "" : "disabled"}>${s.time}</button>`)
+            .join("")}</div>`;
+        const morning = slots.filter((s) => s.date.getHours() < 15);
+        const evening = slots.filter((s) => s.date.getHours() >= 15);
+        let html = "";
+        if (morning.length) html += `<div class="bk-period">☀️ الفترة الصباحية</div>` + group(morning);
+        if (evening.length) html += `<div class="bk-period">🌙 الفترة المسائية</div>` + group(evening);
+        area.innerHTML = html || `<div class="bk-empty">لا توجد مواعيد في هذا اليوم</div>`;
+      }
+
+      function bkRenderSummary() {
+        const spec = activeSelectedSpecialist;
+        const slotDate = new Date(selectedSlotIso);
+        const rows = [
+          ["المختص", spec.name, null],
+          ["نوع الجلسة", BK_TYPES[bk.type], 1],
+          ["مدة الجلسة", `${bk.duration} دقيقة`, 1],
+          ["اليوم", bkFmtDay(slotDate), 2],
+          ["الوقت", bkFmtTime(slotDate), 2],
+          ["قيمة الجلسة", `${bkPrice()} د.أ`, null],
+        ];
+        document.getElementById("bkSummary").innerHTML = rows
+          .map(([k, v, step]) => `
+            <div class="bk-sum-row"><span>${k}</span>
+              <strong>${v}${step ? `<button type="button" class="bk-sum-edit" data-goto="${step}">تعديل</button>` : ""}</strong>
+            </div>`)
+          .join("");
+      }
+
+      function bkGo(step) {
+        bk.step = step;
+        [1, 2, 3].forEach((n) => {
+          document.getElementById("bkPanel" + n).classList.toggle("active", n === step);
+          const el = document.querySelector(`.bk-step[data-step="${n}"]`);
+          el.classList.toggle("active", n === step);
+          el.classList.toggle("done", n < step);
+        });
+        if (step === 2) { bkRenderDays(); bkRenderSlots(); }
+        if (step === 3) bkRenderSummary();
+        bkUpdateFooter();
+        document.getElementById("detailModalBox").scrollTop = 0;
+      }
+
+      function bkUpdateFooter() {
+        const next = document.getElementById("bkNextBtn");
+        const confirmBtn = document.getElementById("confirmBookingBtn");
+        document.getElementById("bkBackBtn").style.display = bk.step > 1 ? "" : "none";
+        document.getElementById("bkTotal").textContent = `${bkPrice()} د.أ`;
+        next.style.display = bk.step < 3 ? "" : "none";
+        confirmBtn.style.display = bk.step === 3 ? "" : "none";
+        if (bk.step === 1) {
+          next.disabled = false;
+          next.innerHTML = `<span>التالي: اختيار الموعد</span><span style="font-size:1.1rem">←</span>`;
+        } else if (bk.step === 2) {
+          next.disabled = !selectedSlotIso;
+          next.innerHTML = selectedSlotIso
+            ? `<span>متابعة · ${bkFmtTime(new Date(selectedSlotIso))}</span><span style="font-size:1.1rem">←</span>`
+            : `<span>اختر وقتاً للمتابعة</span>`;
+        }
+      }
+
+      function bkSelectNearest() {
+        for (let i = 0; i < bk.days.length; i++) {
+          const s = bk.days[i].slots.find((x) => x.available);
+          if (s) { bk.dayIdx = i; selectedSlotIso = s.iso; selectedSlotTime = bkFmtDay(s.date) + " · " + s.time; return true; }
+        }
+        return false;
+      }
+
+      window.openSpecialistDetailWithSlot = function (specId, slotTime, slotIso) {
         const spec =
           loadedSpecialists.find((s) => s.id === specId) ||
           targetFourSpecialists.find((s) => s.id === specId);
         if (!spec) return;
 
         activeSelectedSpecialist = spec;
-        selectedSlotTime =
-          slotTime ||
-          (spec.slots && spec.slots[0] ? spec.slots[0].time : "اليوم 05:00 م");
+        bk.type = "video";
+        bk.duration = 45;
+        bk.days = bkBuildDays(spec);
+        bk.dayIdx = null;
+        selectedSlotIso = null;
+        selectedSlotTime = null;
+
+        // If a slot was picked from the card, preselect it and jump straight to its day
+        if (slotIso) {
+          const t = new Date(slotIso);
+          const idx = bk.days.findIndex((d) => d.date.toDateString() === t.toDateString());
+          if (idx >= 0) {
+            bk.dayIdx = idx;
+            selectedSlotIso = slotIso;
+            selectedSlotTime = bkFmtDay(t) + " · " + bkFmtTime(t);
+          }
+        }
 
         document.getElementById("detailAvatar").src = spec.avatar;
         document.getElementById("detailName").textContent = spec.name;
@@ -1309,40 +1734,113 @@
         document.getElementById("detailExp").textContent =
           `${spec.experience_years || 10} سنوات`;
 
-        const slotsRow = document.getElementById("detailSlotsRow");
-        slotsRow.innerHTML = (spec.slots || [])
-          .map(
-            (s) => `
-                <button class="slot-btn ${s.time === selectedSlotTime ? "active" : ""}" style="${s.time === selectedSlotTime ? "background:var(--teal-deep); color:var(--gold-light);" : ""}" onclick="selectDetailSlot('${s.time}')">
-                    ${s.time}
-                </button>
-            `,
-          )
-          .join("");
+        document.querySelectorAll("#bkTypeGrid .bk-type").forEach((b) =>
+          b.classList.toggle("active", b.dataset.type === bk.type));
+        bkRenderDurations();
+        document.getElementById("bkNotes").value = "";
 
         const modalAlert = document.getElementById("modalAlert");
         modalAlert.style.display = "none";
+        const confirmBtn = document.getElementById("confirmBookingBtn");
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = `<span>تأكيد الحجز والدفع</span><span style="font-size:1.1rem">←</span>`;
 
+        bkGo(1);
         document.getElementById("detailModal").classList.add("active");
         document.body.style.overflow = "hidden";
       };
 
-      window.selectDetailSlot = function (time) {
-        selectedSlotTime = time;
-        if (activeSelectedSpecialist) {
-          openSpecialistDetailWithSlot(activeSelectedSpecialist.id, time);
-        }
+      window.selectDetailSlot = function (time, iso) {
+        selectedSlotIso = iso;
+        selectedSlotTime = bkFmtDay(new Date(iso)) + " · " + time;
+        bkRenderSlots();
+        bkUpdateFooter();
       };
 
+      // Labayh-style: users can browse & pick a slot first; login is only required at confirmation
       window.handleBookSpecialistClick = function (specId) {
-        const token =
-          localStorage.getItem("psyai_token") || localStorage.getItem("token");
-        if (!token) {
-          window.location.href = "login.html?from=booking";
-          return;
-        }
         openSpecialistDetail(specId);
       };
+
+      function setupBookingWizard() {
+        document.getElementById("bkTypeGrid").addEventListener("click", (e) => {
+          const b = e.target.closest(".bk-type");
+          if (!b) return;
+          bk.type = b.dataset.type;
+          document.querySelectorAll("#bkTypeGrid .bk-type").forEach((x) => x.classList.toggle("active", x === b));
+        });
+        document.getElementById("bkDurationRow").addEventListener("click", (e) => {
+          const b = e.target.closest(".bk-dur");
+          if (!b) return;
+          bk.duration = Number(b.dataset.min);
+          bkRenderDurations();
+          bkUpdateFooter();
+        });
+        document.getElementById("bkDays").addEventListener("click", (e) => {
+          const b = e.target.closest(".bk-day");
+          if (!b || b.disabled) return;
+          bk.dayIdx = Number(b.dataset.idx);
+          selectedSlotIso = null;
+          selectedSlotTime = null;
+          bkRenderDays();
+          bkRenderSlots();
+          bkUpdateFooter();
+        });
+        document.getElementById("detailSlotsRow").addEventListener("click", (e) => {
+          const b = e.target.closest(".bk-slot");
+          if (!b || b.disabled) return;
+          selectDetailSlot(b.textContent.trim(), b.dataset.iso);
+        });
+        document.getElementById("bkNearestBtn").addEventListener("click", () => {
+          if (bkSelectNearest()) {
+            bkRenderDays();
+            bkRenderSlots();
+            bkUpdateFooter();
+            const active = document.querySelector(".bk-day.active");
+            if (active) active.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+          }
+        });
+        document.getElementById("bkSummary").addEventListener("click", (e) => {
+          const b = e.target.closest(".bk-sum-edit");
+          if (b) bkGo(Number(b.dataset.goto));
+        });
+        document.getElementById("bkNextBtn").addEventListener("click", () => {
+          if (bk.step === 1) {
+            if (bk.dayIdx === null) {
+              const firstFree = bk.days.findIndex((d) => d.slots.some((s) => s.available));
+              bk.dayIdx = firstFree >= 0 ? firstFree : 0;
+            }
+            bkGo(2);
+          } else if (bk.step === 2 && selectedSlotIso) {
+            bkGo(3);
+          }
+        });
+        document.getElementById("bkBackBtn").addEventListener("click", () => {
+          if (bk.step > 1) bkGo(bk.step - 1);
+        });
+
+      }
+
+      // Resume a booking the user started before logging in
+      function bkResumePending() {
+        try {
+          const pending = JSON.parse(sessionStorage.getItem("psyai_pending_booking") || "null");
+          const token = localStorage.getItem("psyai_token") || localStorage.getItem("token");
+          if (pending && token) {
+            sessionStorage.removeItem("psyai_pending_booking");
+            setTimeout(() => {
+              openSpecialistDetailWithSlot(pending.specialistId, null, pending.iso);
+              bk.type = pending.type || "video";
+              bk.duration = pending.duration || 45;
+              document.querySelectorAll("#bkTypeGrid .bk-type").forEach((b) =>
+                b.classList.toggle("active", b.dataset.type === bk.type));
+              bkRenderDurations();
+              document.getElementById("bkNotes").value = pending.notes || "";
+              if (selectedSlotIso) bkGo(3);
+            }, 600);
+          }
+        } catch (e) { /* ignore */ }
+      }
 
       function setupModalEvents() {
         const modal = document.getElementById("detailModal");
@@ -1378,18 +1876,32 @@
 
             if (!token) {
               modalAlert.style.display = "block";
-              modalAlert.style.background = "#fee2e2";
-              modalAlert.style.color = "#991b1b";
+              modalAlert.style.background = "#fef9c3";
+              modalAlert.style.color = "#854d0e";
               modalAlert.textContent =
-                "يرجى تسجيل الدخول أو إنشاء حساب أولاً لإتمام حجز الجلسة.";
+                "خطوة أخيرة: سجّل الدخول أو أنشئ حساباً — سنحتفظ باختيارك ونعيدك لإتمام الحجز مباشرة.";
+              try {
+                sessionStorage.setItem("psyai_pending_booking", JSON.stringify({
+                  specialistId: activeSelectedSpecialist.id,
+                  iso: selectedSlotIso,
+                  type: bk.type,
+                  duration: bk.duration,
+                  notes: document.getElementById("bkNotes").value,
+                }));
+              } catch (e) { /* ignore */ }
               setTimeout(() => {
-                window.location.href = "login.html?from=booking";
-              }, 1200);
+                window.location.href = "login.html?from=booking&redirect=" + encodeURIComponent("specialists.html");
+              }, 1400);
               return;
             }
 
             confirmBtn.disabled = true;
-            confirmBtn.textContent = "جاري تسجيل الحجز على السيرفر...";
+            confirmBtn.textContent = "جاري تأكيد الحجز...";
+
+            const userNotes = document.getElementById("bkNotes").value.trim();
+            const bookingNotes =
+              `نوع الجلسة: ${BK_TYPES[bk.type]} · المدة: ${bk.duration} دقيقة` +
+              (userNotes ? `\n${userNotes}` : "");
 
             try {
               const res = await fetch(`${API_BASE}/api/bookings`, {
@@ -1400,8 +1912,9 @@
                 },
                 body: JSON.stringify({
                   specialistId: activeSelectedSpecialist.id,
-                  sessionTime: selectedSlotTime,
-                  condition: activeSelectedSpecialist.specialization
+                  sessionTime: selectedSlotIso,
+                  condition: activeSelectedSpecialist.specialization,
+                  notes: bookingNotes
                 })
               });
 
@@ -1419,12 +1932,13 @@
                 <div>
                   <strong>تم تسجيل حجز الجلسة بنجاح في النظام!</strong><br>
                   المختص: <strong>${activeSelectedSpecialist.name}</strong> (${selectedSlotTime})<br>
-                  قيمة الجلسة: <strong>${activeSelectedSpecialist.price || 250} ر.س</strong>
+                  قيمة الجلسة: <strong>${bkPrice()} د.أ</strong>
                 </div>
-                <div style="margin-top:10px; display:flex; gap:8px;">
-                  <button id="payVisaNowBtn" style="background:#1a3a3c; color:#d4a843; border:none; padding:8px 14px; border-radius:6px; font-weight:700; cursor:pointer; font-family:inherit;">
-                    سداد فوري ببطاقة Visa
+                <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+                  <button id="payVisaNowBtn" style="background:#1a3a3c; color:#d4a843; border:none; padding:10px 16px; border-radius:8px; font-weight:700; cursor:pointer; font-family:inherit; font-size:0.95rem;">
+                    💳 سداد فوري ببطاقة Visa (Hosted Checkout)
                   </button>
+                  <small style="color:#047857; font-size:0.8rem;">بوابة دفع إلكتروني مشفرة ومطابقة لمعايير PCI-DSS</small>
                 </div>
               `;
 
@@ -1432,9 +1946,9 @@
               if (payBtn) {
                 payBtn.onclick = async () => {
                   payBtn.disabled = true;
-                  payBtn.textContent = "جاري معالجة بطاقة Visa...";
+                  payBtn.textContent = "جاري إنشاء جلسة الدفع المشفرة...";
                   try {
-                    const payRes = await fetch(`${API_BASE}/api/payments/pay-visa`, {
+                    const payRes = await fetch(`${API_BASE}/api/payments/create-session`, {
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",
@@ -1442,27 +1956,57 @@
                       },
                       body: JSON.stringify({
                         bookingId,
-                        cardNumber: "4111222233334444",
-                        cardHolder: "PsyAI User",
-                        expiry: "12/28",
-                        cvv: "123"
+                        amount: bkPrice(),
+                        currency: "JOD"
                       })
                     });
                     const payData = await payRes.json();
                     if (!payRes.ok || !payData.success) {
-                      throw new Error(payData.message || "فشلت عملية الدفع");
+                      throw new Error(payData.message || "فشلت عملية إنشاء جلسة الدفع");
                     }
+
+                    if (payData.alreadyPaid) {
+                      modalAlert.innerHTML = `
+                        <div style="padding:6px 0;">
+                          <strong>✅ تم تأكيد سداد هذا الحجز مسبقاً!</strong><br>
+                          رقم المعاملة: <code style="direction:ltr; display:inline-block;">${payData.paymentId || bookingId}</code>
+                        </div>
+                      `;
+                      return;
+                    }
+
                     modalAlert.innerHTML = `
                       <div style="padding:4px 0;">
-                        <strong>تم سداد قيمة الجلسة بنجاح وتأكيد الموعد رسميّاً!</strong><br>
-                        رقم العملية البنكية: <code style="direction:ltr; display:inline-block;">${payData.payment.transactionRef}</code><br>
-                        تم إرسال تفاصيل الموعد والفاتورة إلى حسابك.
+                        <strong>تم إنشاء جلسة الدفع بنجاح!</strong><br>
+                        معرف جلسة Visa: <code style="direction:ltr; display:inline-block; font-size:0.82rem;">${payData.visaSessionId || 'sess_active'}</code><br>
+                        <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+                          <a href="${payData.redirectUrl}" target="_blank" rel="noopener noreferrer" style="background:#1a3a3c; color:#d4a843; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; display:inline-block; font-size:0.88rem;">
+                            الانتقال لصفحة Visa Checkout ↗
+                          </a>
+                          <button id="btnSimulateSuccess" style="background:#047857; color:#fff; border:none; padding:8px 14px; border-radius:6px; font-weight:700; cursor:pointer; font-family:inherit; font-size:0.88rem;">
+                            تأكيد السداد التجريبي (Sandbox) ✓
+                          </button>
+                        </div>
                       </div>
                     `;
-                    setTimeout(() => {
-                      document.getElementById("detailModal").classList.remove("active");
-                      document.body.style.overflow = "";
-                    }, 3500);
+
+                    const simBtn = document.getElementById("btnSimulateSuccess");
+                    if (simBtn) {
+                      simBtn.onclick = () => {
+                        modalAlert.innerHTML = `
+                          <div style="padding:6px 0;">
+                            <strong>✅ تم سداد قيمة الجلسة بنجاح وتأكيد الموعد رسمياً!</strong><br>
+                            رقم الحجز: <code style="direction:ltr; display:inline-block;">${bookingId}</code><br>
+                            الموعد: <strong>${selectedSlotTime}</strong> مع <strong>${activeSelectedSpecialist.name}</strong><br>
+                            تم إرسال إشعار التأكيد وتفاصيل الجلسة إلى حسابك.
+                          </div>
+                        `;
+                        setTimeout(() => {
+                          document.getElementById("detailModal").classList.remove("active");
+                          document.body.style.overflow = "";
+                        }, 3500);
+                      };
+                    }
                   } catch (pErr) {
                     alert("خطأ في الدفع: " + pErr.message);
                     payBtn.disabled = false;

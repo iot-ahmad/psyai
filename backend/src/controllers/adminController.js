@@ -16,7 +16,7 @@ async function getDashboard(req, res, next) {
     const totalBookings = await prisma.booking.count();
 
     const paymentsSum = await prisma.payment.aggregate({
-      where: { status: 'paid' },
+      where: { status: 'SUCCEEDED' },
       _sum: { amount: true }
     });
     const totalRevenue = paymentsSum._sum.amount || 0;

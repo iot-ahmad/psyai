@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "psyai",
+    "description": "منصة الرفاه النفسي والدعم الاستشاري الذكي (PsyAI) المبنية بأحدث معايير الأمان والتشفير البنكي وحجز الجلسات الفوري.",
+    "languages": [
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "Prisma",
+      "SQL"
+    ],
+    "frameworks": [
+      "Express",
+      "Node.js",
+      "Prisma ORM",
+      "Zod",
+      "Bcrypt",
+      "Argon2"
+    ],
+    "analyzedAt": "2026-11-10T18:57:45.731Z",
+    "gitCommitHash": "cc91c2fd12a5e877889453c8506984345de8a143"
+  },
+  "analyzedAt": "2026-11-10T18:57:45.731Z",
+  "gitCommitHash": "cc91c2fd12a5e877889453c8506984345de8a143",
+  "stats": {
+    "nodeCount": 31,
+    "edgeCount": 23,
+    "layerCount": 4,
+    "tourCount": 4
+  }
+}

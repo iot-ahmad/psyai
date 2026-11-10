@@ -149,20 +149,46 @@ function initFAQ() {
   });
 }
 
-// Specialists carousel navigation
+// Specialists carousel navigation (with active dot sync & RTL support)
 function initSpecialistsCarousel() {
   const grid = document.getElementById("specialistsGrid");
   const prevBtn = document.getElementById("specPrev");
   const nextBtn = document.getElementById("specNext");
+  const dots = document.querySelectorAll("#specCarouselDots .dot, .carousel-dots .dot");
   if (!grid || !prevBtn || !nextBtn) return;
 
+  const isRTL = () => document.documentElement.dir !== "ltr";
+
   prevBtn.addEventListener("click", () => {
-    grid.scrollBy({ left: 260, behavior: "smooth" });
+    grid.scrollBy({ left: isRTL() ? 280 : -280, behavior: "smooth" });
   });
 
   nextBtn.addEventListener("click", () => {
-    grid.scrollBy({ left: -260, behavior: "smooth" });
+    grid.scrollBy({ left: isRTL() ? -280 : 280, behavior: "smooth" });
   });
+
+  if (dots.length) {
+    dots.forEach((dot, idx) => {
+      dot.addEventListener("click", () => {
+        const maxScroll = Math.max(1, grid.scrollWidth - grid.clientWidth);
+        const ratio = idx / Math.max(1, dots.length - 1);
+        const target = isRTL() ? -maxScroll * ratio : maxScroll * ratio;
+        grid.scrollTo({ left: target, behavior: "smooth" });
+        dots.forEach((d) => d.classList.remove("active"));
+        dot.classList.add("active");
+      });
+    });
+
+    grid.addEventListener("scroll", () => {
+      const maxScroll = Math.max(1, grid.scrollWidth - grid.clientWidth);
+      const current = Math.abs(grid.scrollLeft);
+      const activeIdx = Math.min(
+        dots.length - 1,
+        Math.round((current / maxScroll) * (dots.length - 1))
+      );
+      dots.forEach((d, i) => d.classList.toggle("active", i === activeIdx));
+    }, { passive: true });
+  }
 }
 
 // Smooth scroll for anchor links
@@ -632,7 +658,7 @@ function addRevealClasses() {
 // Global Auth & Dynamic Header Navigation state
 function updateHeaderNavState() {
   const userStr = localStorage.getItem("psyai_user");
-  const token = localStorage.getItem("psyai_token");
+  const token = localStorage.getItem("psyai_token") || localStorage.getItem("token");
   const authBtnContainers = document.querySelectorAll(
     ".header-actions, #headerAuthContainer, .mobile-nav",
   );
@@ -641,21 +667,26 @@ function updateHeaderNavState() {
     const authBtn = container.querySelector(".btn-gold, #navAuthBtn");
     if (!authBtn) return;
 
-    if (userStr && token) {
+    // Preserve original label if not yet stored
+    if (!authBtn.dataset.origLabel) {
+      authBtn.dataset.origLabel = authBtn.textContent.trim();
+      authBtn.dataset.origHref = authBtn.getAttribute("href") || "login.html";
+    }
+
+    if (token) {
       try {
-        const user = JSON.parse(userStr);
-        authBtn.textContent = `مرحباً، ${user.first_name || "حسابي"}`;
-        authBtn.href = "login.html";
-        authBtn.style.background =
-          "linear-gradient(135deg, var(--teal-dark), var(--teal-deep))";
-        authBtn.style.color = "#fff";
+        const user = userStr ? JSON.parse(userStr) : {};
+        authBtn.textContent = user.first_name
+          ? `مرحباً، ${user.first_name}`
+          : "حسابي وجلساتي";
+        authBtn.href = "profile.html";
       } catch (e) {
-        authBtn.textContent = "احجز جلستك";
-        authBtn.href = "login.html";
+        authBtn.textContent = "حسابي وجلساتي";
+        authBtn.href = "profile.html";
       }
     } else {
-      authBtn.textContent = "احجز جلستك";
-      authBtn.href = "login.html";
+      authBtn.textContent = authBtn.dataset.origLabel;
+      authBtn.href = authBtn.dataset.origHref;
       authBtn.style.background = "";
       authBtn.style.color = "";
     }
@@ -663,7 +694,7 @@ function updateHeaderNavState() {
 }
 
 window.PsyAI = {
-  API_BASE: "http://localhost:5000/api",
+  API_BASE: (window.PSYAI_API_BASE ?? "http://localhost:5000") + "/api",
   updateNav: updateHeaderNavState,
 };
 
@@ -713,21 +744,189 @@ function initMoodTrackerMockup() {
   });
 }
 
+// Emotional Triage Compass (UX Enhancement)
+function initTriageCompass() {
+  const pills = document.querySelectorAll(".triage-pill[data-triage]");
+  const resultPanel = document.getElementById("triageResultPanel");
+  if (!pills.length || !resultPanel) return;
+
+  const badgeEl = document.getElementById("triageRecBadge");
+  const titleEl = document.getElementById("triageRecTitle");
+  const descEl = document.getElementById("triageRecDesc");
+  const primaryBtn = document.getElementById("triagePrimaryBtn");
+  const secondaryBtn = document.getElementById("triageSecondaryBtn");
+
+  const triageData = {
+    anxiety: {
+      badge: "المسار المقترح · جلسة فردية + مقياس GAD-7",
+      title: "التعامل مع القلق والتوتر المستمر",
+      desc: "نوصي بالبدء بإجراء مقياس القلق المعتمد (GAD-7) في دقيقتين لمعرفة درجة الشدة، أو حجز جلسة علاج معرفي سلوكي (CBT) مع أخصائي مرخص لاستعادة توازنك الذهني.",
+      primaryText: "تصفح أخصائيي القلق",
+      primaryHref: "specialists.html",
+      secondaryText: "إجراء مقياس القلق المجاني ←",
+      secondaryHref: "assessment.html?start=true",
+    },
+    burnout: {
+      badge: "المسار المقترح · توازن العمل + مقياس PSS-10",
+      title: "تجاوز ضغط العمل والاحتراق الوظيفي",
+      desc: "الإرهاق المهني المستمر يستنزف طاقتك وإنتاجيتك. يمكنك قياس مستوى الضغط النفسي الآن أو التحدث بسرية تامة مع أخصائي رفاه مهني لوضع خطة تعافٍ عملية.",
+      primaryText: "احجز جلسة رفاه مهني",
+      primaryHref: "specialists.html",
+      secondaryText: "حلول الشركات والمؤسسات ←",
+      secondaryHref: "business.html",
+    },
+    depression: {
+      badge: "المسار المقترح · دعم تخصصي + مقياس PHQ-9",
+      title: "استعادة الشغف وتجاوز الحزن والفتور",
+      desc: "فقدان الطاقة والشغف لفترات طويلة إشارة تستحق الرعاية. يساعدك مقياس (PHQ-9) السريري في تقييم حالتك بدقة، ويوفر لك أخصائيونا مساحة آمنة خالية من الأحكام.",
+      primaryText: "تحدث مع أخصائي مرخص",
+      primaryHref: "specialists.html",
+      secondaryText: "ابدأ التقييم الذاتي المجاني ←",
+      secondaryHref: "assessment.html?start=true",
+    },
+    family: {
+      badge: "المسار المقترح · إرشاد أسري وعلاقات",
+      title: "بناء علاقات متوازنة وحل الخلافات الأسرية",
+      desc: "جلسات إرشادية متخصصة للأزواج والأسر لتطوير مهارات التواصل الفعال، تفهم الاحتياجات العاطفية، وتجاوز التوترات الأسرية بسرية تامة.",
+      primaryText: "تصفح مستشاري الأسرة",
+      primaryHref: "specialists.html",
+      secondaryText: "استكشف خدمات الأفراد والأسرة ←",
+      secondaryHref: "service-individual.html",
+    },
+    kids: {
+      badge: "المسار المقترح · برامج الأطفال (4–12 سنة)",
+      title: "تنمية الذكاء العاطفي والمرونة النفسية لطفلك",
+      desc: "مسار تربوي ونفسي متخصص يساعد طفلك على فهم مشاعره والتعبير عنها بثقة، مع أدلة إرشادية عملية للوالدين للتعامل مع التحديات السلوكية.",
+      primaryText: "استكشف برامج الأطفال",
+      primaryHref: "service-kids.html",
+      secondaryText: "استشر أخصائي طفولة وأسرة ←",
+      secondaryHref: "specialists.html",
+    },
+  };
+
+  pills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      const key = pill.getAttribute("data-triage");
+      const info = triageData[key];
+      if (!info) return;
+
+      pills.forEach((p) => {
+        p.classList.remove("active");
+        p.setAttribute("aria-selected", "false");
+      });
+      pill.classList.add("active");
+      pill.setAttribute("aria-selected", "true");
+
+      resultPanel.style.opacity = "0.4";
+      resultPanel.style.transform = "translateY(4px)";
+
+      setTimeout(() => {
+        if (badgeEl) badgeEl.textContent = info.badge;
+        if (titleEl) titleEl.textContent = info.title;
+        if (descEl) descEl.textContent = info.desc;
+        if (primaryBtn) {
+          primaryBtn.textContent = info.primaryText;
+          primaryBtn.href = info.primaryHref;
+        }
+        if (secondaryBtn) {
+          secondaryBtn.textContent = info.secondaryText;
+          secondaryBtn.href = info.secondaryHref;
+        }
+        resultPanel.style.opacity = "1";
+        resultPanel.style.transform = "translateY(0)";
+      }, 140);
+    });
+  });
+}
+
+// Interactive Assessment Phone Demo on Homepage
+function initInteractiveAssessmentPhone() {
+  const phone = document.getElementById("homeAssessmentPhone");
+  if (!phone) return;
+
+  const progressFill = document.getElementById("aqDemoProgressFill");
+  const progressLabel = document.getElementById("aqDemoProgressLabel");
+  const questionText = document.getElementById("aqDemoQuestion");
+  const optionsContainer = document.getElementById("aqDemoOptions");
+  const nextBtn = document.getElementById("aqDemoNextBtn");
+  const nextText = document.getElementById("aqDemoNextText");
+
+  const sampleQuestions = [
+    "خلال الأسبوعين الماضيين، كم مرة شعرت بالقلق أو التوتر أو الانزعاج؟",
+    "خلال الأسبوعين الماضيين، كم مرة شعرت بعدم القدرة على إيقاف القلق أو السيطرة عليه؟",
+    "خلال الأسبوعين الماضيين، كم مرة وجدت صعوبة في الاسترخاء والهدوء الذهني؟",
+  ];
+
+  let currentStep = 0;
+  const checkSvg = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+  function bindOptionClicks() {
+    const opts = optionsContainer.querySelectorAll(".aq-option");
+    opts.forEach((opt) => {
+      opt.addEventListener("click", () => {
+        opts.forEach((o) => {
+          o.classList.remove("aq-option-selected");
+          const svg = o.querySelector("svg");
+          if (svg) svg.remove();
+        });
+        opt.classList.add("aq-option-selected");
+        opt.insertAdjacentHTML("beforeend", checkSvg);
+      });
+    });
+  }
+
+  bindOptionClicks();
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      if (currentStep < sampleQuestions.length - 1) {
+        currentStep++;
+        const pct = Math.round(((currentStep + 1) / sampleQuestions.length) * 100);
+        if (progressFill) progressFill.style.width = `${pct}%`;
+        if (progressLabel) progressLabel.textContent = `${currentStep + 1} / ${sampleQuestions.length} (معاينة تفاعلية)`;
+        if (questionText) questionText.textContent = sampleQuestions[currentStep];
+        if (currentStep === sampleQuestions.length - 1 && nextText) {
+          nextText.textContent = "احصل على نتيجتك الكاملة";
+        }
+      } else {
+        window.location.href = "assessment.html?start=true";
+      }
+    });
+  }
+}
+
+// Floating Quick-Action Dock & Back to Top
+function initFloatingQuickDock() {
+  const dock = document.getElementById("floatingQuickDock");
+  const topBtn = document.getElementById("backToTopBtn");
+  if (!dock) return;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (window.scrollY > 420) {
+        dock.classList.add("visible");
+      } else {
+        dock.classList.remove("visible");
+      }
+    },
+    { passive: true }
+  );
+
+  if (topBtn) {
+    topBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+}
+
 // User Auth Status
 function initUserAuthStatus() {
-  try {
-    const token = localStorage.getItem('psyai_token') || localStorage.getItem('token');
-    if (token) {
-      document.querySelectorAll('a[href="login.html"]').forEach((btn) => {
-        btn.href = 'profile.html';
-        btn.textContent = 'حسابي وجلساتي';
-      });
-    }
-  } catch (e) {}
+  updateHeaderNavState();
 }
 
 // B2B Corporate Form Submission
-window.handleB2bSubmit = async function(event) {
+window.handleB2bSubmit = async function (event) {
   event.preventDefault();
   const form = event.target;
   const submitBtn = form.querySelector('#b2bSubmitBtn') || form.querySelector('button[type="submit"]');
@@ -777,7 +976,7 @@ window.handleB2bSubmit = async function(event) {
     } else if (res.status === 401 || !token) {
       const subject = encodeURIComponent(`طلب شراكة مؤسسية - ${companyName}`);
       const body = encodeURIComponent(`اسم الشركة: ${companyName}\nرقم التواصل: ${companyPhone}\nالبريد الإلكتروني: ${companyEmail}\nعدد الموظفين: ${employeesCount}`);
-      
+
       if (msgBox) {
         msgBox.className = 'b2b-form-msg success';
         msgBox.innerHTML = `✨ <strong>تم تسجيل بيانات شركتكم بنجاح (${companyName})!</strong> جاري تحويل طلبكم لمستشارينا.`;
@@ -824,6 +1023,9 @@ document.addEventListener("DOMContentLoaded", () => {
   updateHeaderNavState();
   initAnimOnScroll();
   initMoodTrackerMockup();
+  initTriageCompass();
+  initInteractiveAssessmentPhone();
+  initFloatingQuickDock();
   initUserAuthStatus();
 });
 

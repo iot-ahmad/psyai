@@ -229,74 +229,64 @@ function readRegisterStep2() {
  * then open the OTP modal.
  * @param {Event} [event]
  */
-export async function submitRegisterStep2(event) {
+export async function submitRegisterDirect(event) {
   event?.preventDefault?.();
 
   const step1 = readRegisterStep1();
-  const step2 = readRegisterStep2();
 
-  // Merge step-1 form inputs, keeping existing pending data if fields are empty
-  const activeStep1 = {};
-  for (const [k, v] of Object.entries(step1)) {
-    if (v) activeStep1[k] = v;
+  if (!step1.firstName || !step1.lastName || !step1.phone || !step1.gender || !step1.password) {
+    ui.showToast('يرجى ملء جميع الحقول المطلوبة', 'err');
+    return;
   }
+
+  // Format clean Jordanian phone
+  let digits = step1.phone.replace(/\D/g, '');
+  if (digits.startsWith('962')) digits = digits.slice(3);
+  if (digits.startsWith('0')) digits = digits.slice(1);
+  const cleanPhone = `+962${digits}`;
+
+  const userEmail = step1.email || `${cleanPhone.replace(/[^0-9]/g, '')}@psyai.me`;
 
   state.pendingRegistration = {
-    ...(state.pendingRegistration || {}),
-    ...activeStep1,
-    ...step2,
+    ...step1,
+    email: userEmail,
+    phone: cleanPhone,
+    condition: 'استشارة عامة',
+    specGenderPref: 'any'
   };
 
-  // The condition drives specialist matching — it is required.
-  if (!state.pendingRegistration.condition) {
-    ui.showToast(t('lblCondition'), 'err');
-    return;
-  }
-
-  // If 'other' condition is chosen, custom description is required
-  if (state.pendingRegistration.condition === 'other' && !state.pendingRegistration.otherDesc) {
-    ui.showToast(t('lblOtherDesc') || 'يرجى كتابة ما يصف حالتك', 'err');
-    document.getElementById('rOtherDesc')?.focus?.();
-    return;
-  }
-
   const restore = ui.withLoading(
-    document.getElementById('finalRegBtn'),
-    t('msgSendingOtp'),
+    document.getElementById('regNextBtn'),
+    t('msgSendingOtp') || 'جاري إرسال الرمز...',
   );
 
   try {
-    const devCode = await requestOtp(state.pendingRegistration.phone);
+    const devCode = await requestOtp(cleanPhone);
     state.currentDevCode = devCode;
-    goToRegisterStep2();
-    openOtpModal(state.pendingRegistration.phone, devCode);
-    ui.showToast(`تم إرسال رمز التحقق إلى واتساب على الرقم ${state.pendingRegistration.phone}`);
+    openOtpModal(cleanPhone, devCode);
+    ui.showToast(`تم إرسال رمز التحقق إلى واتساب على الرقم ${cleanPhone}`);
   } catch (err) {
-    const errEl = document.getElementById('otpErrorMsg');
-    if (errEl) {
-      errEl.textContent = err?.message || t('msgUnexpected');
-      errEl.style.display = 'block';
-    }
     ui.showToast(err?.message || t('msgUnexpected'), 'err');
   } finally {
     restore();
   }
 }
 
+export const submitRegisterStep2 = submitRegisterDirect;
+
 /**
- * Request an OTP, falling back to the offline simulator code if the backend
- * is unreachable.
+ * Request an OTP via WhatsApp Cloud API.
  * @param {string} phone
- * @returns {Promise<string>} the dev code (if any)
+ * @returns {Promise<string|null>} the dev code if returned by backend in dev/test mode, or null
  */
 async function requestOtp(phone) {
   try {
     const result = await api.sendOtp(phone);
-    if (result.success) return result.devCode || OTP.OFFLINE_CODE;
+    if (result.success) return result.devCode || null;
     throw new Error(result.message || t('msgOtpSendError'));
   } catch (err) {
     if (err instanceof TypeError) {
-      return OTP.OFFLINE_CODE;
+      throw new Error('تعذر الاتصال بخادم PsyAI. يرجى التحقق من تشغيل الخادم أو اتصالك بالإنترنت.');
     }
     throw err;
   }
@@ -383,7 +373,7 @@ export async function resendOtp() {
 
   try {
     const res = await api.sendOtp(pending.phone);
-    const devCode = res.devCode || (res.success ? OTP.OFFLINE_CODE : null);
+    const devCode = res.devCode || null;
     state.currentDevCode = devCode;
     ui.showToast(t('msgOtpSentShort'));
     if (devCode) {
@@ -455,7 +445,13 @@ export async function verifyAndCompleteRegistration() {
 
 /** Finish the standard email/password registration after OTP success. */
 async function completeStandardRegistration(digits) {
-  const payload = { ...state.pendingRegistration, otpCode: digits };
+  const cleanPhone = state.pendingRegistration?.phone || '';
+  const userEmail = state.pendingRegistration?.email || `${cleanPhone.replace(/[^0-9]/g, '')}@psyai.me`;
+  const payload = {
+    ...state.pendingRegistration,
+    email: userEmail,
+    otpCode: digits
+  };
 
   let user;
   let token;
@@ -463,14 +459,9 @@ async function completeStandardRegistration(digits) {
     ({ user, token } = await api.register(payload));
   } catch (err) {
     if (err instanceof TypeError) {
-      if (state.currentDevCode && digits !== state.currentDevCode) {
-        throw new Error(t('msgOtpInvalid'));
-      }
-      user = buildOfflineUser('u');
-      token = `mock_jwt_${Date.now()}`;
-    } else {
-      throw err;
+      throw new Error('تعذر إكمال التسجيل لعدم توفر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت والمحاولة مجدداً.');
     }
+    throw err;
   }
 
   persistSession(token, user);
@@ -481,42 +472,29 @@ async function completeStandardRegistration(digits) {
 
 /** Finish a Google-originated registration after OTP success. */
 async function completeGoogleRegistration(digits) {
-  let verified = false;
-  try {
-    const res = await api.verifyOtp(state.pendingRegistration.phone, digits);
-    verified = res.success;
-  } catch {
-    verified =
-      (state.currentDevCode && digits === state.currentDevCode) ||
-      (!state.currentDevCode && digits.length === OTP.LENGTH);
-  }
-  if (!verified && state.currentDevCode && digits !== state.currentDevCode) {
-    throw new Error(t('msgOtpInvalid'));
+  const res = await api.verifyOtp(state.pendingRegistration.phone, digits);
+  if (!res.success) {
+    throw new Error(res.message || t('msgOtpInvalid'));
   }
 
   const data = state.pendingRegistration;
-  let user;
-  let token = `mock_jwt_token_${Date.now()}`;
-  try {
-    const res = await api.googleAuth({
-      email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      phone: data.phone,
-      condition: data.condition,
-      specGenderPref: data.specGenderPref,
-    });
-    user = res.user;
-    token = res.token;
-    ui.showToast(res.message || 'تم تأكيد رقم الهاتف وتسجيل الدخول بنجاح!');
-  } catch {
-    user = buildOfflineUser('g');
-    ui.showToast('تم تأكيد رقم الهاتف وتسجيل الدخول بنجاح!');
+  const authRes = await api.googleAuth({
+    email: data.email,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    phone: data.phone,
+    condition: data.condition,
+    specGenderPref: data.specGenderPref,
+  });
+
+  if (!authRes.token || !authRes.user) {
+    throw new Error(authRes.message || 'فشلت عملية المصادقة');
   }
 
-  persistSession(token, user);
+  persistSession(authRes.token, authRes.user);
   closeOtpModal();
-  redirectAfterAuth(user, { withPrefs: true });
+  ui.showToast(authRes.message || 'تم تأكيد رقم الهاتف وتسجيل الدخول بنجاح!');
+  redirectAfterAuth(authRes.user, { withPrefs: true });
 }
 
 /** Build a local user object for the offline/demo fallback. */
@@ -833,6 +811,7 @@ if (typeof window !== 'undefined') {
     goToRegisterStep2,
     resetToStep1,
     submitRegisterStep2,
+    submitRegisterDirect,
     verifyAndCompleteRegistration,
     resendOtp,
     submitLogin,

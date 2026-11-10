@@ -28,14 +28,7 @@ function wireEvents() {
     window.location.href = 'index.html';
   });
   onClick('regNextBtn', () => { }); // submit handled by form
-  onSubmit('registerForm', (e) => {
-    e.preventDefault();
-    auth.goToRegisterStep2();
-  });
-  onSubmit('step2Form', auth.submitRegisterStep2);
-  document.getElementById('rCondition')?.addEventListener('change', (e) => {
-    auth.handleConditionChange(e.target.value);
-  });
+  onSubmit('registerForm', auth.submitRegisterDirect);
   onSubmit('loginForm', auth.submitLogin);
 
   // Footer switch links (multiple "go to register/login" buttons)

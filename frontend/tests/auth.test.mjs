@@ -231,14 +231,13 @@ describe('auth controller — submitRegisterStep2', () => {
     assert.equal(registry.colRegister.classList.contains('step2'), false);
   });
 
-  test('edge: network rejection during OTP send falls back to the offline dev code', async () => {
+  test('edge: network rejection during OTP send surfaces a clear error', async () => {
     auth.handleRegisterStep1(STEP1);
     globalThis.fetch = async () => { throw new TypeError('network down'); };
     registry.rCondition.value = 'condAnxiety';
     await auth.submitRegisterStep2();
-    assert.equal(registry.otpDevCodeVal.textContent, '123456'); // OFFLINE_CODE
-    assert.equal(registry.otpDevBadge.style.display, 'flex');
-    assert.equal(registry.colRegister.classList.contains('step2'), true);
+    assert.equal(registry.otpErrorMsg.textContent.length > 0, true);
+    assert.equal(registry.toastMsg.textContent.includes('تعذر الاتصال'), true);
   });
 });
 

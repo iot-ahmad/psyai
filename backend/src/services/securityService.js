@@ -14,13 +14,18 @@ const IP_SALT = process.env.IP_SALT || 'psyai_ip_hash_salt_2025_wellness';
 class SecurityService {
   /**
    * Hash a password according to Section 3: Argon2id (Memory >= 64MB, Time >= 3, Parallelism = 4)
-   * Falls back to high-cost bcrypt (cost 12) if argon2 native module is not installed.
+   * AUTH-204: Fail-fast in production if Argon2 native module is not present
    * @param {string} password
    * @returns {Promise<string>}
    */
   static async hashPassword(password) {
     if (!password || typeof password !== 'string') {
       throw new Error('Password must be a valid non-empty string');
+    }
+
+    if (process.env.NODE_ENV === 'production' && !argon2) {
+      console.error('[SECURITY FATAL] Argon2id is strictly required in production but native binding is missing.');
+      throw new Error('SEC_ARGON2_REQUIRED_IN_PRODUCTION');
     }
 
     if (argon2) {
@@ -38,6 +43,17 @@ class SecurityService {
 
     const salt = await bcrypt.genSalt(12);
     return await bcrypt.hash(password, salt);
+  }
+
+  /**
+   * Check if a hash needs to be rehashed to Argon2id (AUTH-204)
+   * @param {string} hash
+   * @returns {boolean}
+   */
+  static needsRehash(hash) {
+    if (!hash) return false;
+    // If not hashed with Argon2id, it needs rehash upon successful login
+    return !hash.startsWith('$argon2id');
   }
 
   /**
@@ -123,6 +139,51 @@ class SecurityService {
       .createHash('sha256')
       .update(String(rawToken).trim())
       .digest('hex');
+  }
+
+  /**
+   * Issue a short-lived, single-use phone verification ticket (AUTH-101)
+   * Valid for 10 minutes with unique jti, purpose: 'phone_verified'
+   * @param {string} phone
+   * @param {string} [userId]
+   * @returns {string}
+   */
+  static createPhoneVerificationTicket(phone, userId = null) {
+    const jwt = require('jsonwebtoken');
+    const JWT_SECRET = process.env.JWT_SECRET;
+    const jti = crypto.randomUUID ? crypto.randomUUID() : crypto.randomBytes(16).toString('hex');
+
+    return jwt.sign(
+      {
+        sub: userId || 'anonymous',
+        phone,
+        purpose: 'phone_verified',
+        scope: ['phone_verified'],
+        jti
+      },
+      JWT_SECRET,
+      { expiresIn: '10m', algorithm: 'HS256' }
+    );
+  }
+
+  /**
+   * Verify phone verification ticket (AUTH-101)
+   * @param {string} ticket
+   * @param {string} expectedPhone
+   * @returns {boolean}
+   */
+  static verifyPhoneVerificationTicket(ticket, expectedPhone) {
+    if (!ticket) return false;
+    const jwt = require('jsonwebtoken');
+    const JWT_SECRET = process.env.JWT_SECRET;
+    try {
+      const decoded = jwt.verify(ticket, JWT_SECRET, { algorithms: ['HS256'] });
+      if (decoded.purpose !== 'phone_verified') return false;
+      if (expectedPhone && decoded.phone !== expectedPhone) return false;
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   /**
