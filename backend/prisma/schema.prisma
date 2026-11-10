@@ -80,6 +80,10 @@ model Specialist {
 
   @@index([isFeatured, rating])
   @@index([status])
+  @@index([gender])
+  @@index([isAvailable])
+  @@index([status, isAvailable, gender])
+  @@index([specialty])
   @@map("specialists")
 }
 
@@ -93,6 +97,7 @@ model SpecialistSchedule {
   endTime      String     @map("end_time")     // "HH:MM"
   available    Boolean?   @default(true)
 
+  @@index([specialistId, day])
   @@map("specialist_schedule")
 }
 
@@ -129,6 +134,9 @@ model Booking {
   @@unique([specialistId, sessionTime], name: "unique_booking_specialist_time")
   @@index([userId, createdAt])
   @@index([specialistId, sessionTime])
+  @@index([status])
+  @@index([specialistId, status])
+  @@index([userId, status])
   @@map("bookings")
 }
 
@@ -150,6 +158,8 @@ model Payment {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
 
+  @@index([userId])
+  @@index([status])
   @@map("payments")
 }
 
@@ -175,6 +185,8 @@ model Article {
 
   @@index([specialistId])
   @@index([status])
+  @@index([categorySlug])
+  @@index([status, createdAt])
   @@map("articles")
 }
 

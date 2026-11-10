@@ -112,17 +112,38 @@ async function createBooking(req, res, next) {
 async function getMyBookings(req, res, next) {
   try {
     const userId = req.user.id;
+    const page = req.query.page ? Math.max(1, parseInt(req.query.page, 10) || 1) : null;
+    const limit = req.query.limit ? Math.min(50, Math.max(1, parseInt(req.query.limit, 10) || 20)) : null;
+    const skip = (page && limit) ? (page - 1) * limit : undefined;
+    const take = limit || undefined;
 
-    const rawBookings = await prisma.booking.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        specialist: {
-          select: { id: true, name: true, title: true, avatarUrl: true, price: true }
+    const [total, rawBookings] = await Promise.all([
+      prisma.booking.count({ where: { userId } }),
+      prisma.booking.findMany({
+        where: { userId },
+        select: {
+          id: true,
+          sessionTime: true,
+          status: true,
+          meetingLink: true,
+          notes: true,
+          conditionEncrypted: true,
+          cliqSenderName: true,
+          cliqRefNumber: true,
+          rating: true,
+          createdAt: true,
+          specialist: {
+            select: { id: true, name: true, title: true, avatarUrl: true, price: true }
+          },
+          payment: {
+            select: { id: true, amount: true, currency: true, status: true, transactionId: true }
+          }
         },
-        payment: true
-      }
-    });
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take
+      })
+    ]);
 
     const formatted = rawBookings.map((b) => {
       const decrypted = EncryptionService.decryptBookingFields(b);
@@ -135,7 +156,10 @@ async function getMyBookings(req, res, next) {
 
     res.status(200).json({
       success: true,
+      total,
       count: formatted.length,
+      page: page || 1,
+      totalPages: limit ? Math.ceil(total / limit) : 1,
       bookings: formatted
     });
   } catch (err) {

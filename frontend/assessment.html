@@ -697,6 +697,49 @@
       margin: 0 auto 1.75rem;
     }
 
+    /* AI Token Streaming Simulation */
+    .ai-token-stream {
+      display: inline;
+    }
+    .ai-stream-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--gold, #d4af37);
+      margin-inline-start: 3px;
+      vertical-align: middle;
+      animation: aiCursorBlink 0.7s infinite;
+    }
+    @keyframes aiCursorBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .ai-badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 9999px;
+      color: #f1d479;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+    .ai-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulseDot 1.5s infinite;
+    }
+    @keyframes pulseDot {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+
     /* Recommendations */
     .asm-recommendations {
       display: grid;
@@ -1515,6 +1558,31 @@
     //   Scale: PsyAI Wellbeing Index (8 questions, 0–3)
     // ═══════════════════════════════════════════════
 
+    // Token-by-token streaming animation for AI recommendations
+    function streamAiTokens(targetEl, text, speedMs = 26) {
+      if (!targetEl) return;
+      targetEl.innerHTML = '<div class="ai-badge-live"><span class="ai-badge-dot"></span> تحليل الذكاء الاصطناعي الحي</div><br><span class="ai-token-stream"></span><span class="ai-stream-cursor"></span>';
+      const streamSpan = targetEl.querySelector('.ai-token-stream');
+      const cursor = targetEl.querySelector('.ai-stream-cursor');
+
+      const tokens = text.match(/[\u0600-\u06FF\w]+|[^\s\w\u0600-\u06FF]+|\s+/g) || text.split(" ");
+      let idx = 0;
+
+      function emitNext() {
+        if (idx < tokens.length) {
+          streamSpan.textContent += tokens[idx];
+          idx++;
+          const jitter = (Math.random() * 10) - 5;
+          setTimeout(emitNext, Math.max(12, speedMs + jitter));
+        } else {
+          if (cursor) {
+            setTimeout(() => cursor.remove(), 1000);
+          }
+        }
+      }
+      emitNext();
+    }
+
     const SCALES = [
       {
         id: "pwi",
@@ -1968,8 +2036,9 @@
 
       document.getElementById("summaryTitle").textContent =
         sumTitles[overallMax];
-      document.getElementById("summaryBody").textContent =
-        sumBodies[overallMax];
+
+      // Stream AI response token-by-token
+      streamAiTokens(document.getElementById("summaryBody"), sumBodies[overallMax], 26);
 
       // Link recommendation to specialists page
       const conditionMap = ["resilience", "stress", "anxiety", "depression"];
